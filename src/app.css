@@ -211,13 +211,13 @@ body::before {
   background-repeat: repeat;
   z-index: 100;
   pointer-events: none;
-  opacity: .15;
+  opacity: .07;
   transition: all .3s ease;
 }
 
 html:not(.dark) body::before {
   filter: invert(1);
-  opacity: .12;
+  opacity: .05;
 }
 
 body[data-noise="animated"]::before {
@@ -259,18 +259,23 @@ body[data-dyslexia-font] {
 @keyframes noise {
 	0% {
 		background-position: top right;
+    transform: scale(3) rotate(180deg);
 	}
 	25% {
 		background-position: bottom right;
+    transform: scale(3) rotate(0deg);
 	}
 	50% {
 		background-position: top left;
+    transform: scale(3) rotate(180deg);
 	}
 	75% {
 		background-position: bottom left;
+    transform: scale(3) rotate(0deg);
 	}
 	100% {
 		background-position: top right;
+    transform: scale(3) rotate(180deg);
 	}
 }
 

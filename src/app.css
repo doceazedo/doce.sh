@@ -234,7 +234,7 @@ body[data-dyslexia-font] {
 
 @media screen and (min-width: 96rem /* 2xl */) {
   body::before {
-    opacity: .3;
+    opacity: .075;
   }
 
   body::after {

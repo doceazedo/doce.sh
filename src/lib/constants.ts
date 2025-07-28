@@ -8,6 +8,7 @@ import {
 	SoundcloudLineLogos,
 	SteamLineLogos,
 	TwitchLineLogos,
+	WhatsappLineLogos,
 	YoutubeLineLogos,
 } from "svelte-remix";
 import { m } from "$lib/paraglide/messages";
@@ -50,6 +51,7 @@ export const SOCIALS = {
 		icon: InstagramLineLogos,
 		url: "https://instagram.com/doceazedo911",
 		label: "Instagram",
+		handle: "doceazedo911",
 	},
 	discord: {
 		icon: DiscordLineLogos,
@@ -75,6 +77,7 @@ export const SOCIALS = {
 		icon: SoundcloudLineLogos,
 		url: "https://soundcloud.com/doceazedo",
 		label: "SoundCloud",
+		handle: "doceazedo",
 	},
 	bandcamp: {
 		icon: siBandcamp.svg,
@@ -91,6 +94,13 @@ export const SOCIALS = {
 		url: "https://www.discogs.com/user/doceazedo",
 		label: "Discogs",
 	},
+};
+
+export const WHATSAPP = {
+	icon: WhatsappLineLogos,
+	url: "https://wa.me/5531988696043",
+	label: "WhatsApp",
+	handle: "(31) 98869-6043",
 };
 
 export const WORK = {

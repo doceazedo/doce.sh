@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Prose from "$lib/components/common/prose.svelte";
 	import Seo from "$lib/components/common/seo.svelte";
 	import { m } from "$lib/paraglide/messages";
 </script>
@@ -14,6 +15,6 @@
 	</p>
 </hgroup>
 
-<div class="prose prose-neutral dark:prose-invert w-full max-w-none">
+<Prose>
 	{@html m.ai_usage_description()}
-</div>
+</Prose>

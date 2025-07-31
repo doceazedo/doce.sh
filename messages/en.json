@@ -493,5 +493,15 @@
 	"no_comments": "No comments yet",
 	"comments": "Comments",
 	"gachapon_gift_title": "A little something for you...",
-	"gachapon_open_gift": "Unwrap it!"
+	"gachapon_open_gift": "Unwrap it!",
+	"presskit": "Press kit",
+	"all_hd_photos": "Drive with HD photos",
+	"bio": "Bio",
+	"presskit_bio_intro": "Queer & non-binary DJ from Minas Gerais, Brasil, <strong>DoceAzedo</strong> escapes reality as a developer to join the vibrant scene of Belo Horizonte, mixing electrifying underground sounds. They host the <a href=\"https://www.instagram.com/embrazamaisjoga\" target=\"_blank\" rel=\"noopener noreferrer\">Combo EMBRAZA + JOGA</a> show on the indie web radio station <a href=\"https://www.instagram.com/function.fm\" target=\"_blank\" rel=\"noopener noreferrer\">FUNCTION!</a> and aims for sounds that travel between UKG, Drum & Bass, Jersey Club and so many Baile Funk dimensions.",
+	"presskit_bio_experience": "Right out of Pedro Leopodo, MG, <strong>Doce</strong> arrives at the capital of Minas Gerais to build their own musical identity, coming back to parties and venues he lived so many of his nights, this time to perform, such as at <a href=\"https://www.instagram.com/festatrophy\" target=\"_blank\" rel=\"noopener noreferrer\">Trophy</a>, <a href=\"https://www.instagram.com/kaofunk\" target=\"_blank\" rel=\"noopener noreferrer\">Kaô Funk</a>, <a href=\"https://www.instagram.com/mira_beaga\" target=\"_blank\" rel=\"noopener noreferrer\">MIRA!</a> and <a href=\"https://www.instagram.com/clubecontra\" target=\"_blank\" rel=\"noopener noreferrer\">Contra</a>.",
+	"dj_sets_remixes": "DJ sets & remixes",
+	"listen_on_soundcloud": "Listen on SoundCloud",
+	"tech_rider": "Tech rider",
+	"or_newer": "or newer",
+	"own_gear": "(can provide own gear)"
 }

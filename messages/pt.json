@@ -493,5 +493,15 @@
 	"no_comments": "Sem comentários ainda",
 	"comments": "Comentários",
 	"gachapon_gift_title": "Uma lembrancinha pra você...",
-	"gachapon_open_gift": "Desembrulhar!"
+	"gachapon_open_gift": "Desembrulhar!",
+	"presskit": "Press kit",
+	"all_hd_photos": "Galeria de fotos em HD",
+	"bio": "Bio",
+	"presskit_bio_intro": "DJ não-binárie da Grande BH, <strong>DoceAzedo</strong> foge do seu dia a dia como programador para se juntar à cena efervescente de Belo Horizonte, misturando os sons mais eletrizantes do underground local. Host do programa <a href=\"https://www.instagram.com/embrazamaisjoga\" target=\"_blank\" rel=\"noopener noreferrer\">Combo EMBRAZA + JOGA</a> na web rádio independente <a href=\"https://www.instagram.com/function.fm\" target=\"_blank\" rel=\"noopener noreferrer\">FUNCTION!</a>, sua sonoridade viaja entre UKG, Drum & Bass, Jersey Club e tantas vertentes do Baile Funk.",
+	"presskit_bio_experience": "Diretamente de Pedro Leopodo - MG, <strong>Doce</strong> chega até a capital mineira para construir sua identidade enquanto DJ, passando por festas e espaços onde já viveu tantas noites, dessa vez agora para discotecar, como na <a href=\"https://www.instagram.com/festatrophy\" target=\"_blank\" rel=\"noopener noreferrer\">Festa Trophy</a>, <a href=\"https://www.instagram.com/kaofunk\" target=\"_blank\" rel=\"noopener noreferrer\">Kaô Funk</a>, <a href=\"https://www.instagram.com/mira_beaga\" target=\"_blank\" rel=\"noopener noreferrer\">MIRA!</a> e <a href=\"https://www.instagram.com/clubecontra\" target=\"_blank\" rel=\"noopener noreferrer\">Contra</a> (Juíz de Fora - MG).",
+	"dj_sets_remixes": "DJ sets & remixes",
+	"listen_on_soundcloud": "Ouvir no SoundCloud",
+	"tech_rider": "Rider técnico",
+	"or_newer": "ou mais recente",
+	"own_gear": "(equipamento próprio)"
 }

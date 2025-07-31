@@ -359,6 +359,11 @@
 					description: m.acknowledgements_cobalt(),
 					url: "https://cobalt.tools/about/privacy",
 				},
+				{
+					label: "Toby Fox",
+					description: m.acknowledgements_toby_fox(),
+					url: "https://twitter.com/tobyfox",
+				},
 			]}
 		/>
 	</Prose>

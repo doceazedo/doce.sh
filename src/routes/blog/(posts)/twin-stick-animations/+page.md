@@ -2,8 +2,8 @@
 title: "Twin-stick movement and directional animations in 3D with vector math"
 date: "2025/08/05"
 icon: "/img/icons/rust.svg"
-# blueskyPostId: ""
-# mastodonPostId: ""
+blueskyPostId: "3lvofibnhvc2y"
+mastodonPostId: "114977702291659030"
 ---
 
 <video src="/video/blog/twin-stick-animations/demo.webm" muted autoplay loop playsinline></video>

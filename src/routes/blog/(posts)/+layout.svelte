@@ -17,6 +17,7 @@
 		Chat3LineCommunication,
 		EarthFillMap,
 		EyeLineSystem,
+		Heart3FillHealthMedical,
 		Heart3LineHealthMedical,
 		MastodonLineLogos,
 		PlayFillMedia,
@@ -208,18 +209,19 @@
 						</Button>
 					</div>
 				</div>
-				<ul class="flex flex-col gap-6 md:gap-12">
+				<ul class="flex flex-col gap-6">
 					{#if activity}
-						{#each activity.comments as comment}
+						{#each activity.comments as comment, i}
 							{@const postedAt = new Date(comment.postedAt)}
-							<li
-								class="ease-elastic hover:before:bg-muted/50 before:border-border relative flex gap-4 p-4 transition-all before:absolute before:top-0 before:left-0 before:-z-10 before:size-full before:rounded before:border before:transition-all hover:scale-105 md:gap-6 md:p-6"
-							>
+							<li class="ease-elastic flex gap-3 transition-all">
 								<a
 									href={comment.author.url}
 									target="_blank"
 									rel="noopener noreferrer"
-									class="relative size-12 shrink-0 rounded-full before:absolute before:size-12 before:rounded-full before:border before:border-white/15 md:size-14 md:before:size-14"
+									class={cn(
+										"ease-elastic relative size-12 shrink-0 rounded-full transition-all before:absolute before:size-12 before:rounded-full before:border before:border-white/15 hover:scale-120",
+										i % 2 ? "hover:rotate-6" : "hover:-rotate-6",
+									)}
 								>
 									<img
 										src={comment.author.avatar}
@@ -227,156 +229,192 @@
 										class="size-full rounded-full"
 									/>
 								</a>
-								<div class="flex w-full flex-col">
-									<p
-										class="text-foreground flex items-center gap-1.5 font-medium"
-									>
-										<a
-											href={comment.author.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="hover:text-primary text-lg transition-all"
+								<div class="flex w-full flex-col gap-3">
+									<div class="flex w-full flex-col rounded border p-6 pt-4.5">
+										<p
+											class="text-foreground flex items-center gap-1.5 font-medium"
 										>
-											{comment.author.displayName}
-										</a>
-										{#if comment.author.id === SOCIALS.bluesky.id || comment.author.id === SOCIALS.mastodon.id}
-											<VerifiedBadgeFillBusiness class="text-primary size-4" />
-										{/if}
-										<span class="dark:text-muted text-border scale-90">
-											&bull;
-										</span>
-										<a
-											href={comment.url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="text-body flex items-center gap-1.5 text-sm hover:underline"
-										>
-											{postedAt.toLocaleDateString(getLocale(), {
-												year:
-													postedAt.getFullYear() !== new Date().getFullYear()
-														? "numeric"
-														: undefined,
-												month: "short",
-												day: "numeric",
-											})}
-											<span class="text-body/70 flex items-center gap-1">
-												<span>via</span>
-												{#if comment.source === "bluesky"}
-													<BlueskyLineLogos class="size-4" />
-												{:else if comment.source === "mastodon"}
-													<MastodonLineLogos class="size-4" />
-												{/if}
+											<a
+												href={comment.author.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="hover:text-primary text-lg transition-all"
+											>
+												{comment.author.displayName}
+											</a>
+											{#if comment.author.id === SOCIALS.bluesky.id || comment.author.id === SOCIALS.mastodon.id}
+												<VerifiedBadgeFillBusiness
+													class="text-primary size-4"
+												/>
+											{/if}
+											<span class="text-muted-foreground scale-50">
+												&bull;
 											</span>
-										</a>
-									</p>
-									{#if !comment.embed && isEmojiOnly(comment.content) && !comment.content.includes("\n")}
-										{@const emojiCount = comment.content.split("").length}
-										<p class={emojiCount <= 3 ? "text-6xl" : "text-3xl"}>
-											{@html comment.content}
+											<a
+												href={comment.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												class="text-body flex items-center gap-1.5 text-sm hover:underline"
+											>
+												{postedAt.toLocaleDateString(getLocale(), {
+													year:
+														postedAt.getFullYear() !== new Date().getFullYear()
+															? "numeric"
+															: undefined,
+													month: "short",
+													day: "numeric",
+												})}
+												<span class="text-body/70 flex items-center gap-1">
+													<span>via</span>
+													{#if comment.source === "bluesky"}
+														<BlueskyLineLogos class="size-4" />
+													{:else if comment.source === "mastodon"}
+														<MastodonLineLogos class="size-4" />
+													{/if}
+												</span>
+											</a>
 										</p>
-									{:else}
-										<Prose class="line-clamp-6 w-full whitespace-pre-line">
-											{@html comment.content}
-										</Prose>
-									{/if}
-									{#if comment.embed}
-										<div class="mt-3 w-full">
-											{#if comment.embed.type === "image"}
-												{@const qty = comment.embed.images.length}
-												{#if qty === 1}
-													{@const img = comment.embed.images[0]}
-													<img
-														src={img.thumbnail}
-														alt={img.alt || "Image"}
-														class="size-full max-h-[48rem] w-full rounded md:w-[calc(50%-6px)]"
-													/>
-												{:else}
-													<div class="grid grid-cols-2 gap-1.5">
-														{#each comment.embed.images as img, i}
-															<figure
+										{#if !comment.embed && isEmojiOnly(comment.content) && !comment.content.includes("\n")}
+											{@const emojiCount = comment.content.split("").length}
+											<p class={emojiCount <= 3 ? "text-6xl" : "text-3xl"}>
+												{@html comment.content}
+											</p>
+										{:else}
+											<Prose class="line-clamp-6 w-full whitespace-pre-line">
+												{@html comment.content}
+											</Prose>
+										{/if}
+										{#if comment.embed}
+											<div class="mt-3 w-full">
+												{#if comment.embed.type === "image"}
+													{@const qty = comment.embed.images.length}
+													{#if qty === 1}
+														{@const img = comment.embed.images[0]}
+														<a
+															href={img.fullsize}
+															target="_blank"
+															rel="noopener noreferrer"
+															class="contents"
+														>
+															<img
+																src={img.thumbnail}
+																alt={img.alt || "Image"}
 																class={cn(
-																	"relative overflow-hidden rounded before:absolute before:size-full before:rounded before:border before:border-white/15",
-																	qty === 1 && "aspect-square",
-																	qty === 3 &&
-																		i === 0 &&
-																		"row-span-2 aspect-auto! h-full",
-																	qty >= 3 && "aspect-video",
+																	"ease-elastic size-full max-h-[48rem] w-full rounded transition-all hover:scale-105 md:w-[calc(50%-6px)]",
+																	i % 2 ? "hover:-rotate-1" : "hover:rotate-1",
 																)}
-															>
-																<img
-																	src={img.thumbnail}
-																	alt={img.alt || "Image"}
-																	class="size-full rounded object-cover"
-																/>
-															</figure>
-														{/each}
-													</div>
-												{/if}
-											{:else if comment.embed.type === "video" && comment.embed.thumbnail}
-												<a
-													href={comment.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													class="relative flex aspect-video w-full items-center justify-center overflow-hidden rounded before:absolute before:size-full before:rounded before:border before:border-white/15"
-												>
-													<img
-														src={comment.embed.thumbnail}
-														alt="Video thumbnail"
-														class="size-full object-cover"
-													/>
-													<div
-														class="bg-primary/20 hover:bg-primary/40 border-primary absolute flex size-12 items-center justify-center rounded-full border transition-all"
+															/>
+														</a>
+													{:else}
+														<div class="grid grid-cols-2 gap-1.5">
+															{#each comment.embed.images as img, i}
+																<a
+																	href={img.fullsize}
+																	target="_blank"
+																	rel="noopener noreferrer"
+																	class={cn(
+																		"ease-elastic relative overflow-hidden rounded transition-all before:absolute before:size-full before:rounded before:border before:border-white/15 hover:z-10 hover:scale-110",
+																		qty === 1 && "aspect-square",
+																		qty === 3 &&
+																			i === 0 &&
+																			"row-span-2 aspect-auto! h-full",
+																		qty >= 3 && "aspect-video",
+																		i % 2
+																			? "hover:-rotate-1"
+																			: "hover:rotate-1",
+																	)}
+																>
+																	<img
+																		src={img.thumbnail}
+																		alt={img.alt || "Image"}
+																		class="size-full rounded object-cover"
+																	/>
+																</a>
+															{/each}
+														</div>
+													{/if}
+												{:else if comment.embed.type === "video" && comment.embed.thumbnail}
+													<a
+														href={comment.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														class={cn(
+															"ease-elastic relative flex aspect-video w-full items-center justify-center overflow-hidden rounded transition-all before:absolute before:size-full before:rounded before:border before:border-white/15 hover:scale-105",
+															i % 2 ? "hover:-rotate-1" : "hover:rotate-1",
+														)}
 													>
-														<PlayFillMedia class="text-primary size-6" />
-													</div>
-												</a>
-											{:else if comment.embed.type === "link"}
-												<a
-													href={comment.embed.url}
-													target="_blank"
-													rel="noopener noreferrer"
-													class="hover:bg-primary/15 hover:border-primary flex flex-col rounded border transition-all"
-												>
-													{#if comment.embed.thumbnail}
 														<img
 															src={comment.embed.thumbnail}
-															alt="Link preview"
-															class="aspect-[120/63] w-full rounded-t object-cover"
+															alt="Video thumbnail"
+															class="size-full object-cover"
 														/>
-													{/if}
-													<hgroup class="p-3">
-														<p class="line-clamp-1 font-medium">
-															{comment.embed.title}
-														</p>
-														{#if comment.embed.description}
-															<p class="text-body line-clamp-2 text-sm">
-																{comment.embed.description}
-															</p>
-														{/if}
-														<hr class="my-1.5" />
 														<div
-															class="text-body/70 flex items-center gap-1 text-xs"
+															class="bg-primary/20 hover:bg-primary/40 border-primary absolute flex size-12 items-center justify-center rounded-full border transition-all"
 														>
-															<EarthFillMap class="size-3" />
-															{new URL(comment.embed.url).host}
+															<PlayFillMedia class="text-primary size-6" />
 														</div>
-													</hgroup>
-												</a>
-											{:else if comment.embed.type === "gifv"}
-												<video
-													src={comment.embed.url}
-													muted
-													autoplay
-													loop
-													playsinline
-													class="size-full max-h-[48rem] w-full rounded md:w-[calc(50%-6px)]"
-												></video>
-											{/if}
-										</div>
-									{/if}
+													</a>
+												{:else if comment.embed.type === "link"}
+													<a
+														href={comment.embed.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														class="hover:bg-primary/15 ease-elastic hover:border-primary flex flex-col rounded border transition-all hover:scale-105"
+													>
+														{#if comment.embed.thumbnail}
+															<img
+																src={comment.embed.thumbnail}
+																alt="Link preview"
+																class="aspect-[120/63] w-full rounded-t object-cover"
+															/>
+														{/if}
+														<hgroup class="p-3">
+															<p class="line-clamp-1 font-medium">
+																{comment.embed.title}
+															</p>
+															{#if comment.embed.description}
+																<p class="text-body line-clamp-2 text-sm">
+																	{comment.embed.description}
+																</p>
+															{/if}
+															<hr class="my-1.5" />
+															<div
+																class="text-body/70 flex items-center gap-1 text-xs"
+															>
+																<EarthFillMap class="size-3" />
+																{new URL(comment.embed.url).host}
+															</div>
+														</hgroup>
+													</a>
+												{:else if comment.embed.type === "gifv"}
+													<a
+														href={comment.embed.url}
+														target="_blank"
+														rel="noopener noreferrer"
+														class="contents"
+														aria-label="Video"
+													>
+														<video
+															src={comment.embed.url}
+															muted
+															autoplay
+															loop
+															playsinline
+															class={cn(
+																"ease-elastic size-full max-h-[48rem] w-full rounded transition-all hover:scale-105 md:w-[calc(50%-6px)]",
+																i % 2 ? "hover:-rotate-1" : "hover:rotate-1",
+															)}
+														></video>
+													</a>
+												{/if}
+											</div>
+										{/if}
+									</div>
 									{#if comment.likesCount > 0}
-										<div class="text-body mt-3 flex items-center gap-1.5">
-											<Heart3LineHealthMedical class="size-5" />
+										<div
+											class="text-body flex w-full cursor-default items-center gap-1 text-sm"
+										>
+											<Heart3FillHealthMedical class="size-4" />
 											{comment.likesCount}
 										</div>
 									{/if}

@@ -6,7 +6,7 @@ blueskyPostId: "3lvofibnhvc2y"
 mastodonPostId: "114977702291659030"
 ---
 
-<video src="/video/blog/twin-stick-animations/demo.webm" muted autoplay loop playsinline></video>
+<video src="/video/blog/twin-stick-animations/demo.mp4" muted autoplay loop playsinline></video>
 
 Top-down or _isometric_ ARPG games such as Path of Exile 2 or Last Epoch allows the player to control the character with WASD for moving around and the cursor for aiming.
 
@@ -119,7 +119,7 @@ let walk_animation = match snapped_angle_deg {
 
 In the end, this is how the character controller is looking so far:
 
-<video src="/video/blog/twin-stick-animations/final-results.webm" muted autoplay loop playsinline></video>
+<video src="/video/blog/twin-stick-animations/final-results.mp4" muted autoplay loop playsinline></video>
 
 I'm very happy with the results, it looks quite clean! In the future I'll also implement animation masks for having different animations for the upper and lower body (for example, swinging a sword while walking).
 

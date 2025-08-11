@@ -13,7 +13,11 @@
 		VerifiedBadgeFillBusiness,
 	} from "svelte-remix";
 
-	let { comment, i }: { comment: PostComment; i: number } = $props();
+	let {
+		comment,
+		i,
+		isReply = false,
+	}: { comment: PostComment; i: number; isReply?: boolean } = $props();
 
 	let postedAt = $derived(new Date(comment.postedAt));
 
@@ -42,7 +46,7 @@
 	</a>
 	<div class="flex w-full flex-col gap-1.5">
 		<div class="flex w-full flex-col rounded border p-6 pt-4.5">
-			<p class="text-foreground flex items-center gap-1.5 font-medium">
+			<p class="text-foreground flex items-center gap-1 font-medium md:gap-1.5">
 				<a
 					href={comment.author.url}
 					target="_blank"
@@ -69,7 +73,12 @@
 						month: "short",
 						day: "numeric",
 					})}
-					<span class="text-body/70 flex items-center gap-1">
+					<span
+						class={cn(
+							"text-body/70 flex items-center gap-1",
+							isReply && "hidden md:flex",
+						)}
+					>
 						<span>via</span>
 						{#if comment.source === "bluesky"}
 							<BlueskyLineLogos class="size-4" />

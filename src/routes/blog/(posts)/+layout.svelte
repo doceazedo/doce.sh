@@ -240,7 +240,7 @@
 							</li>
 							{#each comment.replies as reply, j}
 								<li class="ml-15">
-									<Comment comment={reply} i={j} />
+									<Comment comment={reply} i={j} isReply />
 								</li>
 							{/each}
 						{/each}

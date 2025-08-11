@@ -2,12 +2,20 @@ import {
 	ATP_IDENTIFIER,
 	ATP_PASSWORD,
 	PLAUSIBLE_API_KEY,
+	REDDIT_CLIENT_ID,
+	REDDIT_CLIENT_SECRET,
+	REDDIT_PASSWORD,
+	REDDIT_USERNAME,
 } from "$env/static/private";
 import { SOCIALS } from "$lib/constants.js";
 import type {
 	BlueskyRawEmbed,
 	PostActivity,
+	PostComment,
 	PostCommentEmbed,
+	RedditComment,
+	RedditCommentsResponse,
+	RedditUserResponse,
 } from "$lib/types.js";
 import { escapeHTML, removeEmojiCodes } from "$lib/utils/string";
 import { AppBskyFeedGetPostThread, AtpAgent, type Facet } from "@atproto/api";
@@ -21,21 +29,26 @@ export const GET = async ({ params }) => {
 	const post = await import(`../../(posts)/${params.slug}/+page.md`);
 	if (!post) return error(404);
 
-	const [viewsCount, blueskyData, mastodonData] = await Promise.all([
-		getPageViews(`/blog/${params.slug}`),
-		getBlueskyData(post.metadata?.blueskyPostId),
-		getMastodonData(post.metadata?.mastodonPostId),
-	]);
+	const [viewsCount, blueskyData, mastodonData, redditData] = await Promise.all(
+		[
+			getPageViews(`/blog/${params.slug}`),
+			getBlueskyData(post.metadata?.blueskyPostId),
+			getMastodonData(post.metadata?.mastodonPostId),
+			getRedditData(post.metadata?.redditPostId),
+		],
+	);
 
 	const blueskyLikes = blueskyData?.likesCount || 0;
 	const mastodonLikes = mastodonData?.likesCount || 0;
+	const redditUpvotes = redditData?.likesCount || 0;
 
 	return json({
 		viewsCount,
-		likesCount: blueskyLikes + mastodonLikes,
+		likesCount: blueskyLikes + mastodonLikes + redditUpvotes,
 		comments: [
 			...(blueskyData?.comments || []),
 			...(mastodonData?.comments || []),
+			...(redditData?.comments || []),
 		].sort(
 			(a, b) => new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime(),
 		),
@@ -213,6 +226,7 @@ const getBlueskyData = async (
 							x.post.author.displayName || `@${x.post.author.handle}`,
 						url: `https://bsky.app/profile/${x.post.author.handle}`,
 						avatar: x.post.author.avatar || `/img/avatar-fallback.webp`,
+						isOp: x.post.author.did === SOCIALS.bluesky.id,
 					},
 					content: parseMessageFacets(
 						(x.post.record?.text as string) || "",
@@ -223,6 +237,7 @@ const getBlueskyData = async (
 					url: `https://bsky.app/profile/${x.post.author.handle}/post/${x.post.uri.split("app.bsky.feed.post/")[1]}`,
 					postedAt:
 						(x.post.record?.createdAt as string) || new Date(0).toString(),
+					replies: [],
 					source: "bluesky",
 				})) || [],
 	};
@@ -358,6 +373,7 @@ const getMastodonData = async (
 				: reply.account.username,
 			url: reply.account.url,
 			avatar: reply.account.avatar_static,
+			isOp: reply.account.id === SOCIALS.mastodon.id,
 		},
 		content: reply.content.replaceAll(
 			"<a",
@@ -367,6 +383,7 @@ const getMastodonData = async (
 		likesCount: reply.favourites_count,
 		url: reply.url,
 		postedAt: reply.created_at,
+		replies: [],
 		source: "mastodon" as const,
 	}));
 
@@ -374,4 +391,112 @@ const getMastodonData = async (
 		likesCount: post.favourites_count,
 		comments,
 	};
+};
+
+const getRedditAccessToken = async () => {
+	try {
+		const resp = await fetch(
+			`https://www.reddit.com/api/v1/access_token?grant_type=password&username=${REDDIT_USERNAME}&password=${REDDIT_PASSWORD}`,
+			{
+				method: "POST",
+				headers: {
+					Authorization: `Basic ${Buffer.from(REDDIT_CLIENT_ID + ":" + REDDIT_CLIENT_SECRET).toString("base64")}`,
+				},
+			},
+		);
+		const data = await resp.json();
+		return data.access_token || null;
+	} catch (_error) {
+		return null;
+	}
+};
+
+const EPHEMERAL_USERS_CACHE = new Map<string, RedditUserResponse["data"]>();
+
+const getRedditUser = async (
+	username: string,
+): Promise<RedditUserResponse["data"] | null> => {
+	const cachedUser = EPHEMERAL_USERS_CACHE.get(username);
+	if (cachedUser) return cachedUser;
+
+	try {
+		const resp = await fetch(`https://api.reddit.com/user/${username}/about`);
+		const data: RedditUserResponse = await resp.json();
+		const about = data?.data;
+		if (!about) return null;
+		EPHEMERAL_USERS_CACHE.set(username, about);
+		return about;
+	} catch (_error) {
+		return null;
+	}
+};
+
+const SELF_UPVOTE = 1;
+
+const parseRedditComment = async (
+	comment: RedditComment,
+): Promise<PostComment | null> => {
+	const author = await getRedditUser(comment.data.author);
+	if (!author) return null;
+	return {
+		author: {
+			id: author.id,
+			displayName: author.name,
+			url: `https://www.reddit.com/user/${author.name}`,
+			avatar: author.snoovatar_img || author.icon_img,
+			isOp: author.id === SOCIALS.reddit.id,
+		},
+		content: comment.data.body || "",
+		likesCount: comment.data.ups - comment.data.downs - SELF_UPVOTE,
+		url: `https://www.reddit.com/${comment.data.permalink}`,
+		postedAt: new Date(comment.data.created * 1000).toISOString(),
+		replies: (
+			await Promise.all(
+				comment.data.replies?.data?.children?.map((reply) =>
+					parseRedditComment(reply),
+				) || [],
+			)
+		).filter((x) => !!x),
+		source: "reddit",
+		subreddit: comment.data.subreddit,
+	};
+};
+
+const getRedditData = async (
+	postId?: string,
+): Promise<Partial<PostActivity>> => {
+	if (!postId) return {};
+
+	const accessToken = await getRedditAccessToken();
+	if (!accessToken) return {};
+
+	try {
+		const resp = await fetch(`https://oauth.reddit.com/comments/${postId}`, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`,
+			},
+		});
+		const data: RedditCommentsResponse = await resp.json();
+
+		const post = data[0].data.children[0].data;
+		const comments = data?.[1]?.data?.children || [];
+
+		return {
+			likesCount: post.ups - post.downs - SELF_UPVOTE,
+			comments: (
+				await Promise.all(
+					comments
+						.map((x) => {
+							if (x.data.author !== SOCIALS.reddit.handle) return x;
+							// this is my own comment on my reddit post, which serves as a description, so we're only interested in the replies
+							return x.data?.replies?.data?.children || [];
+						})
+						.flat()
+						.map((x) => parseRedditComment(x)),
+				)
+			).filter((x) => !!x),
+		};
+	} catch (_error) {
+		return {};
+	}
 };

@@ -4,6 +4,7 @@ date: "2025/08/05"
 icon: "/img/icons/rust.svg"
 blueskyPostId: "3lvofibnhvc2y"
 mastodonPostId: "114977702291659030"
+redditPostId: "1mk1mm1"
 ---
 
 <video src="/video/blog/twin-stick-animations/demo.mp4" muted autoplay loop playsinline></video>

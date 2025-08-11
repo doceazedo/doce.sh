@@ -5,6 +5,7 @@ import {
 	InstagramLineLogos,
 	LinkedinBoxLineLogos,
 	MastodonLineLogos,
+	RedditLineLogos,
 	SoundcloudLineLogos,
 	SteamLineLogos,
 	TwitchLineLogos,
@@ -57,6 +58,13 @@ export const SOCIALS = {
 		icon: DiscordLineLogos,
 		url: "https://discord.gg/vEGRe2kq8B",
 		label: "Discord",
+	},
+	reddit: {
+		icon: RedditLineLogos,
+		url: "https://www.reddit.com/user/doceazedo911",
+		label: "Reddit",
+		handle: "doceazedo911",
+		id: "brmi94vu",
 	},
 	steam: {
 		icon: SteamLineLogos,

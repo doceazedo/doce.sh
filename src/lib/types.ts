@@ -52,6 +52,7 @@ export type PostActivity = {
 };
 
 export type PostComment = {
+	id: string;
 	author: {
 		id: string;
 		displayName: string;

@@ -219,27 +219,31 @@ const getBlueskyData = async (
 		comments:
 			data.thread.replies
 				?.filter((x) => "post" in x)
-				.map((x) => ({
-					author: {
-						id: x.post.author.did,
-						displayName:
-							x.post.author.displayName || `@${x.post.author.handle}`,
-						url: `https://bsky.app/profile/${x.post.author.handle}`,
-						avatar: x.post.author.avatar || `/img/avatar-fallback.webp`,
-						isOp: x.post.author.did === SOCIALS.bluesky.id,
-					},
-					content: parseMessageFacets(
-						(x.post.record?.text as string) || "",
-						(x.post.record.facets as Facet[]) || [],
-					),
-					embed: parseEmbed(x.post.embed as BlueskyRawEmbed),
-					likesCount: x.post.likeCount || 0,
-					url: `https://bsky.app/profile/${x.post.author.handle}/post/${x.post.uri.split("app.bsky.feed.post/")[1]}`,
-					postedAt:
-						(x.post.record?.createdAt as string) || new Date(0).toString(),
-					replies: [],
-					source: "bluesky",
-				})) || [],
+				.map((x) => {
+					const did = x.post.uri.split("app.bsky.feed.post/")[1];
+					return {
+						id: did,
+						author: {
+							id: x.post.author.did,
+							displayName:
+								x.post.author.displayName || `@${x.post.author.handle}`,
+							url: `https://bsky.app/profile/${x.post.author.handle}`,
+							avatar: x.post.author.avatar || `/img/avatar-fallback.webp`,
+							isOp: x.post.author.did === SOCIALS.bluesky.id,
+						},
+						content: parseMessageFacets(
+							(x.post.record?.text as string) || "",
+							(x.post.record.facets as Facet[]) || [],
+						),
+						embed: parseEmbed(x.post.embed as BlueskyRawEmbed),
+						likesCount: x.post.likeCount || 0,
+						url: `https://bsky.app/profile/${x.post.author.handle}/post/${did}`,
+						postedAt:
+							(x.post.record?.createdAt as string) || new Date(0).toString(),
+						replies: [],
+						source: "bluesky",
+					};
+				}) || [],
 	};
 };
 
@@ -295,6 +299,8 @@ const getMastodonData = async (
 	);
 	const context = await contextRes.json();
 	const descendants: {
+		id: string;
+		in_reply_to_id: string;
 		account: {
 			id: string;
 			display_name: string;
@@ -365,7 +371,8 @@ const getMastodonData = async (
 		return undefined;
 	};
 
-	const comments = descendants.map((reply) => ({
+	let comments: PostComment[] = descendants.map((reply) => ({
+		id: reply.id,
 		author: {
 			id: reply.account.id,
 			displayName: reply.account.display_name
@@ -386,6 +393,24 @@ const getMastodonData = async (
 		replies: [],
 		source: "mastodon" as const,
 	}));
+
+	comments = comments
+		.map((comment) => {
+			const replies = descendants
+				.filter((x) => x.in_reply_to_id === comment.id)
+				.map((x) => comments.find((parsed) => x.id === parsed.id))
+				.filter((x) => !!x);
+			return {
+				...comment,
+				replies,
+			};
+		})
+		.filter((x) => {
+			const isReply = !!descendants.find(
+				(raw) => raw.id === x.id && raw.in_reply_to_id !== postId,
+			);
+			return !isReply;
+		});
 
 	return {
 		likesCount: post.favourites_count,
@@ -439,6 +464,7 @@ const parseRedditComment = async (
 	const author = await getRedditUser(comment.data.author);
 	if (!author) return null;
 	return {
+		id: comment.data.id,
 		author: {
 			id: author.id,
 			displayName: author.name,

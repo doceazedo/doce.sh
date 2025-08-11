@@ -134,7 +134,16 @@
 									{@html m.published_at({
 										date: new Date(
 											`${data.metadata.date} GMT-3`,
-										).toLocaleDateString(getLocale()),
+										).toLocaleDateString(
+											getLocale(),
+											getLocale() === "en"
+												? {
+														day: "numeric",
+														month: "short",
+														year: "numeric",
+													}
+												: undefined,
+										),
 									})}
 								</p>
 							</div>

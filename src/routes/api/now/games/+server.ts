@@ -1,4 +1,9 @@
 import { FORTNITE_API_KEY, STEAM_API_KEY } from "$env/static/private";
+import { authSuperUser, pbAdmin } from "$lib/pocketbase";
+import type {
+	LastPlayedGamesRecord,
+	LastPlayedGamesResponse,
+} from "$lib/pocketbase-types";
 import { json } from "@sveltejs/kit";
 import SteamUser from "steam-user";
 
@@ -17,6 +22,26 @@ const FORTNITE_USERNAME = "DoceAzedo911";
 let steam: SteamUser | null = null;
 
 export const GET = async () => {
+	const lastUpdatedGame = await pbAdmin
+		.collection("last_played_games")
+		.getFirstListItem("", {
+			sort: "-updated",
+		});
+	const lastUpdated = new Date(lastUpdatedGame.updated);
+	const isOlderThan1Day =
+		lastUpdated.getTime() <= new Date().getTime() - 1 * 24 * 60 * 60 * 1000;
+	if (isOlderThan1Day) {
+		await updateLastPlayedGames();
+	}
+
+	const games = await pbAdmin.collection("last_played_games").getList(1, 5, {
+		sort: "-playtime_2weeks,-last_played",
+	});
+
+	return json(games.items);
+};
+
+const updateLastPlayedGames = async () => {
 	if (!steam) {
 		steam = new SteamUser();
 		steam.logOn({ anonymous: true });
@@ -26,23 +51,57 @@ export const GET = async () => {
 		});
 	}
 
+	let cachedGames: LastPlayedGamesResponse[] = [];
+	try {
+		cachedGames = await pbAdmin.collection("last_played_games").getFullList();
+	} catch (_error) {
+		/* empty */
+	}
+
 	const [steamGames, lastPlayedFortniteAt] = await Promise.all([
-		getSteamGames(),
+		getSteamGames(cachedGames),
 		getFortniteLastPlayedAt(),
 	]);
-	const nonSteamGames = [
+	const games: LastPlayedGamesRecord[] = [
+		...steamGames.slice(0, 4),
 		{
+			id: "fortnite",
 			name: "Fortnite",
-			cover: await getGameCover("fortnite"),
-			url: "https://www.fortnite.com",
-			lastPlayedAt: lastPlayedFortniteAt,
+			cover_url: (await getGameCover("fortnite")) || "",
+			store_url: "https://www.fortnite.com",
+			last_played: lastPlayedFortniteAt,
 		},
 	];
 
-	return json([...steamGames.slice(0, 4), ...nonSteamGames]);
+	await authSuperUser();
+
+	try {
+		const batch = pbAdmin.createBatch();
+		games.forEach(async (game) => {
+			const cachedGame = cachedGames.find((cached) => cached.id === game.id);
+			if (cachedGame) {
+				batch.collection("last_played_games").update(game.id, game);
+			} else {
+				batch.collection("last_played_games").create(game);
+			}
+		});
+		const unplayedGames = cachedGames.filter(
+			(cached) => !games.find((game) => game.id === cached.id),
+		);
+		unplayedGames.forEach((game) => {
+			batch
+				.collection("last_played_games")
+				.update(game.id, { playtime_2weeks: 0 });
+		});
+		await batch.send();
+	} catch (_error) {
+		console.log(_error);
+	}
 };
 
-const getSteamGames = async () => {
+const getSteamGames = async (
+	cachedGames: LastPlayedGamesRecord[],
+): Promise<Required<LastPlayedGamesRecord>[]> => {
 	try {
 		const resp = await fetch(
 			`${STEAM_BASE_URL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`,
@@ -58,12 +117,29 @@ const getSteamGames = async () => {
 						name: string;
 						appid: number;
 						playtime_2weeks: string;
-					}) => ({
-						name: x.name,
-						cover: await getGameCover(x.appid),
-						url: `https://store.steampowered.com/app/${x.appid}`,
-						playtime: x.playtime_2weeks,
-					}),
+					}) => {
+						let lastPlayed: string | undefined = undefined;
+						const id = x.appid.toString();
+						const cachedGame = cachedGames.find((cached) => cached.id === id);
+						const lastPlayed2WeeksAgo =
+							new Date(cachedGame?.last_played || 0).getTime() >=
+							new Date().getTime() - 14 * 24 * 60 * 60 * 1000;
+						if (!lastPlayed2WeeksAgo) {
+							// our responses are cached for 24h. if the game wasn't played within 2 weeks, we
+							// assume it was played sometime since yesterday. set to 12h ago as a rough estimation.
+							const playedWithin12Hours = new Date();
+							playedWithin12Hours.setHours(playedWithin12Hours.getHours() - 12);
+							lastPlayed = playedWithin12Hours.toISOString();
+						}
+						return {
+							id,
+							name: x.name,
+							cover_url: await getGameCover(x.appid),
+							store_url: `https://store.steampowered.com/app/${x.appid}`,
+							playtime_2weeks: x.playtime_2weeks,
+							last_played: lastPlayed,
+						};
+					},
 				),
 		);
 	} catch (_error) {
@@ -91,7 +167,7 @@ const getGameCover = async (appid: number | string) => {
 	return await _gameSteamAppCover(appid);
 };
 
-const getFortniteLastPlayedAt = async (): Promise<string | null> => {
+const getFortniteLastPlayedAt = async (): Promise<string | undefined> => {
 	try {
 		const resp = await fetch(
 			`${FORTNITE_API_BASE_URL}/stats/br/v2?name=${FORTNITE_USERNAME}`,
@@ -102,8 +178,8 @@ const getFortniteLastPlayedAt = async (): Promise<string | null> => {
 			},
 		);
 		const data = await resp.json();
-		return data?.data?.stats?.all?.overall?.lastModified || null;
+		return data?.data?.stats?.all?.overall?.lastModified || undefined;
 	} catch (_error) {
-		return null;
+		return undefined;
 	}
 };

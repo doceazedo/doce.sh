@@ -33,6 +33,7 @@
 	import { onVisible } from "$lib/utils/actions";
 	import { Tween } from "svelte/motion";
 	import { cubicInOut } from "svelte/easing";
+	import type { LastPlayedGamesRecord } from "$lib/pocketbase-types";
 
 	type Availability = {
 		label: string;
@@ -59,7 +60,7 @@
 		startedAt: new Date("2025/06/13 GMT-3"),
 	};
 
-	const getLastPlayedGames = async () => {
+	const getLastPlayedGames = async (): Promise<LastPlayedGamesRecord[]> => {
 		try {
 			const resp = await fetch("/api/now/games");
 			return await resp.json();
@@ -503,11 +504,14 @@
 			{:then games}
 				{#if isPlayingGamesVisible}
 					{#each games as game, i (i)}
+						{@const lastPlayed2WeeksAgo =
+							new Date(game.last_played || 0).getTime() >=
+							new Date().getTime() - 14 * 24 * 60 * 60 * 1000}
 						<Tooltip.Provider delayDuration={300}>
 							<Tooltip.Root>
 								<Tooltip.Trigger>
 									<a
-										href={game.url}
+										href={game.store_url}
 										target="_blank"
 										rel="noopener noreferrer"
 										class="bg-muted ease-elastic relative flex aspect-[6/9] rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 lg:hover:scale-115"
@@ -519,10 +523,10 @@
 										}}
 									>
 										<img
-											src={game.cover}
+											src={game.cover_url}
 											alt={game.name}
 											class="size-full rounded object-cover"
-											data-appid={game.appid}
+											data-appid={game.id}
 											onerror={handleMissingGameCover}
 										/>
 									</a></Tooltip.Trigger
@@ -536,30 +540,30 @@
 										{game.name}
 									</p>
 									<div class="flex items-center justify-center gap-1">
-										{#if game.updatedAt}
-											<CalendarCheckLineBusiness class="text-body size-4" />
-										{:else}
+										{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
 											<GamepadLineDevice class="text-body size-4" />
+										{:else}
+											<CalendarCheckLineBusiness class="text-body size-4" />
 										{/if}
 										<p
 											class="text-body [&>span]:text-secondary-foreground text-center text-sm"
 										>
-											{#if game.updatedAt}
-												{@html m.updated_at({
-													date: new Date(game.updatedAt).toLocaleDateString(
-														getLocale(),
-													),
-												})}
-											{:else if game.lastPlayedAt}
-												{@html m.last_played_game({
-													date: daysAgo(new Date(game.lastPlayedAt)),
-												})}
-											{:else if game.playtime}
+											{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
 												{@html m.played_last_two_weeks({
 													time:
-														game.playtime >= 60
-															? `${toFixedIfNecessary(game.playtime / 60)}h`
-															: `${game.playtime}min`,
+														game.playtime_2weeks >= 60
+															? `${toFixedIfNecessary(game.playtime_2weeks / 60)}h`
+															: `${game.playtime_2weeks}min`,
+												})}
+											{:else if game.last_played}
+												{@html m.last_played_game({
+													date: daysAgo(new Date(game.last_played)),
+												})}
+											{:else if game.updated}
+												{@html m.updated_at({
+													date: new Date(game.updated).toLocaleDateString(
+														getLocale(),
+													),
 												})}
 											{/if}
 										</p>

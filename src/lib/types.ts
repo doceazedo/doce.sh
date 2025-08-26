@@ -4,9 +4,6 @@ import {
 	AppBskyEmbedRecord,
 	AppBskyEmbedRecordWithMedia,
 	AppBskyEmbedVideo,
-	AppBskyFeedDefs,
-	AppBskyFeedGetLikes,
-	AppBskyFeedGetPostThread,
 	type $Typed,
 } from "@atproto/api";
 import type { SimpleIcon } from "simple-icons";
@@ -18,14 +15,6 @@ export type Post = {
 	icon: string;
 	slug: string;
 	pinned?: boolean;
-};
-
-export type NowPlayingTrack = {
-	artist: string;
-	track: string;
-	cover: string | null;
-	nowPlaying: boolean;
-	playedAt: string | null;
 };
 
 export type Project = {

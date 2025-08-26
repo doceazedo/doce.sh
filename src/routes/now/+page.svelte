@@ -412,7 +412,7 @@
 							class="ease-elastic flex items-center gap-1.5 rounded border p-1.5 pr-3 transition-all hover:-translate-y-1"
 						>
 							<img
-								src={track.cover}
+								src={track.cover_url}
 								alt=""
 								class="size-10 rounded object-cover"
 							/>
@@ -421,13 +421,13 @@
 								<p>{track.track}</p>
 							</div>
 							<div class="ml-auto flex items-center gap-1.5 text-xs">
-								{#if track.nowPlaying}
+								{#if track.now_playing}
 									<p class="hidden lg:block">{m.now_playing()}</p>
 									<span
 										class="before:animation-duration-[2s] relative flex size-1.5 items-center justify-center rounded-full bg-red-500 before:absolute before:flex before:size-2 before:animate-ping before:rounded-full before:bg-red-500/70"
 									></span>
-								{:else if track.playedAt}
-									{@const playedAt = new Date(track.playedAt)}
+								{:else if track.played}
+									{@const playedAt = new Date(track.played)}
 									{@const isToday =
 										new Date().toDateString() === playedAt.toDateString()}
 									{@const formattedDate = playedAt.toLocaleDateString(

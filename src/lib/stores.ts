@@ -1,7 +1,9 @@
 import { writable } from "svelte/store";
-import type { NowPlayingTrack } from "./types";
+import type { LastPlayedTracksRecord } from "./pocketbase-types";
 
-export const LAST_PLAYED_TRACKS = writable<NowPlayingTrack[] | null>(null);
+export const LAST_PLAYED_TRACKS = writable<
+	Required<LastPlayedTracksRecord>[] | null
+>(null);
 
 export const IS_DESKTOP = writable(false);
 

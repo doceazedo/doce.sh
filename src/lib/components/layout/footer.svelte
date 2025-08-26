@@ -2,7 +2,6 @@
 	import { m } from "$lib/paraglide/messages";
 	import ElevatorUp from "$lib/components/icons/elevator-up.svg?component";
 	import { cn } from "$lib/utils";
-	import type { NowPlayingTrack } from "$lib/types";
 	import Memoji from "$lib/components/misc/memoji.svelte";
 	import { LAST_PLAYED_TRACKS } from "$lib/stores";
 	import { SOCIALS } from "$lib/constants";
@@ -10,6 +9,7 @@
 	import { sineOut } from "svelte/easing";
 	import { pauseAudio, playAudio } from "$lib/audio";
 	import { MAKE_ELEVATOR_FASTER } from "$lib/settings";
+	import type { LastPlayedTracksRecord } from "$lib/pocketbase-types";
 
 	const FOOTER_SOCIALS = [
 		SOCIALS.github,
@@ -67,7 +67,7 @@
 		requestAnimationFrame(animation);
 	};
 
-	let currentTrack = $derived<NowPlayingTrack | null>(
+	let currentTrack = $derived<LastPlayedTracksRecord | null>(
 		$LAST_PLAYED_TRACKS?.[0] || null,
 	);
 </script>
@@ -121,8 +121,12 @@
 					{currentTrack.track}
 				</p>
 			</hgroup>
-			<img src={currentTrack.cover} alt="" class="bg-muted size-10 rounded" />
-			{#if currentTrack.nowPlaying}
+			<img
+				src={currentTrack.cover_url}
+				alt=""
+				class="bg-muted size-10 rounded"
+			/>
+			{#if currentTrack.now_playing}
 				<div
 					class="absolute top-0 left-10 flex size-2.5 items-center justify-center md:right-0 md:left-auto"
 				>

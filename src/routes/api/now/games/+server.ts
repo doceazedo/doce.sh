@@ -78,12 +78,7 @@ const updateLastPlayedGames = async () => {
 	try {
 		const batch = pbAdmin.createBatch();
 		games.forEach(async (game) => {
-			const cachedGame = cachedGames.find((cached) => cached.id === game.id);
-			if (cachedGame) {
-				batch.collection("last_played_games").update(game.id, game);
-			} else {
-				batch.collection("last_played_games").create(game);
-			}
+			batch.collection("last_played_games").upsert(game);
 		});
 		const unplayedGames = cachedGames.filter(
 			(cached) => !games.find((game) => game.id === cached.id),

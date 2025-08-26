@@ -12,6 +12,7 @@ export enum Collections {
 	Otps = "_otps",
 	Superusers = "_superusers",
 	LastPlayedGames = "last_played_games",
+	LastPlayedTracks = "last_played_tracks",
 	Users = "users",
 }
 
@@ -102,6 +103,17 @@ export type LastPlayedGamesRecord = {
 	updated?: IsoDateString
 }
 
+export type LastPlayedTracksRecord = {
+	artist?: string
+	cover_url?: string
+	created?: IsoDateString
+	id: string
+	now_playing?: boolean
+	played?: IsoDateString
+	track?: string
+	updated?: IsoDateString
+}
+
 export type UsersRecord = {
 	avatar?: string
 	created?: IsoDateString
@@ -122,6 +134,7 @@ export type MfasResponse<Texpand = unknown> = Required<MfasRecord> & BaseSystemF
 export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemFields<Texpand>
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
 export type LastPlayedGamesResponse<Texpand = unknown> = Required<LastPlayedGamesRecord> & BaseSystemFields<Texpand>
+export type LastPlayedTracksResponse<Texpand = unknown> = Required<LastPlayedTracksRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
@@ -133,6 +146,7 @@ export type CollectionRecords = {
 	_otps: OtpsRecord
 	_superusers: SuperusersRecord
 	last_played_games: LastPlayedGamesRecord
+	last_played_tracks: LastPlayedTracksRecord
 	users: UsersRecord
 }
 
@@ -143,6 +157,7 @@ export type CollectionResponses = {
 	_otps: OtpsResponse
 	_superusers: SuperusersResponse
 	last_played_games: LastPlayedGamesResponse
+	last_played_tracks: LastPlayedTracksResponse
 	users: UsersResponse
 }
 
@@ -156,5 +171,6 @@ export type TypedPocketBase = PocketBase & {
 	collection(idOrName: '_otps'): RecordService<OtpsResponse>
 	collection(idOrName: '_superusers'): RecordService<SuperusersResponse>
 	collection(idOrName: 'last_played_games'): RecordService<LastPlayedGamesResponse>
+	collection(idOrName: 'last_played_tracks'): RecordService<LastPlayedTracksResponse>
 	collection(idOrName: 'users'): RecordService<UsersResponse>
 }

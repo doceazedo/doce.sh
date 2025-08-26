@@ -6,8 +6,11 @@ import GabaritoBold from "$lib/fonts/Gabarito-Bold.ttf?arraybuffer";
 import GabaritoMedium from "$lib/fonts/Gabarito-Medium.ttf?arraybuffer";
 import type { Post } from "$lib/types.js";
 import { error } from "@sveltejs/kit";
+import type { EntryGenerator } from "./$types";
+import { getAllBlogPosts } from "$lib/utils/blog-posts";
+import { DOMAIN } from "$lib/constants";
 
-export const GET = async ({ url, params }) => {
+export const GET = async ({ params }) => {
 	let post: Post;
 	try {
 		const { metadata } = await import(`../(posts)/${params.slug}/+page.md`);
@@ -16,7 +19,7 @@ export const GET = async ({ url, params }) => {
 		return error(404);
 	}
 
-	const BASE_URL = `${url.protocol}//${url.host}`;
+	const BASE_URL = `https://${DOMAIN}`;
 	const publishedAt = new Date(post.date).toLocaleDateString("en", {
 		year: "numeric",
 		month: "long",
@@ -71,3 +74,9 @@ export const GET = async ({ url, params }) => {
 		},
 	});
 };
+
+export const entries: EntryGenerator = () => {
+	return getAllBlogPosts().map((x) => ({ slug: x.slug }));
+};
+
+export const prerender = true;

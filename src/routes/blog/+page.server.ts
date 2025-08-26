@@ -22,3 +22,5 @@ export const load = async () => {
 	const postsByYear = groupPostsByYear(posts);
 	return { postsByYear };
 };
+
+export const prerender = true;

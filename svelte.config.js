@@ -24,7 +24,13 @@ const config = {
 			],
 		}),
 	],
-	kit: { adapter: adapter() },
+	kit: {
+		adapter: adapter(),
+		prerender: {
+			handleHttpError: "ignore",
+			handleMissingId: "ignore",
+		},
+	},
 	extensions: [".svelte", ".md"],
 };
 

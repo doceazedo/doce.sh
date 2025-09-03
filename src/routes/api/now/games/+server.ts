@@ -22,12 +22,17 @@ const FORTNITE_USERNAME = "DoceAzedo911";
 let steam: SteamUser | null = null;
 
 export const GET = async () => {
-	const lastUpdatedGame = await pbAdmin
-		.collection("last_played_games")
-		.getFirstListItem("", {
-			sort: "-updated",
-		});
-	const lastUpdated = new Date(lastUpdatedGame.updated);
+	let lastUpdated = new Date(0);
+	try {
+		const lastUpdatedGame = await pbAdmin
+			.collection("last_played_games")
+			.getFirstListItem("", {
+				sort: "-updated",
+			});
+		lastUpdated = new Date(lastUpdatedGame.updated);
+	} catch (_error) {
+		/* empty */
+	}
 	const isOlderThan1Day =
 		lastUpdated.getTime() <= new Date().getTime() - 1 * 24 * 60 * 60 * 1000;
 	if (isOlderThan1Day) {

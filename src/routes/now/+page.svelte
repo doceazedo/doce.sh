@@ -479,7 +479,7 @@
 				scrolling="no"
 				frameborder="no"
 				allow="autoplay"
-				src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/2036041653%3Fsecret_token%3Ds-0gxDfMC07SI&color=%23ff5500&auto_play=false&hide_related=true&show_comments=true&show_user=true&show_reposts=false&show_teaser=false&visual=true"
+				src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/2036041653%3Fsecret_token%3Ds-0gxDfMC07SI&color=%23ff5500&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true"
 				title="SoundCloud"
 			></iframe>
 		</div>

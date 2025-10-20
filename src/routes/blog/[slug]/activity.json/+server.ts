@@ -2,10 +2,6 @@ import {
 	ATP_IDENTIFIER,
 	ATP_PASSWORD,
 	PLAUSIBLE_API_KEY,
-	REDDIT_CLIENT_ID,
-	REDDIT_CLIENT_SECRET,
-	REDDIT_PASSWORD,
-	REDDIT_USERNAME,
 } from "$env/static/private";
 import { SOCIALS } from "$lib/constants.js";
 import type {
@@ -418,23 +414,7 @@ const getMastodonData = async (
 	};
 };
 
-const getRedditAccessToken = async () => {
-	try {
-		const resp = await fetch(
-			`https://www.reddit.com/api/v1/access_token?grant_type=password&username=${REDDIT_USERNAME}&password=${REDDIT_PASSWORD}`,
-			{
-				method: "POST",
-				headers: {
-					Authorization: `Basic ${Buffer.from(REDDIT_CLIENT_ID + ":" + REDDIT_CLIENT_SECRET).toString("base64")}`,
-				},
-			},
-		);
-		const data = await resp.json();
-		return data.access_token || null;
-	} catch (_error) {
-		return null;
-	}
-};
+const REDDIT_API_BASE_URL = "https://unreddit.doce.sh";
 
 const EPHEMERAL_USERS_CACHE = new Map<string, RedditUserResponse["data"]>();
 
@@ -445,7 +425,7 @@ const getRedditUser = async (
 	if (cachedUser) return cachedUser;
 
 	try {
-		const resp = await fetch(`https://api.reddit.com/user/${username}/about`);
+		const resp = await fetch(`${REDDIT_API_BASE_URL}/user/${username}`);
 		const data: RedditUserResponse = await resp.json();
 		const about = data?.data;
 		if (!about) return null;
@@ -493,15 +473,8 @@ const getRedditData = async (
 ): Promise<Partial<PostActivity>> => {
 	if (!postId) return {};
 
-	const accessToken = await getRedditAccessToken();
-	if (!accessToken) return {};
-
 	try {
-		const resp = await fetch(`https://oauth.reddit.com/comments/${postId}`, {
-			headers: {
-				Authorization: `Bearer ${accessToken}`,
-			},
-		});
+		const resp = await fetch(`${REDDIT_API_BASE_URL}/comments/${postId}`);
 		const data: RedditCommentsResponse = await resp.json();
 
 		const post = data[0].data.children[0].data;

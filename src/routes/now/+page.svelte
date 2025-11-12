@@ -34,6 +34,7 @@
 	import type { LastPlayedGamesRecord } from "$lib/pocketbase-types";
 	import { siBevy } from "simple-icons";
 	import Backlog from "$lib/components/icons/backlog.svg?component";
+	import PageTitle from "$lib/components/common/page-title.svelte";
 
 	const FOCUS_UPDATED_AT = new Date("2025/11/12");
 
@@ -104,10 +105,7 @@
 <Seo title={m.now_seo_title()} />
 
 <div class="flex flex-col gap-12">
-	<hgroup class="py-3 md:py-6">
-		<h1 class="text-4xl lg:text-6xl/18">{m.now()}</h1>
-		<p class="text-body lg:text-xl">{m.now_subtitle()}</p>
-	</hgroup>
+	<PageTitle title={m.now()} subtitle={m.now_subtitle()} />
 
 	<SectionTitleWithIcon
 		icon={TargetFillOthers}

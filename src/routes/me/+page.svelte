@@ -25,6 +25,8 @@
 	import { browser } from "$app/environment";
 	import { elasticFly } from "$lib/utils/transitions";
 	import { onVisible } from "$lib/utils/actions";
+	import PageTitle from "$lib/components/common/page-title.svelte";
+	import SectionTitle from "$lib/components/common/section-title.svelte";
 
 	let { data } = $props();
 
@@ -119,13 +121,10 @@
 
 <Seo title={m.about_me_seo_title()} />
 
-<hgroup class="mb-3 py-3 md:mb-6 md:py-6">
-	<h1 class="text-3xl md:text-4xl">{m.about_me()}</h1>
-	<p class="text-body">{m.about_me_subtitle()}</p>
-</hgroup>
+<PageTitle title={m.about_me()} subtitle={m.about_me_subtitle()} />
 
 <div
-	class="-ml-6 flex w-dvw flex-col gap-6 overflow-x-hidden px-6 md:ml-0 md:w-full md:gap-12 md:overflow-x-visible md:px-0"
+	class="mt-6 -ml-6 flex w-dvw flex-col gap-6 overflow-x-hidden px-6 md:ml-0 md:w-full md:gap-12 md:overflow-x-visible md:px-0"
 >
 	<div
 		class="-ml-24 flex w-[calc(100%+12rem)] py-12 md:mb-6 md:gap-12 md:py-0 lg:-ml-12 lg:w-[calc(100%+6rem)]"
@@ -160,7 +159,7 @@
 
 	<hr />
 
-	<h2 class="text-2xl md:text-3xl">TL;DR</h2>
+	<SectionTitle title="TL;DR" />
 	<ul class="grid gap-3 md:grid-cols-2 md:flex-row md:gap-6 lg:grid-cols-4">
 		{#if mounted}
 			{#each TLDR as card, i (i)}
@@ -204,7 +203,7 @@
 
 	<hr />
 
-	<h2 class="text-2xl md:text-3xl">{m.personally()}</h2>
+	<SectionTitle title={m.personally()} />
 	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 		<main
 			class="prose prose-neutral dark:prose-invert prose-a:hover:text-primary prose-a:transition-all"
@@ -249,7 +248,7 @@
 
 	<hr />
 
-	<h2 class="text-2xl md:text-3xl">{m.about_music()}</h2>
+	<SectionTitle title={m.about_music()} />
 	<div class="flex flex-col gap-6 lg:grid lg:grid-cols-2">
 		<div class="flex flex-col gap-3 rounded border p-3 md:gap-6 md:p-6">
 			<hgroup>
@@ -418,7 +417,7 @@
 
 	<hr />
 
-	<h2 class="text-2xl md:text-3xl">{m.lets_have_fun()}</h2>
+	<SectionTitle title={m.lets_have_fun()} />
 	<div
 		class="prose prose-neutral dark:prose-invert prose-a:hover:text-primary prose-a:transition-all w-full max-w-none"
 	>

@@ -1,4 +1,7 @@
 <script lang="ts">
+	import PageTitle from "$lib/components/common/page-title.svelte";
+	import Prose from "$lib/components/common/prose.svelte";
+	import SectionTitle from "$lib/components/common/section-title.svelte";
 	import Seo from "$lib/components/common/seo.svelte";
 	import { DOMAIN, SOCIALS, WORK } from "$lib/constants";
 	import { m } from "$lib/paraglide/messages";
@@ -61,8 +64,8 @@
 	title="{m.upcoming_talks()} & {m.past_talks().toLowerCase()} • Doce Fernandes"
 />
 
-<div class="flex flex-col gap-6 py-3 md:gap-12 md:py-6">
-	<h1 class="text-3xl md:text-4xl">{m.upcoming_talks()}</h1>
+<div class="flex flex-col gap-6 md:gap-12">
+	<PageTitle title={m.upcoming_talks()} />
 	<div
 		class="flex w-full justify-center gap-6 rounded border border-dashed p-6 md:flex-col md:items-center md:gap-3 md:py-12 md:text-center"
 	>
@@ -80,7 +83,7 @@
 		</div>
 	</div>
 	<hr />
-	<h1 class="text-3xl md:text-4xl">{m.past_talks()}</h1>
+	<SectionTitle title={m.past_talks()} />
 	<ul class="flex flex-col gap-12 md:gap-6">
 		{#each PAST_TALKS as talk}
 			<li class="flex flex-col justify-between gap-3 md:flex-row">
@@ -116,21 +119,21 @@
 		{/each}
 	</ul>
 	<hr id="giving-talks" />
-	<div class="text-body flex flex-col gap-6">
-		<h1 class="text-foreground text-3xl md:text-4xl">{m.giving_talks()}</h1>
+	<SectionTitle title={m.giving_talks()} />
+	<Prose>
 		<p>
 			{m.giving_talks_subtitle()}
 		</p>
 		<p>{m.giving_talks_subjects()}</p>
-		<ul class="marker:text-foreground list-inside list-disc pl-3">
+		<ul>
 			<li>{m.giving_talks_subject_svelte()}</li>
 			<li>{m.giving_talks_subject_design()}</li>
 			<li>{m.giving_talks_subject_rust()}</li>
 		</ul>
-		<p class="[&>span]:text-foreground">
+		<p>
 			{@html m.giving_talks_languages()}
 		</p>
-		<p class="[&>span]:text-foreground">
+		<p>
 			{@html m.giving_talks_in_person_availability()}
 		</p>
 		<p>
@@ -139,30 +142,30 @@
 		<p>
 			{m.giving_talks_international_expectations()}
 		</p>
-		<p
-			class="[&>a]:text-foreground [&>a]:hover:text-primary [&>a]:underline [&>a]:transition-all"
-		>
+		<p>
 			{@html m.giving_talks_cta()}
 		</p>
-	</div>
+	</Prose>
 	<div class="text-body flex flex-col gap-6">
-		<h2 class="text-foreground text-2xl md:text-3xl">{m.speaker_info()}</h2>
-		<p>{m.speaker_info_subtitle()}</p>
-		<div class="grid grid-cols-[max-content_1fr] gap-x-3 gap-y-1.5">
-			{#each INFORMATION as info}
-				<p class="text-body/70 text-right font-medium">{info.key}</p>
-				{#if info.href}
-					<a
-						href={info.href}
-						target="_blank"
-						class="text-foreground hover:text-primary w-fit underline transition-all"
-					>
-						{info.value}
-					</a>
-				{:else}
-					<p class="max-w-[48ch]">{info.value}</p>
-				{/if}
-			{/each}
-		</div>
+		<SectionTitle title={m.speaker_info()} />
+		<Prose>
+			<p>{m.speaker_info_subtitle()}</p>
+			<p class="grid grid-cols-[max-content_1fr] gap-x-3 gap-y-1.5">
+				{#each INFORMATION as info}
+					<span class="text-body/80 text-right font-normal">{info.key}</span>
+					{#if info.href}
+						<a
+							href={info.href}
+							target="_blank"
+							class="text-foreground hover:text-primary w-fit underline transition-all"
+						>
+							{info.value}
+						</a>
+					{:else}
+						<span class="max-w-[48ch]">{info.value}</span>
+					{/if}
+				{/each}
+			</p>
+		</Prose>
 	</div>
 </div>

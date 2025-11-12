@@ -39,19 +39,13 @@
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { Button } from "$lib/components/ui/button";
 	import Threlte from "$lib/components/icons/threlte.svg?component";
+	import PageTitle from "$lib/components/common/page-title.svelte";
 </script>
 
 <Seo title={m.colophon_seo_title()} />
 
 <div class="flex flex-col gap-12">
-	<hgroup class="py-3 md:py-6">
-		<h1 class="text-3xl md:text-4xl">{m.colophon()}</h1>
-		<p
-			class="text-body [&>a]:hover:text-primary [&>a]:text-foreground [&>a]:underline [&>a]:transition-all"
-		>
-			{@html m.colophon_subtitle()}
-		</p>
-	</hgroup>
+	<PageTitle title={m.colophon()} subtitle={m.colophon_subtitle()} />
 
 	<SectionTitleWithIcon
 		icon={CodeSSlashLineDevelopment}
@@ -101,7 +95,7 @@
 					label: "Threlte",
 					description: m.threejs_description(),
 					icon: Threlte,
-					url: "https://www.mapbox.com",
+					url: "https://threlte.xyz",
 				},
 				{
 					label: "MDsveX",

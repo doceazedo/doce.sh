@@ -6,6 +6,7 @@
 	import ProductsGrid from "./products-grid.svelte";
 	import { browser } from "$app/environment";
 	import { elasticScale } from "$lib/utils/transitions";
+	import PageTitle from "$lib/components/common/page-title.svelte";
 
 	const PC_PARTS = [
 		{ label: m.uses_cpu(), product: "AMD Ryzen 7 7700X" },
@@ -221,11 +222,9 @@
 
 <Seo title={m.uses_seo_title()} />
 
-<hgroup class="mb-3 py-3 md:mb-6 md:py-6">
-	<h1 class="text-3xl md:text-4xl">{m.thing_i_use()}</h1>
-</hgroup>
+<PageTitle title={m.thing_i_use()} />
 
-<div class="flex flex-col gap-6 md:gap-12">
+<div class="mt-6 flex flex-col gap-6 md:gap-12">
 	{#if mounted}
 		<figure
 			class="bg-muted relative aspect-video w-full rounded before:absolute before:size-full before:rounded before:border before:border-white/10"

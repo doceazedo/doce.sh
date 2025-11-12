@@ -6,9 +6,11 @@
 	const SPRITES = 4;
 
 	let active = $state(0);
+	let rotate = $state(false);
 
 	const updateNoise = () => {
 		if ($NOISE_SETTING !== "animated") return;
+		rotate = Math.random() > 0.5;
 		if (active + 1 >= SPRITES) {
 			active = 0;
 		} else {
@@ -17,7 +19,7 @@
 	};
 
 	onMount(() => {
-		const lastPlayedInterval = setInterval(updateNoise, 200 / SPRITES);
+		const lastPlayedInterval = setInterval(updateNoise, 250 / SPRITES);
 		return () => clearInterval(lastPlayedInterval);
 	});
 </script>
@@ -27,7 +29,8 @@
 		<div
 			class={cn(
 				"pointer-events-none fixed top-0 right-0 bottom-0 left-0 z-60 opacity-0 invert-100 dark:invert-0",
-				active === i && "opacity-4 dark:opacity-8",
+				active === i && "opacity-4 dark:opacity-6",
+				rotate && "rotate-180",
 			)}
 			style="image-rendering: pixelated; background-image:url(/img/noise-{i +
 				1}.webp)"

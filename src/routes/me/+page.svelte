@@ -89,7 +89,7 @@
 			items: [
 				m.dislikes_crypto(),
 				m.dislikes_networking(),
-				m.dislikes_fortnite_tryhards(),
+				m.dislikes_hypothetical_questions(),
 				m.dislikes_touching_grass(),
 			],
 		},

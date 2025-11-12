@@ -37,13 +37,17 @@ export const GET = async () => {
 		lastUpdated.getTime() <= new Date().getTime() - 1 * 24 * 60 * 60 * 1000;
 	if (isOlderThan1Day) {
 		await updateLastPlayedGames();
+		lastUpdated = new Date();
 	}
 
 	const games = await pbAdmin.collection("last_played_games").getList(1, 5, {
 		sort: "-playtime_2weeks,-last_played",
 	});
 
-	return json(games.items);
+	return json({
+		games: games.items,
+		updatedAt: lastUpdated,
+	});
 };
 
 const updateLastPlayedGames = async () => {

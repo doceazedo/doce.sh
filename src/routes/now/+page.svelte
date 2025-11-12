@@ -7,38 +7,35 @@
 	import {
 		ArrowRightLineArrows,
 		BookMarkedFillDocument,
-		BookMarkedLineDocument,
 		CalendarCheckLineBusiness,
-		CalendarLineBusiness,
-		CodeSSlashLineDevelopment,
-		Edit2LineDesign,
-		GamepadFillDevice,
+		TargetFillOthers,
 		GamepadLineDevice,
-		GitRepositoryCommitsLineDevelopment,
-		GraduationCapFillOthers,
 		HeadphoneFillMedia,
 		UserLineUserFaces,
+		Progress4LineSystem,
+		CircleLineDesign,
+		CheckboxCircleFillSystem,
+		BookReadFillDocument,
+		ThumbUpFillSystem,
+		PlayFillMedia,
+		Game2FillOthers,
 	} from "svelte-remix";
 	import SectionTitleWithIcon from "$lib/components/common/section-title-with-icon.svelte";
 	import { Button } from "$lib/components/ui/button";
-	import { IS_DESKTOP, LAST_PLAYED_TRACKS } from "$lib/stores";
+	import { LAST_PLAYED_TRACKS } from "$lib/stores";
 	import { Progress } from "$lib/components/ui/progress";
-	import { SOCIALS, WORK } from "$lib/constants";
+	import { SOCIALS } from "$lib/constants";
 	import { cn } from "$lib/utils";
 	import { daysAgo } from "$lib/utils/date";
 	import Seo from "$lib/components/common/seo.svelte";
-	import { onMount } from "svelte";
 	import { browser } from "$app/environment";
 	import { elasticFly } from "$lib/utils/transitions";
 	import { onVisible } from "$lib/utils/actions";
-	import { Tween } from "svelte/motion";
-	import { cubicInOut } from "svelte/easing";
 	import type { LastPlayedGamesRecord } from "$lib/pocketbase-types";
+	import { siBevy } from "simple-icons";
+	import Backlog from "$lib/components/icons/backlog.svg?component";
 
-	type Availability = {
-		label: string;
-		available: boolean | "partial";
-	};
+	const FOCUS_UPDATED_AT = new Date("2025/11/12");
 
 	const BOOK = {
 		title: {
@@ -60,10 +57,18 @@
 		startedAt: new Date("2025/06/13 GMT-3"),
 	};
 
-	const getLastPlayedGames = async (): Promise<LastPlayedGamesRecord[]> => {
+	let lastPlayedGamesUpdatedAt = $state<Date>();
+	const getLastPlayedGames = async () => {
 		try {
 			const resp = await fetch("/api/now/games");
-			return await resp.json();
+			const data = (await resp.json()) as {
+				games: LastPlayedGamesRecord[];
+				updatedAt: string;
+			};
+			lastPlayedGamesUpdatedAt = data?.updatedAt
+				? new Date(data.updatedAt)
+				: undefined;
+			return data.games;
 		} catch (_error) {
 			return [];
 		}
@@ -76,232 +81,135 @@
 		img.src = placeholder;
 	};
 
-	const CURRENT_PROJECT_DEADLINES = [
-		new Date("2025/07/27"), // Tekne
-	];
-
-	const BLOCKED_FREELANCE_MONTHS = [
-		0, // Jan (New Years)
-		11, // Dec (Christmas)
-	];
-
-	const PARTIALLY_BLOCKED_FREELANCE_MONTHS = [
-		2, // Mar (Carnival)
-		9, // Oct (Usually on vacation)
-	];
-
-	const getNewProjectsAvailability = (monthsAhead = 6): Availability[] => {
-		const today = new Date();
-
-		return Array.from({ length: monthsAhead }, (_uwu, i) => {
-			const targetDate = new Date(today);
-			targetDate.setMonth(today.getMonth() + i);
-
-			const monthIdx = targetDate.getMonth();
-			const label = targetDate
-				.toLocaleDateString(getLocale(), { month: "long" })
-				.slice(0, 3)
-				.toUpperCase();
-
-			const hasCurrentProjects = CURRENT_PROJECT_DEADLINES.some(
-				(deadline) => targetDate <= deadline,
-			);
-			if (hasCurrentProjects) {
-				return { label, available: false };
-			}
-
-			const isCurrentMonth = monthIdx === today.getMonth();
-			if (isCurrentMonth) {
-				return { label, available: "partial" };
-			}
-
-			if (PARTIALLY_BLOCKED_FREELANCE_MONTHS.includes(monthIdx)) {
-				return { label, available: "partial" };
-			}
-
-			const isBlocked = BLOCKED_FREELANCE_MONTHS.includes(monthIdx);
-			return { label, available: !isBlocked };
-		});
-	};
-
-	const getNewProjectsBookingStatus = () => {
-		const availability = getNewProjectsAvailability();
-		const availableMonths = availability.filter(
-			(x) => x.available === true,
-		).length;
-		if (availableMonths === 0) return m.booking_status_closed();
-		if (availableMonths <= 4) return m.booking_status_some_availability();
-		return m.booking_status_open();
-	};
-
-	const getLastCommitDate = async (repo: string) => {
+	const getTopArtists = async () => {
 		try {
-			const resp = await fetch(`/api/now/last-commit?repo=${repo}`);
+			const resp = await fetch("/api/now/artists");
 			const data = await resp.json();
-			return data?.date || null;
+			return data as {
+				name: string;
+				image: string;
+				plays: number;
+				url: string;
+			}[];
 		} catch (_error) {
 			return null;
 		}
 	};
 
-	const DEV_PROJECTS = [
-		{
-			pretitle: m.side_project(),
-			title: "Godot WRY",
-			description: m.portfolio_godot_wry_description(),
-			url: "https://github.com/doceazedo/godot_wry",
-			lastCommitAt: getLastCommitDate("doceazedo/godot_wry"),
-		},
-		{
-			pretitle: m.day_job(),
-			title: WORK.company,
-			description: WORK.description,
-			url: WORK.url,
-			cta: m.more_about({ subject: WORK.company }),
-		},
-		{
-			pretitle: m.freelance(),
-			title: getNewProjectsBookingStatus(),
-			description: m.freelance_description(),
-			url: "/contact",
-			cta: m.reach_out(),
-			isFreelance: true,
-		},
-	];
-
-	const COLLEGE_CLASSES = {
-		updatedAt: new Date("2025/06/13"),
-		approved: 11,
-		total: 47,
-		current: [
-			{
-				name: {
-					en: "Logic and computational mathematics",
-					pt: "Lógica e matemática computacional",
-				},
-				classPeriodStartsAt: new Date("2025/08/04"),
-				examPeriodStartsAt: new Date("2025/10/04"),
-			},
-			{
-				name: {
-					en: "Extension Project I - Computer Science",
-					pt: "Projeto de Extensão I - Ciência da Computação",
-				},
-				classPeriodStartsAt: new Date("2025/08/04"),
-				examPeriodStartsAt: new Date("2025/10/04"),
-			},
-		],
-	};
-	const COLLEGE_PROGRESS_TARGET = Math.floor(
-		(COLLEGE_CLASSES.approved / COLLEGE_CLASSES.total) * 100,
-	);
-	// FIXME: suddenly not working so i replaced for now 0 with the target
-	const COLLEGE_PROGRESS = new Tween(COLLEGE_PROGRESS_TARGET, {
-		duration: 1600,
-		easing: cubicInOut,
-	});
-
-	let mounted = $state(!browser);
+	let isReadingVisible = $state(!browser);
+	let isListeningVisible = $state(!browser);
 	let isPlayingGamesVisible = $state(!browser);
-
-	onMount(() => (mounted = true));
 </script>
 
 <Seo title={m.now_seo_title()} />
 
 <div class="flex flex-col gap-12">
 	<hgroup class="py-3 md:py-6">
-		<h1 class="text-3xl md:text-4xl">{m.now()}</h1>
-		<p class="text-body">{m.now_subtitle()}</p>
+		<h1 class="text-4xl lg:text-6xl/18">{m.now()}</h1>
+		<p class="text-body lg:text-xl">{m.now_subtitle()}</p>
 	</hgroup>
 
 	<SectionTitleWithIcon
-		icon={CodeSSlashLineDevelopment}
-		title={m.coding()}
-		subtitle={m.coding_description()}
+		icon={TargetFillOthers}
+		title={m.current_focus()}
+		subtitle={m.current_focus_description()}
+		updatedAt={FOCUS_UPDATED_AT}
 	/>
-	<div class="grid gap-6 md:grid-cols-3">
-		{#if mounted}
-			{#each DEV_PROJECTS as project, i (i)}
-				<a
-					href={project.url}
-					target={!project.url.startsWith("/") ? "_blank" : undefined}
-					class="ease-elastic flex flex-col gap-3 rounded border p-6 transition-all hover:scale-105"
-					in:elasticFly|global={{
-						opacity: 0,
-						y: 24,
-						duration: 800,
-						delay: 100 * (i + 1),
-					}}
+	<ul class="flex flex-col gap-12">
+		<li class="flex flex-col-reverse gap-6 lg:flex-row lg:gap-24">
+			<figure
+				class="bg-muted ease-elastic relative aspect-video w-full shrink-0 -rotate-1 rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 hover:rotate-0 lg:w-1/2"
+				in:elasticFly|global={{
+					opacity: 0,
+					y: 24,
+					duration: 800,
+					delay: 100,
+				}}
+			>
+				<img
+					src="/img/now/youma-screenshot.webp"
+					alt=""
+					class="size-full rounded object-cover transition-all"
+				/>
+			</figure>
+			<div class="flex flex-col">
+				<span
+					class="[&>svg]:fill-foreground mb-1.5 [&>svg]:size-6 lg:[&>svg]:size-8"
 				>
-					<hgroup>
-						<p class="text-primary -mb-0.5 text-xs font-semibold uppercase">
-							{project.pretitle}
-						</p>
-						<h3 class="text-xl md:-mb-px md:text-2xl">{project.title}</h3>
-					</hgroup>
-					<p class="text-body leading-5">
-						{project.description}
-					</p>
-					{#if project.isFreelance}
-						<div class="grid grid-cols-6 gap-4 md:gap-2 lg:gap-3">
-							{#each getNewProjectsAvailability() as month}
-								<div class="flex flex-col items-center gap-0.5 text-center">
-									<span
-										class={cn(
-											"aspect-square w-full rounded",
-											month.available === true && "bg-emerald-500",
-											month.available === false && "bg-red-400",
-											month.available === "partial" && "bg-yellow-500",
-										)}
-									></span>
-									<p class="text-body text-xs">{month.label}</p>
-								</div>
-							{/each}
+					{@html siBevy.svg}
+				</span>
+				<h3 class="mb-1.5 text-2xl md:text-3xl">{m.youma()}</h3>
+				<p
+					class="text-body [&>a]:text-foreground [&>a]:hover:text-primary mb-6 [&>a]:font-medium [&>a]:underline [&>a]:transition-all"
+				>
+					{@html m.youma_description()}
+				</p>
+				<ul class="grid grid-cols-4 gap-3">
+					<li class="flex gap-1.5">
+						<Backlog class="text-foreground/80 size-4" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">{m.task_status_backlog()}</p>
+							<p class="">20</p>
 						</div>
-						<ul class="text-body flex items-center gap-1.5 text-xs">
-							<li class="flex items-center gap-1">
-								<span class="size-3 rounded-xs bg-emerald-500"></span>
-								{m.booking_month_status_available()}
-							</li>
-							<li class="flex items-center gap-1">
-								<span class="size-3 rounded-xs bg-yellow-500"></span>
-								{m.booking_month_status_partial()}
-							</li>
-							<li class="flex items-center gap-1">
-								<span class="size-3 rounded-xs bg-red-400"></span>
-								{m.booking_month_status_unavailable()}
-							</li>
-						</ul>
-					{/if}
-					<div class="mt-auto flex items-center gap-1.5">
-						{#if project.lastCommitAt}
-							<GitRepositoryCommitsLineDevelopment class="size-4" />
-							<p class="text-body flex items-center gap-1 text-sm">
-								{m.last_commit()}:
-								{#await project.lastCommitAt}
-									<Skeleton class="h-4 w-14 rounded" />
-								{:then lastCommitAt}
-									{#if lastCommitAt}
-										<span
-											class="text-foreground hover:text-primary underline transition-all"
-										>
-											{daysAgo(new Date(lastCommitAt))}
-										</span>
-									{/if}
-								{/await}
+					</li>
+					<li class="flex gap-1.5">
+						<CircleLineDesign class="text-foreground/80 size-4" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">{m.task_status_next()}</p>
+							<p class="">15</p>
+						</div>
+					</li>
+					<li class="flex gap-1.5">
+						<Progress4LineSystem class="size-4 text-amber-400" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">
+								{m.task_status_in_progress()}
 							</p>
-						{:else if project.cta}
-							<Button variant="link" size="sm">
-								{project.cta}
-								<ArrowRightLineArrows class="size-4.5" />
-							</Button>
-						{/if}
-					</div>
-				</a>
-			{/each}
-		{/if}
-	</div>
+							<p class="">5</p>
+						</div>
+					</li>
+					<li class="flex gap-1.5">
+						<CheckboxCircleFillSystem class="text-primary size-4" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">{m.task_status_done()}</p>
+							<p class="">6</p>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</li>
+
+		<li class="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-24">
+			<div class="flex flex-col">
+				<img
+					src="/img/icons/sewing.png"
+					alt=""
+					class="mb-1.5 size-6 transition-all lg:size-8 dark:invert"
+				/>
+				<h3 class="mb-1.5 text-2xl md:text-3xl">{m.sewing()}</h3>
+				<p
+					class="text-body [&>a]:text-foreground [&>a]:hover:text-primary mb-6 max-w-[60ch] [&>a]:font-medium [&>a]:underline [&>a]:transition-all"
+				>
+					{m.sewing_description()}
+				</p>
+			</div>
+			<figure
+				class="bg-muted ease-elastic relative mx-auto aspect-4/5 w-1/2 shrink-0 rotate-2 rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 hover:rotate-0 lg:mx-0 lg:ml-auto lg:w-1/3"
+				in:elasticFly|global={{
+					opacity: 0,
+					y: 24,
+					duration: 800,
+					delay: 200,
+				}}
+			>
+				<img
+					src="/img/now/sewing-studies.webp"
+					alt=""
+					class="size-full rounded object-cover transition-all"
+				/>
+			</figure>
+		</li>
+	</ul>
 
 	<hr />
 
@@ -309,53 +217,62 @@
 		icon={BookMarkedFillDocument}
 		title={m.reading()}
 		subtitle={m.reading_subtitle()}
+		updatedAt={BOOK.startedAt}
 	/>
-	{#if mounted}
-		<a
-			href={BOOK.url}
-			target="_blank"
-			rel="noopener noreferrer"
-			class="ease-elastic flex grid-cols-6 gap-6 rounded border p-3 transition-all hover:scale-105 md:grid"
-			in:elasticFly|global={{
-				opacity: 0,
-				y: 24,
-				duration: 800,
-				delay: 400,
-			}}
+	<div
+		class={cn(
+			"ease-elastic-heavy transition-all duration-800",
+			!isReadingVisible && "-translate-y-12",
+		)}
+		use:onVisible={() => (isReadingVisible = true)}
+	>
+		<div
+			class={cn(
+				"flex gap-6 transition-all duration-800",
+				!isReadingVisible && "opacity-0",
+			)}
 		>
-			<figure
-				class="relative h-fit w-1/4 shrink-0 before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/20 md:w-auto"
+			<a
+				href={BOOK.url}
+				target="_blank"
+				rel="noopener noreferrer"
+				class="ease-elastic relative h-fit w-1/4 shrink-0 transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/20 hover:scale-105 hover:-rotate-1 lg:w-1/6"
 			>
 				<img src={BOOK.cover} alt="" class="w-full rounded" />
-			</figure>
+			</a>
 			<div class="col-span-5 flex w-full flex-col gap-1.5 md:gap-3">
 				<hgroup>
-					<h3 class="-mb-0.5 text-xl md:-mb-px md:text-2xl">
+					<h3 class="text-2xl md:-mb-px md:text-3xl">
 						{BOOK.title[getLocale()]}
 					</h3>
-					<p class="text-body text-xs leading-4 md:text-sm">
+					<p class="text-body">
 						{BOOK.subtitle[getLocale()]}
 					</p>
 				</hgroup>
-				<div
-					class="text-body flex flex-col gap-1.5 text-sm md:flex-row md:gap-3 md:text-base"
-				>
-					<p class="hidden items-center gap-1 md:flex">
-						<UserLineUserFaces class="text-foreground size-3.5 md:size-4.5" />
-						{BOOK.author}
-					</p>
-					<span class="hidden opacity-80 md:block">&bull;</span>
-					<div class="flex items-center gap-1">
-						<CalendarLineBusiness
-							class="text-foreground size-3.5 md:size-4.5"
-						/>
-						<p class="[&>span]:text-foreground">
-							{@html m.started_at({
-								date: BOOK.startedAt.toLocaleDateString(getLocale()),
-							})}
-						</p>
-					</div>
-				</div>
+				<hr />
+				<ul class="hidden gap-12 md:flex">
+					<li class="flex gap-1.5">
+						<UserLineUserFaces class="text-primary size-4" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">{m.author()}</p>
+							<p class="">{BOOK.author}</p>
+						</div>
+					</li>
+					<li class="flex gap-1.5">
+						<BookReadFillDocument class="text-primary size-4" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">{m.started_reading()}</p>
+							<p class="">{BOOK.startedAt.toLocaleDateString(getLocale())}</p>
+						</div>
+					</li>
+					<li class="flex gap-1.5">
+						<ThumbUpFillSystem class="text-primary size-4" />
+						<div class="flex flex-col">
+							<p class="text-body -my-0.5 text-sm">{m.do_i_recommend()}</p>
+							<p class="">—</p>
+						</div>
+					</li>
+				</ul>
 				<div class="mt-auto flex flex-col gap-1.5">
 					<div class="flex items-center justify-between text-sm md:text-base">
 						<p class="text-body [&>span]:text-foreground">
@@ -364,26 +281,17 @@
 								total: BOOK.pages.total,
 							})}
 						</p>
-						<div class="text-body flex items-center gap-1 text-sm md:text-base">
-							<CalendarCheckLineBusiness
-								class="text-foreground size-3.5 md:size-4.5"
-							/>
-							<p class="[&>span]:text-foreground">
-								{#if $IS_DESKTOP}
-									{@html m.updated_at({
-										date: BOOK.pages.updatedAt.toLocaleDateString(getLocale()),
-									})}
-								{:else}
-									{BOOK.pages.updatedAt.toLocaleDateString(getLocale())}
-								{/if}
-							</p>
-						</div>
+						<p>{Math.ceil((BOOK.pages.read / BOOK.pages.total) * 100)}%</p>
 					</div>
-					<Progress value={BOOK.pages.read} max={BOOK.pages.total} />
+					<Progress
+						value={BOOK.pages.read}
+						max={BOOK.pages.total}
+						class="rounded-full lg:h-3"
+					/>
 				</div>
 			</div>
-		</a>
-	{/if}
+		</div>
+	</div>
 
 	<hr />
 
@@ -391,106 +299,163 @@
 		icon={HeadphoneFillMedia}
 		title={m.listening()}
 		subtitle={m.listening_subtitle()}
+		updatedAt={new Date()}
 	/>
-	<div class="grid gap-6 md:grid-cols-2">
-		<div class="flex flex-col gap-3">
-			<h3 class="text-xl md:text-2xl">{m.last_played_tracks()}</h3>
-			<div class="flex flex-col gap-3 rounded border p-3">
-				{#if !$LAST_PLAYED_TRACKS}
-					{#each Array(5).fill(null) as _uwu}
-						<Skeleton class="h-[54px] w-full rounded" />
-					{/each}
-				{:else}
-					{#each $LAST_PLAYED_TRACKS as track}
-						<a
-							href="https://www.last.fm/music/{track.artist.replaceAll(
-								' ',
-								'+',
-							)}/_/{track.track.replaceAll(' ', '+')}"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="ease-elastic flex items-center gap-1.5 rounded border p-1.5 pr-3 transition-all hover:-translate-y-1"
-						>
-							<img
-								src={track.cover_url}
-								alt=""
-								class="size-10 rounded object-cover"
-							/>
-							<div class="flex flex-col justify-center">
-								<p class="text-body -mb-1 text-sm">{track.artist}</p>
-								<p>{track.track}</p>
-							</div>
-							<div class="ml-auto flex items-center gap-1.5 text-xs">
-								{#if track.now_playing}
-									<p class="hidden lg:block">{m.now_playing()}</p>
-									<span
-										class="before:animation-duration-[2s] relative flex size-1.5 items-center justify-center rounded-full bg-red-500 before:absolute before:flex before:size-2 before:animate-ping before:rounded-full before:bg-red-500/70"
-									></span>
-								{:else if track.played}
-									{@const playedAt = new Date(track.played)}
-									{@const isToday =
-										new Date().toDateString() === playedAt.toDateString()}
-									{@const formattedDate = playedAt.toLocaleDateString(
-										getLocale(),
-										{
-											day: "numeric",
-											month: "numeric",
-										},
-									)}
-									{@const formattedTime = playedAt.toLocaleTimeString(
-										getLocale(),
-										{
-											hour: "2-digit",
-											minute: "2-digit",
-										},
-									)}
+	<div
+		class="flex flex-col gap-3 md:gap-6"
+		use:onVisible={() => (isListeningVisible = true)}
+	>
+		<div class="grid gap-6 md:grid-cols-2 md:gap-12">
+			<div class="flex flex-col gap-3 md:gap-6">
+				<h3 class="text-2xl md:text-3xl">{m.last_played_tracks()}</h3>
+				<div class="flex flex-col gap-3">
+					{#if !$LAST_PLAYED_TRACKS}
+						{#each Array(5).fill(null) as _uwu}
+							<Skeleton class="h-56px w-full rounded" />
+						{/each}
+					{:else}
+						{#each $LAST_PLAYED_TRACKS as track}
+							<a
+								href="https://www.last.fm/music/{track.artist.replaceAll(
+									' ',
+									'+',
+								)}/_/{track.track.replaceAll(' ', '+')}"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="ease-elastic flex items-center gap-3 transition-all hover:scale-105"
+							>
+								<img
+									src={track.cover_url}
+									alt=""
+									class="size-14 rounded object-cover"
+								/>
+								<div class="flex flex-col justify-center">
+									<p class="text-body -mb-1 text-sm">{track.artist}</p>
+									<p>{track.track}</p>
+								</div>
+								<div class="ml-auto flex items-center gap-1.5 text-xs">
+									{#if track.now_playing}
+										<p class="hidden lg:block">{m.now_playing()}</p>
+										<span
+											class="before:animation-duration-[2s] relative flex size-1.5 items-center justify-center rounded-full bg-red-500 before:absolute before:flex before:size-2 before:animate-ping before:rounded-full before:bg-red-500/70"
+										></span>
+									{:else if track.played}
+										{@const playedAt = new Date(track.played)}
+										{@const isToday =
+											new Date().toDateString() === playedAt.toDateString()}
+										{@const formattedDate = playedAt.toLocaleDateString(
+											getLocale(),
+											{
+												day: "numeric",
+												month: "numeric",
+											},
+										)}
+										{@const formattedTime = playedAt.toLocaleTimeString(
+											getLocale(),
+											{
+												hour: "2-digit",
+												minute: "2-digit",
+											},
+										)}
 
-									<p class="text-body">
-										{#if !isToday}
-											{m.date_time({
-												date: formattedDate,
-												time: formattedTime,
-											})}
+										<p class="text-body">
+											{#if !isToday}
+												{m.date_time({
+													date: formattedDate,
+													time: formattedTime,
+												})}
+											{:else}
+												{formattedTime}
+											{/if}
+										</p>
+									{/if}
+								</div>
+							</a>
+						{/each}
+					{/if}
+				</div>
+			</div>
+
+			<div class="flex flex-col gap-3 md:gap-6">
+				<h3 class="text-2xl md:text-3xl">{m.top_artists()}</h3>
+				<div class="grid grid-cols-3 gap-3">
+					{#await getTopArtists()}
+						{#each Array(9).fill(null) as _uwu}
+							<Skeleton class="aspect-square rounded" />
+						{/each}
+					{:then artists}
+						{#each artists as artist, i}
+							{@const variant = Math.floor(Math.random() * 4)}
+							<Tooltip.Provider delayDuration={300}>
+								<Tooltip.Root>
+									<Tooltip.Trigger>
+										{#if isListeningVisible}
+											<a
+												href={artist.url}
+												target="_blank"
+												rel="noopener noreferrer"
+												class={cn(
+													"bg-muted ease-elastic relative flex aspect-square rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:z-10 hover:scale-105 lg:hover:scale-115",
+													variant === 0 && "hover:-rotate-1",
+													variant === 1 && "hover:rotate-1",
+													variant === 2 && "hover:-rotate-2",
+													variant === 3 && "hover:rotate-2",
+												)}
+												in:elasticFly|global={{
+													opacity: 0,
+													y: 12,
+													duration: 800,
+													delay: 50 * i,
+												}}
+											>
+												<img
+													src={artist.image}
+													alt=""
+													class="size-full rounded object-cover"
+												/>
+											</a>
 										{:else}
-											{formattedTime}
+											<div class="aspect-square"></div>
 										{/if}
-									</p>
-								{/if}
-							</div>
-						</a>
-					{/each}
-				{/if}
-				<Button
-					href={SOCIALS.lastfm.url}
-					target="_blank"
-					variant="link"
-					class="ml-auto"
-				>
-					{m.see_on_lastfm()}
-					<ArrowRightLineArrows class="size-5" />
-				</Button>
+									</Tooltip.Trigger>
+									<Tooltip.Content
+										side="bottom"
+										align="center"
+										class="flex cursor-default flex-col items-center"
+									>
+										<p>{artist.name}</p>
+										<p
+											class="text-body -mt-0.5 flex items-center gap-1 text-sm"
+										>
+											<PlayFillMedia class="text-body size-4" />
+											<span class="text-foreground"> {artist.plays}</span> plays
+										</p>
+									</Tooltip.Content>
+								</Tooltip.Root>
+							</Tooltip.Provider>
+						{/each}
+					{/await}
+				</div>
 			</div>
 		</div>
-
-		<div class="flex flex-col gap-3">
-			<h3 class="text-xl md:text-2xl">{m.discover_weekly()}</h3>
-			<iframe
-				class="aspect-square size-full rounded border md:aspect-auto"
-				scrolling="no"
-				frameborder="no"
-				allow="autoplay"
-				src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/2036041653%3Fsecret_token%3Ds-0gxDfMC07SI&color=%23ff5500&auto_play=false&hide_related=false&show_comments=false&show_user=true&show_reposts=false&show_teaser=true"
-				title="SoundCloud"
-			></iframe>
-		</div>
+		<Button
+			href={SOCIALS.lastfm.url}
+			target="_blank"
+			variant="link"
+			class="ml-auto"
+		>
+			{m.see_on_lastfm()}
+			<ArrowRightLineArrows class="size-5" />
+		</Button>
 	</div>
 
 	<hr />
 
 	<SectionTitleWithIcon
-		icon={GamepadFillDevice}
+		icon={Game2FillOthers}
 		title={m.playing_games()}
 		subtitle={m.playing_games_subtitle()}
+		updatedAt={lastPlayedGamesUpdatedAt}
 	/>
 	<div
 		class="flex flex-col gap-3 md:gap-6"
@@ -531,11 +496,7 @@
 										/>
 									</a></Tooltip.Trigger
 								>
-								<Tooltip.Content
-									side="bottom"
-									class="justify-center"
-									sideOffset={24}
-								>
+								<Tooltip.Content side="bottom" class="justify-center">
 									<p class="mx-auto mb-px max-w-[20ch] text-center leading-5">
 										{game.name}
 									</p>
@@ -584,94 +545,5 @@
 			{m.add_me_on_steam()}
 			<ArrowRightLineArrows class="size-5" />
 		</Button>
-	</div>
-
-	<hr />
-
-	<SectionTitleWithIcon
-		icon={GraduationCapFillOthers}
-		title={m.studying()}
-		subtitle={m.studying_description()}
-		updatedAt={COLLEGE_CLASSES.updatedAt}
-	/>
-	<div class="flex grid-cols-3 flex-col gap-6 md:grid md:gap-12">
-		<div class="flex flex-col gap-3">
-			<h3 class="text-xl md:text-2xl">{m.degree_progress()}</h3>
-			<div
-				class="relative mx-auto flex size-full max-w-64 items-center justify-center md:max-w-none"
-				use:onVisible={() =>
-					(COLLEGE_PROGRESS.target = COLLEGE_PROGRESS_TARGET)}
-			>
-				<svg
-					class="size-full -rotate-90"
-					viewBox="0 0 36 36"
-					xmlns="http://www.w3.org/2000/svg"
-				>
-					<circle
-						cx="18"
-						cy="18"
-						r="16"
-						fill="none"
-						class="stroke-primary/20"
-						stroke-width="0.5"
-					></circle>
-					<circle
-						cx="18"
-						cy="18"
-						r="16"
-						fill="none"
-						class="stroke-primary"
-						stroke-width="0.5"
-						stroke-dasharray="100"
-						stroke-dashoffset={100 - COLLEGE_PROGRESS.current}
-					></circle>
-				</svg>
-
-				<div class="absolute flex flex-col items-center gap-0.5 text-center">
-					<p class="text-xl md:text-2xl">
-						{Math.floor(COLLEGE_PROGRESS.current)}%
-					</p>
-					<p
-						class="text-body [&>span]:text-foreground max-w-[15ch] text-sm leading-4 lg:max-w-none"
-					>
-						{@html m.classe_completed({
-							approved: COLLEGE_CLASSES.approved,
-							total: COLLEGE_CLASSES.total,
-						})}
-					</p>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-span-2 flex flex-col gap-3">
-			<h3 class="text-xl md:text-2xl">{m.current_classes()}</h3>
-			{#each COLLEGE_CLASSES.current as subject}
-				{@const today = new Date().getTime()}
-				{@const isExamPeriod = subject.examPeriodStartsAt.getTime() <= today}
-				{@const isClassPeriod = subject.classPeriodStartsAt.getTime() <= today}
-				<div
-					class="text-body ease-elastic group flex cursor-default items-center gap-3 rounded border p-3 transition-all hover:-translate-y-1"
-				>
-					{subject.name[getLocale()]}
-					<span
-						class={cn(
-							"text-muted-foreground group-hover:bg-foreground/10 bg-muted ml-auto flex w-fit shrink-0 items-center gap-1.5 rounded px-2 py-1 text-sm transition-all",
-							isExamPeriod &&
-								"bg-primary text-primary-foreground group-hover:bg-primary",
-						)}
-					>
-						{#if isExamPeriod}
-							<Edit2LineDesign class="size-3.5" />
-							{m.period_exams()}
-						{:else if isClassPeriod}
-							<BookMarkedLineDocument class="size-3.5" />
-							{m.period_classes()}
-						{:else}
-							{m.period_soon()}
-						{/if}
-					</span>
-				</div>
-			{/each}
-		</div>
 	</div>
 </div>

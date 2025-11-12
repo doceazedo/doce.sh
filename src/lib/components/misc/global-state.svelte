@@ -5,7 +5,7 @@
 
 	const updateLastPlayedTracks = async () => {
 		try {
-			const resp = await fetch("/api/now/listening?limit=5");
+			const resp = await fetch("/api/now/listening?limit=7");
 			const data = await resp.json();
 			$LAST_PLAYED_TRACKS = data;
 		} catch (_error) {

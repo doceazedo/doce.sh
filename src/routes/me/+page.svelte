@@ -329,7 +329,7 @@
 					{/each}
 				{:then collection}
 					{#each collection as lp, i (i)}
-						{@const variant = Math.floor(Math.random() * 3)}
+						{@const variant = Math.floor(Math.random() * 4)}
 						{#if isVinylCollectionVisible}
 							<Tooltip.Provider delayDuration={0} disableHoverableContent>
 								<Tooltip.Root>
@@ -340,7 +340,7 @@
 												variant === 0 && "hover:-rotate-2",
 												variant === 1 && "hover:rotate-2",
 												variant === 2 && "hover:-rotate-3",
-												variant === 4 && "hover:rotate-3",
+												variant === 3 && "hover:rotate-3",
 											)}
 											in:elasticFly|global={{
 												opacity: 0,

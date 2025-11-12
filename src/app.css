@@ -237,45 +237,11 @@ body {
 	overflow-x: hidden;
 }
 
-body::before {
-	content: "";
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	image-rendering: crisp-edges;
-	background-image: url("/img/noise-v3.webp");
-	background-size: 128px 128px;
-	background-repeat: repeat;
-	z-index: 100;
-	pointer-events: none;
-	opacity: 0.07;
-	transition: all 0.3s ease;
-}
-
-html:not(.dark) body::before {
-	filter: invert(1);
-	opacity: 0.05;
-}
-
-body[data-noise="animated"]::before {
-	animation: noise 1s steps(4, jump-both) infinite;
-}
-
-body[data-noise="off"]::before {
-	opacity: 0 !important;
-}
-
 body[data-dyslexia-font] {
 	font-family: "SylexiadSansSpacedMed";
 }
 
 @media screen and (min-width: 96rem /* 2xl */) {
-	body::before {
-		opacity: 0.075;
-	}
-
 	body::after {
 		content: "";
 		position: fixed;
@@ -296,29 +262,6 @@ body[data-dyslexia-font] {
 
 	.dark body::after {
 		opacity: 1;
-	}
-}
-
-@keyframes noise {
-	0% {
-		background-position: top right;
-		transform: scale(3) rotate(180deg);
-	}
-	25% {
-		background-position: bottom right;
-		transform: scale(3) rotate(0deg);
-	}
-	50% {
-		background-position: top left;
-		transform: scale(3) rotate(180deg);
-	}
-	75% {
-		background-position: bottom left;
-		transform: scale(3) rotate(0deg);
-	}
-	100% {
-		background-position: top right;
-		transform: scale(3) rotate(180deg);
 	}
 }
 

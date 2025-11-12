@@ -30,6 +30,7 @@
 	import { toast } from "svelte-sonner";
 	import Settings from "$lib/components/controls/settings/settings.svelte";
 	import { playAudio } from "$lib/audio";
+	import NoiseOverlay from "$lib/components/misc/noise-overlay.svelte";
 
 	let { children } = $props();
 
@@ -176,3 +177,5 @@
 	<Loader2LineSystem class="text-primary size-6 animate-spin" />
 	{m.loading()}
 </div>
+
+<NoiseOverlay />

@@ -8,7 +8,7 @@
 	import { elasticFly } from "$lib/utils/transitions";
 	import { cn } from "$lib/utils";
 
-	const PET_OFFSET = -48;
+	const PET_OFFSET = -32;
 
 	let isPetting = $state(false);
 	let mouseX = $state(0);
@@ -77,7 +77,7 @@
 			<img
 				src="/img/selfie.webp"
 				alt=""
-				class="ease-elastic relative z-20 rounded object-cover transition-all group-hover:-translate-x-3 group-hover:translate-y-3"
+				class="ease-elastic-heavy relative z-20 rounded object-cover transition-all duration-800 group-hover:-translate-x-6 group-hover:translate-y-6 group-hover:-rotate-90"
 				in:elasticFly={{
 					opacity: 0,
 					x: 24,
@@ -86,7 +86,7 @@
 				}}
 			/>
 			<span
-				class="border-foreground/10 ease-elastic absolute top-0 left-0 z-30 size-full rounded border transition-all group-hover:-translate-x-3 group-hover:translate-y-3"
+				class="border-foreground/15 ease-elastic-heavy absolute top-0 left-0 z-30 size-full rounded border transition-all duration-800 group-hover:-translate-x-6 group-hover:translate-y-6 group-hover:-rotate-90"
 				in:elasticFly={{
 					opacity: 0,
 					x: 24,
@@ -95,7 +95,7 @@
 				}}
 			></span>
 			<span
-				class="border-primary absolute top-4 left-3 z-10 h-full w-[calc(100%-1.5rem)] rounded border md:top-11 md:-left-11 md:w-full"
+				class="border-primary ease-elastic absolute top-4 left-3 z-10 h-full w-[calc(100%-1.5rem)] rounded border duration-600 group-hover:-rotate-90 md:top-11 md:-left-11 md:w-full"
 				in:elasticFly={{
 					opacity: 0,
 					x: 24,
@@ -105,7 +105,7 @@
 				}}
 			></span>
 			<span
-				class="border-primary/50 ease-elastic absolute top-8 left-6 z-10 h-full w-[calc(100%-3rem)] rounded border transition-all group-hover:top-[76px] group-hover:left-[-76px] md:top-[88px] md:left-[-88px] md:w-full"
+				class="border-primary/50 ease-elastic absolute top-8 left-6 z-10 h-full w-[calc(100%-3rem)] rounded border transition-all duration-800 group-hover:top-16 group-hover:-left-16 group-hover:-rotate-90 md:top-[88px] md:left-[-88px] md:w-full"
 				in:elasticFly={{
 					opacity: 0,
 					x: 24,
@@ -116,7 +116,7 @@
 			></span>
 			<div
 				class={cn(
-					"ease-elastic absolute top-8 left-14 z-30 hidden h-12 w-32 rounded-t-full transition-all group-hover:-translate-x-3 group-hover:translate-y-3 hover:cursor-none md:block",
+					"ease-elastic absolute top-26 left-18 z-30 hidden h-8 w-20 rounded-t-full transition-all hover:cursor-none md:group-hover:block",
 					dev && "border border-red-500/50",
 				)}
 				aria-hidden="true"
@@ -129,7 +129,7 @@
 			<img
 				src="/img/pet.gif"
 				alt=""
-				class="pointer-events-none fixed z-20 size-24"
+				class="pointer-events-none fixed z-20 size-16"
 				style="left:{mouseX + PET_OFFSET}px;top:{mouseY + PET_OFFSET}px"
 			/>
 		{/if}

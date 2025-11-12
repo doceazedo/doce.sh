@@ -25,7 +25,6 @@
 		siDiscogs,
 		siFigma,
 		siFortnite,
-		siGithub,
 		siLastdotfm,
 		siMapbox,
 		siShadcnui,
@@ -35,11 +34,17 @@
 		siSvg,
 		siTailwindcss,
 		siVercel,
+		siBluesky,
+		siMastodon,
+		siReddit,
+		siPocketbase,
 	} from "simple-icons";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { Button } from "$lib/components/ui/button";
 	import Threlte from "$lib/components/icons/threlte.svg?component";
+	import Deezer from "$lib/components/icons/deezer.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
+	import { cn } from "$lib/utils";
 </script>
 
 <Seo title={m.colophon_seo_title()} />
@@ -143,6 +148,11 @@
 				},
 			]}
 		/>
+		<p
+			class="[&_svg]:fill-body [&_svg]:group-hover:fill-primary [&_svg]:size-4 [&_svg]:transition-all [&>a]:inline-flex [&>a]:translate-y-0.5 [&>a]:items-center [&>a]:gap-1"
+		>
+			{@html m.pocketbase_description({ icon: siPocketbase.svg })}
+		</p>
 	</Prose>
 
 	<hr />
@@ -162,16 +172,16 @@
 					url: "https://www.last.fm/api",
 				},
 				{
+					label: "Deezer",
+					description: m.deezer_api_description(),
+					icon: Deezer,
+					url: "https://developers.deezer.com/api",
+				},
+				{
 					label: "Discogs",
 					description: m.discogs_api_description(),
 					icon: siDiscogs.svg,
 					url: "https://www.discogs.com/developers",
-				},
-				{
-					label: "GitHub",
-					description: m.github_api_description(),
-					icon: siGithub.svg,
-					url: "https://docs.github.com/rest",
 				},
 				{
 					label: "Steam",
@@ -180,16 +190,28 @@
 					url: "https://steamcommunity.com/dev",
 				},
 				{
-					label: "SteamGridDB",
-					description: m.steamgriddb_api_description(),
-					icon: siSteam.svg,
-					url: "https://www.steamgriddb.com/api/v2",
-				},
-				{
 					label: "Fortnite-API",
 					description: m.fortnite_api_description(),
 					icon: siFortnite.svg,
 					url: "https://dash.fortnite-api.com",
+				},
+				{
+					label: "Bluesky",
+					description: m.backfeeding_api_description(),
+					icon: siBluesky.svg,
+					url: "https://docs.bsky.app",
+				},
+				{
+					label: "Mastodon",
+					description: m.backfeeding_api_description(),
+					icon: siMastodon.svg,
+					url: "https://docs.joinmastodon.org/client/intro",
+				},
+				{
+					label: "Reddit",
+					description: m.backfeeding_api_description(),
+					icon: siReddit.svg,
+					url: "https://www.reddit.com/dev/api",
 				},
 			]}
 		/>

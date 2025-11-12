@@ -527,5 +527,8 @@
 	"months_ago": "há {months} meses",
 	"this_year": "esse ano",
 	"years_ago": "há {years} anos",
-	"just_now": "agora mesmo"
+	"just_now": "agora mesmo",
+	"deezer_api_description": "Fotos dos meus top artistas do mês.",
+	"backfeeding_api_description": "Comentários externos para posts do blog.",
+	"pocketbase_description": "Além disso, eu hospedo uma instância do <a class=\"group\" href=\"https://pocketbase.io\" target=\"_blank\" rel=\"noopener noreferrer\">{icon} PocketBase</a> no meu home server pra fazer cache de APIs externas e, potencialmente, codar mais coisas divertidas que dependem de um backend no futuro."
 }

@@ -22,7 +22,7 @@
 		{sideOffset}
 		{side}
 		class={cn(
-			"bg-secondary text-secondary-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--bits-tooltip-content-transform-origin) rounded border px-3 py-1 text-base text-balance",
+			"bg-muted text-foreground animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--bits-tooltip-content-transform-origin) rounded border px-3 py-1 text-base text-balance",
 			className,
 		)}
 		{...restProps}
@@ -32,7 +32,7 @@
 			{#snippet child({ props })}
 				<div
 					class={cn(
-						"bg-secondary z-50 size-2.5 rotate-45 rounded-[2px]",
+						"bg-muted z-50 size-2.5 rotate-45 rounded-[2px]",
 						"data-[side=top]:translate-x-1/2 data-[side=top]:translate-y-[calc(-50%_+_2px)]",
 						"data-[side=bottom]:translate-x-[calc(50%_-_6px)] data-[side=bottom]:-translate-y-[calc(-50%_+_1px)]",
 						"data-[side=right]:translate-x-[calc(50%_+_2px)] data-[side=right]:translate-y-1/2",

@@ -86,7 +86,7 @@
 		<a href="/" class="flex items-center gap-1.5 font-sans! text-2xl">
 			<Memoji />
 			<span>
-				doce<span class="text-body">.sh</span>
+				doce<span class="text-body/70">.sh</span>
 			</span>
 		</a>
 

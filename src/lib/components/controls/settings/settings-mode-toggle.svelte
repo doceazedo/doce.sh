@@ -48,7 +48,7 @@
 					"z-10 flex h-7 w-11.5 cursor-pointer items-center justify-center rounded-xs text-sm transition-all",
 					isActive
 						? "text-primary-foreground"
-						: "hover:bg-muted hover:text-foreground",
+						: "hover:bg-primary/20 hover:text-foreground",
 				)}
 				onclick={() => setMode(option.value)}
 			>

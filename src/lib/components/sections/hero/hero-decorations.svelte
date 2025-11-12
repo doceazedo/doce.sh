@@ -25,10 +25,7 @@
 			{#each Array(12 * 9).fill(null) as _uwu}
 				<div
 					class={cn(
-						"size-24 border-t border-r opacity-30 transition-all",
-						isDayTime
-							? "dark:border-foreground/10 opacity-40 dark:opacity-100"
-							: "dark:opacity-80",
+						"size-24 border-t border-r opacity-40 transition-all dark:opacity-80",
 					)}
 				></div>
 			{/each}
@@ -36,21 +33,21 @@
 		<div
 			class={cn(
 				"absolute top-0 -z-10 h-full w-48 bg-linear-to-l",
-				_mode === "dark" && "from-black/0 to-black",
+				_mode === "dark" && "from-[#0c0911]/0 to-[#0c0911]",
 				_mode === "light" && "from-white/0 to-white",
 			)}
 		></div>
 		<div
 			class={cn(
 				"absolute top-0 right-0 -z-10 h-full w-48 bg-linear-to-r",
-				_mode === "dark" && "from-black/0 to-black",
+				_mode === "dark" && "from-[#0c0911]/0 to-[#0c0911]",
 				_mode === "light" && "from-white/0 to-white",
 			)}
 		></div>
 		<div
 			class={cn(
 				"absolute bottom-0 -z-10 h-48 w-full bg-linear-to-b",
-				_mode === "dark" && "from-black/0 to-black",
+				_mode === "dark" && "from-[#0c0911]/0 to-[#0c0911]",
 				_mode === "light" && "from-white/0 to-white",
 			)}
 		></div>

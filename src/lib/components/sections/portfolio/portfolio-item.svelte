@@ -120,7 +120,7 @@
 						>
 							<GumballIcon
 								class={cn(
-									"ease-elastic dark:text-muted text-border h-48 transition-all group-hover:scale-110 md:h-64 lg:h-auto",
+									"ease-elastic text-muted dark:group-hover:text-border h-48 transition-all group-hover:scale-110 md:h-64 lg:h-auto",
 									!hasPlayedGachapon && "opacity-50",
 								)}
 							/>
@@ -142,7 +142,7 @@
 							class={cn(
 								"ease-elastic flex w-full flex-col transition-all group-hover:-translate-y-4",
 								type === "desktop"
-									? "border-muted rounded-lg border"
+									? "rounded-lg border"
 									: "w-48 lg:w-[calc(100%-6rem)]",
 								direction === "row" &&
 									"md:-mr-20 md:group-hover:-translate-x-4 md:group-hover:translate-y-0",
@@ -156,7 +156,7 @@
 						>
 							{#if type === "desktop"}
 								<ul
-									class="bg-foreground/10 flex w-full gap-1.5 rounded-t-lg p-2.5 transition-all"
+									class="bg-border flex w-full gap-1.5 rounded-t-lg p-2.5 transition-all"
 								>
 									<li
 										class="bg-foreground/10 size-3 rounded-full transition-all group-hover:bg-red-400"
@@ -174,12 +174,12 @@
 									"relative flex w-full flex-col items-center overflow-hidden transition-all",
 									type === "desktop"
 										? "aspect-video rounded-b-lg"
-										: "dark:border-muted border-border aspect-[9/16] rounded-3xl border-4 lg:rounded-[3rem] lg:border-8",
+										: "aspect-[9/16] rounded-3xl border-4 border-[#e5e1e8] lg:rounded-[3rem] lg:border-8 dark:border-[#2d2534]",
 								)}
 							>
 								{#if type === "mobile"}
 									<div
-										class="dark:bg-muted dark:lg-top-0 bg-border absolute top-[3px] z-10 size-2.5 rounded-full transition-all md:-top-0.5 md:h-4 md:w-18 md:rounded-t-none md:rounded-b-lg lg:-top-px lg:h-6 lg:w-32 lg:rounded-b-xl"
+										class="dark:lg-top-0 absolute top-[3px] z-10 size-2.5 rounded-full bg-[#e5e1e8] transition-all md:-top-0.5 md:h-4 md:w-18 md:rounded-t-none md:rounded-b-lg lg:-top-px lg:h-6 lg:w-32 lg:rounded-b-xl dark:bg-[#2d2534]"
 									></div>
 								{/if}
 								{#if project.video}

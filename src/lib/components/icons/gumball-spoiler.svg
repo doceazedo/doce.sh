@@ -30,8 +30,8 @@
       <path fill="currentColor" d="M-142 0h684v684h-684z"/>
     </clipPath>
     <radialGradient id="d" cx="0" cy="0" r="1" gradientTransform="matrix(0 342 -200 0 200 342)" gradientUnits="userSpaceOnUse">
-      <stop stop-color="var(--background)" stop-opacity="0"/>
-      <stop offset="1" stop-color="var(--background)"/>
+      <stop stop-color="red" stop-opacity="0"/>
+      <stop offset="1" stop-color="red"/>
     </radialGradient>
   </defs>
 </svg>

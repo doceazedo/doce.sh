@@ -505,7 +505,7 @@
 											<CalendarCheckLineBusiness class="text-body size-4" />
 										{/if}
 										<p
-											class="text-body [&>span]:text-secondary-foreground text-center text-sm"
+											class="text-body [&>span]:text-foreground text-center text-sm"
 										>
 											{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
 												{@html m.played_last_two_weeks({

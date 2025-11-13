@@ -36,27 +36,21 @@ Command: npx @threlte/gltf@3.0.1 static/models/gumball.glb
 	{...props}
 >
 	{#await gltf then gltf}
-		{#await import('@threlte/rapier') then rapier}
-			<rapier.RigidBody type="fixed" {oncreate}>
-				<rapier.AutoColliders shape="trimesh">
-					<T.Mesh geometry={gltf.nodes.Globe.geometry}>
-						<T.MeshPhysicalMaterial
-							transparent={true}
-							transmission={1}
-							roughness={0.05}
-							thickness={1.2}
-							ior={0.9}
-							clearcoat={1}
-							clearcoatRoughness={0.02}
-							color="#ffffff"
-							envMapIntensity={0.9}
-							opacity={0.2}
-							reflectivity={0.1}
-						/>
-					</T.Mesh>
-				</rapier.AutoColliders>
-			</rapier.RigidBody>
-		{/await}
+		<T.Mesh geometry={gltf.nodes.Globe.geometry}>
+			<T.MeshPhysicalMaterial
+				transparent={true}
+				transmission={1}
+				roughness={0.05}
+				thickness={1.2}
+				ior={0.9}
+				clearcoat={1}
+				clearcoatRoughness={0.02}
+				color="#ffffff"
+				envMapIntensity={0.9}
+				opacity={0.2}
+				reflectivity={0.1}
+			/>
+		</T.Mesh>
 		<T.Group position={[0, -1, 0]} scale={0.7}>
 			<T.Mesh
 				geometry={gltf.nodes.Circle002.geometry}
@@ -131,5 +125,12 @@ Command: npx @threlte/gltf@3.0.1 static/models/gumball.glb
 			position={[-0.02, -1.73, 0.64]}
 			rotation={[1.31, 0, 0]}
 		/>
+		{#await import('@threlte/rapier') then rapier}
+			<rapier.RigidBody type="fixed" {oncreate}>
+				<rapier.AutoColliders shape="trimesh" density={100}>
+					<T.Mesh geometry={gltf.nodes.Icosphere001.geometry} visible={false} />
+				</rapier.AutoColliders>
+			</rapier.RigidBody>
+		{/await}
 	{/await}
 </T.Group>

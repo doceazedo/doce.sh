@@ -7,5 +7,3 @@ export const load = async ({ route }) => {
 		slug,
 	};
 };
-
-export const prerender = true;

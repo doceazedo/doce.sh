@@ -78,5 +78,3 @@ export const GET = async ({ params }) => {
 export const entries: EntryGenerator = () => {
 	return getAllBlogPosts().map((x) => ({ slug: x.slug }));
 };
-
-export const prerender = true;

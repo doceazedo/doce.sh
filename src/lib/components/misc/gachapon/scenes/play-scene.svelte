@@ -2,6 +2,7 @@
 	import { T, useTask } from "@threlte/core";
 	import Gumball from "../models/gumball.svelte";
 	import { degToRad } from "three/src/math/MathUtils.js";
+	import { Vector3 } from "three";
 	import Capsule from "../models/capsule.svelte";
 	import { browser } from "$app/environment";
 	import type { RigidBody } from "@dimforge/rapier3d-compat";
@@ -20,24 +21,30 @@
 	import Prize from "./prize.svelte";
 	import World from "./world.svelte";
 	import { getRandomPrize, giveItem } from "../game";
-	import type { RarityId, Vector3 } from "../types";
+	import type { RarityId, Vector3 as Vec3Array } from "../types";
 	import { playAudio } from "$lib/audio";
 
 	const DISPENSE_COST = 100;
 
 	const PHYSICS_CONFIG = {
-		gravityEnabled: [0, -9.81, 0] as Vector3,
-		gravityDisabled: [0, 0, 0] as Vector3,
+		gravityEnabled: [0, -9.81, 0] as Vec3Array,
+		gravityDisabled: [0, 0, 0] as Vec3Array,
 		capsuleRestitution: 0.7,
 		shakeStrength: 0.2,
 		shakeFrequency: 8,
 	} as const;
 
 	const SPAWN_CONFIG = {
-		machineCenter: [-0.1, 2.4, 0.2] as Vector3,
+		machineCenter: [-0.05, 2.4, 0.05] as Vec3Array,
 		capsulesMultiplier: 2,
 		capsuleShape: { height: 0.1, radius: 0.15 } as const,
 	} as const;
+
+	const MACHINE_CENTER = new Vector3(
+		SPAWN_CONFIG.machineCenter[0],
+		SPAWN_CONFIG.machineCenter[1],
+		SPAWN_CONFIG.machineCenter[2],
+	);
 
 	const GOLDEN_RATIO = (1 + Math.sqrt(5)) / 2;
 
@@ -52,16 +59,16 @@
 
 	const INITIAL_TRANSFORMS = {
 		capsule: {
-			position: [0.4, 0.7, 0] as Vector3,
-			scale: [1, 1, 1] as Vector3,
+			position: [0.4, 0.7, 0] as Vec3Array,
+			scale: [1, 1, 1] as Vec3Array,
 		},
 		capsuleCap: {
-			up: [0, 0, 0] as Vector3,
-			down: [0, 0.2, 0] as Vector3,
+			up: [0, 0, 0] as Vec3Array,
+			down: [0, 0.2, 0] as Vec3Array,
 		},
 		gumball: {
-			position: [0, 2.5, 0] as Vector3,
-			scale: [1, 1, 1] as Vector3,
+			position: [0, 2.5, 0] as Vec3Array,
+			scale: [1, 1, 1] as Vec3Array,
 		},
 		prize: {
 			scale: 0,
@@ -73,33 +80,33 @@
 	} as const;
 
 	const capsuleTweener = {
-		position: new Tween<Vector3>([...INITIAL_TRANSFORMS.capsule.position], {
+		position: new Tween<Vec3Array>([...INITIAL_TRANSFORMS.capsule.position], {
 			easing: bounceOut,
 			duration: 1600,
 		}),
-		scale: new Tween<Vector3>([...INITIAL_TRANSFORMS.capsule.scale], {
+		scale: new Tween<Vec3Array>([...INITIAL_TRANSFORMS.capsule.scale], {
 			easing: cubicOut,
 			duration: ANIMATION_TIMING.scaleTransition,
 		}),
 	};
 
 	const capsuleCapTweener = {
-		up: new Tween<Vector3>([...INITIAL_TRANSFORMS.capsuleCap.up], {
+		up: new Tween<Vec3Array>([...INITIAL_TRANSFORMS.capsuleCap.up], {
 			easing: expoOut,
 			duration: 600,
 		}),
-		down: new Tween<Vector3>([...INITIAL_TRANSFORMS.capsuleCap.down], {
+		down: new Tween<Vec3Array>([...INITIAL_TRANSFORMS.capsuleCap.down], {
 			easing: expoOut,
 			duration: 600,
 		}),
 	};
 
 	const gumballTweener = {
-		position: new Tween<Vector3>([...INITIAL_TRANSFORMS.gumball.position], {
+		position: new Tween<Vec3Array>([...INITIAL_TRANSFORMS.gumball.position], {
 			easing: elasticOut,
 			duration: ANIMATION_TIMING.scaleTransition,
 		}),
-		scale: new Tween<Vector3>([...INITIAL_TRANSFORMS.gumball.scale], {
+		scale: new Tween<Vec3Array>([...INITIAL_TRANSFORMS.gumball.scale], {
 			easing: cubicOut,
 			duration: 300,
 		}),
@@ -122,27 +129,30 @@
 	});
 
 	let capsuleRigidBodies = $state<RigidBody[]>([]);
-	let worldGravity = $state<Vector3>([...PHYSICS_CONFIG.gravityEnabled]);
+	let worldGravity = $state<Vec3Array>([...PHYSICS_CONFIG.gravityEnabled]);
 	let isShaking = $state(false);
 	let selectedCapsuleColor = $state(CAPSULE_PALETTE[0]);
 
-	const calculateSpherePosition = (
-		index: number,
-		totalSpheres: number,
-	): Vector3 => {
-		if (index === 0) return [...SPAWN_CONFIG.machineCenter];
+	const calculateCapsulePosition = (
+		idx: number,
+		totalCapsules: number,
+	): Vec3Array => {
+		if (idx + 1 === totalCapsules) {
+			return [...SPAWN_CONFIG.machineCenter];
+		}
 
-		const phi = Math.acos(1 - (2 * index) / (totalSpheres + 1));
-		const theta = Math.PI * GOLDEN_RATIO * index;
-		const radius = (index / totalSpheres) * totalSpheres * 0.025;
+		const COILS = 5;
+		const RADIUS = 0.5;
 
-		const [centerX, centerY, centerZ] = SPAWN_CONFIG.machineCenter;
+		const thetaMax = COILS * 2 * Math.PI;
+		const normalIdx = idx / totalCapsules;
+		const theta = normalIdx * thetaMax;
+		const awayStep = RADIUS / thetaMax;
+		const away = awayStep * theta;
 
-		const x = radius * Math.sin(phi) * Math.cos(theta) + centerX;
-		const y = radius * Math.sin(phi) * Math.sin(theta) + centerY;
-		const z = radius * Math.cos(phi) + centerZ;
-
-		return [x, y, z];
+		const x = MACHINE_CENTER.x + Math.cos(theta) * away;
+		const z = MACHINE_CENTER.z + Math.sin(theta) * away;
+		return [x, MACHINE_CENTER.y + 0.6 - normalIdx, z];
 	};
 
 	const resetAllAnimations = () => {
@@ -188,7 +198,7 @@
 			CAPSULE_PALETTE.length * SPAWN_CONFIG.capsulesMultiplier;
 
 		capsuleRigidBodies.forEach((body, index) => {
-			const position = calculateSpherePosition(index, totalCapsules);
+			const position = calculateCapsulePosition(index, totalCapsules);
 			body.setRotation({ x: 0, y: 0, z: 0, w: 0 }, true);
 			body.setTranslation(
 				{ x: position[0], y: position[1], z: position[2] },
@@ -301,6 +311,13 @@
 	};
 
 	useTask((delta: number) => {
+		capsuleRigidBodies.forEach((body) => {
+			let distanceFromCenter = MACHINE_CENTER.distanceTo(body.translation());
+			if (distanceFromCenter > (isShaking ? 1.1 : 1.5)) {
+				body.setTranslation(MACHINE_CENTER, false);
+			}
+		});
+
 		if (!isShaking) return;
 
 		const shakeIntensity =
@@ -356,7 +373,7 @@
 						.fill(shuffleArray(CAPSULE_PALETTE))
 						.flat() as color, index}
 						<T.Group
-							position={calculateSpherePosition(
+							position={calculateCapsulePosition(
 								index,
 								CAPSULE_PALETTE.length * SPAWN_CONFIG.capsulesMultiplier,
 							)}
@@ -372,6 +389,7 @@
 									<Capsule
 										scale={gumballTweener.scale.current}
 										position.y={-0.1}
+										rotation={[Math.random() * 0.5, 0, Math.random() * -0.5]}
 										{color}
 									/>
 								</rapier.Collider>

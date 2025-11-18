@@ -9,6 +9,7 @@ import SteamUser from "steam-user";
 
 const GAME_COVER_OVERRIDES = {
 	fortnite: "/img/now/games/fortnite.webp",
+	minecraft: "/img/now/games/minecraft.webp",
 	480: "/img/now/games/spacewar.webp",
 } as { [appid: number | string]: string };
 const STEAM_BASE_URL = "http://api.steampowered.com";

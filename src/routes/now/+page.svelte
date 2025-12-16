@@ -36,7 +36,7 @@
 	import Backlog from "$lib/components/icons/backlog.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
 
-	const FOCUS_UPDATED_AT = new Date("2025/11/12");
+	const FOCUS_UPDATED_AT = new Date("2025/12/15");
 
 	const BOOK = {
 		title: {
@@ -147,14 +147,14 @@
 						<Backlog class="text-foreground/80 size-4" />
 						<div class="flex flex-col">
 							<p class="text-body -my-0.5 text-sm">{m.task_status_backlog()}</p>
-							<p class="">20</p>
+							<p class="">17</p>
 						</div>
 					</li>
 					<li class="flex gap-1.5">
 						<CircleLineDesign class="text-foreground/80 size-4" />
 						<div class="flex flex-col">
 							<p class="text-body -my-0.5 text-sm">{m.task_status_next()}</p>
-							<p class="">15</p>
+							<p class="">12</p>
 						</div>
 					</li>
 					<li class="flex gap-1.5">
@@ -170,7 +170,7 @@
 						<CheckboxCircleFillSystem class="text-primary size-4" />
 						<div class="flex flex-col">
 							<p class="text-body -my-0.5 text-sm">{m.task_status_done()}</p>
-							<p class="">6</p>
+							<p class="">9</p>
 						</div>
 					</li>
 				</ul>

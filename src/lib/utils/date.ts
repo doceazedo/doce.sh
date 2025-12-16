@@ -32,53 +32,45 @@ export const daysAgo = (date: Date) => {
 };
 
 export const timeAgo = (date: Date) => {
-	const now = new Date();
-
 	const hours = Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60);
-	if (hours < 1) {
-		return m.just_now();
+	const days = Math.floor(hours / 24);
+	const weeks = Math.floor(days / 7);
+	const months = Math.floor(days / 30);
+	const years = Math.floor(days / 365);
+
+	if (years) {
+		return years === 1 ? m.this_year() : m.years_ago({ years });
 	}
-	if (hours < 24) {
-		if (hours >= 12) {
-			return m.today();
-		}
+
+	if (months >= 2) {
+		return m.months_ago({ months });
+	}
+
+	if (weeks >= 3) {
+		return m.this_month();
+	}
+
+	if (weeks >= 2) {
+		return m.weeks_ago({ weeks });
+	}
+
+	if (days >= 6) {
+		return m.this_week();
+	}
+
+	if (days >= 2) {
+		return m.days_ago({ days });
+	}
+
+	if (hours >= 12) {
+		return m.today();
+	}
+
+	if (hours) {
 		return hours === 1 ? m.hour_ago() : m.hours_ago({ hours });
 	}
 
-	const days = Math.floor(hours / 24);
-	if (days <= 7) {
-		const weekStart = new Date(date);
-		weekStart.setHours(0, 0, 0, 0);
-		weekStart.setDate(date.getDate() - date.getDay());
-
-		const nowWeekStart = new Date(now);
-		nowWeekStart.setHours(0, 0, 0, 0);
-		nowWeekStart.setDate(now.getDate() - now.getDay());
-
-		if (weekStart.getTime() === nowWeekStart.getTime()) {
-			return m.this_week();
-		}
-		return days === 1 ? m.today() : m.days_ago({ days });
-	}
-
-	const weeks = Math.floor(days / 7);
-	if (weeks < 4) {
-		return weeks === 1 ? m.this_week() : m.weeks_ago({ weeks });
-	}
-
-	const months = Math.floor(days / 30);
-	if (months < 12) {
-		if (
-			date.getMonth() === now.getMonth() &&
-			date.getFullYear() === now.getFullYear()
-		) {
-			return m.this_month();
-		}
-		return months === 1 ? m.this_month() : m.months_ago({ months });
-	}
-
-	const years = Math.floor(days / 365);
-	return years === 1 ? m.this_year() : m.years_ago({ years });
+	return m.just_now();
 };
 
 export const readyInDays = (date: Date) => {

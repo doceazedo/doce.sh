@@ -32,7 +32,8 @@ export const daysAgo = (date: Date) => {
 };
 
 export const timeAgo = (date: Date) => {
-	const hours = Math.floor((Date.now() - date.getTime()) / 1000 / 60 / 60);
+	const now = new Date();
+	const hours = Math.floor((now.getTime() - date.getTime()) / 1000 / 60 / 60);
 	const days = Math.floor(hours / 24);
 	const weeks = Math.floor(days / 7);
 	const months = Math.floor(days / 30);
@@ -47,7 +48,7 @@ export const timeAgo = (date: Date) => {
 	}
 
 	if (weeks >= 3) {
-		return m.this_month();
+		return date.getMonth() === now.getMonth() ? m.this_month() : m.last_month();
 	}
 
 	if (weeks >= 2) {

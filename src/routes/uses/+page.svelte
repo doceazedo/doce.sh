@@ -11,15 +11,29 @@
 	const PC_PARTS = [
 		{ label: m.uses_cpu(), product: "AMD Ryzen 7 7700X" },
 		{ label: m.uses_gpu(), product: "Gigabyte RTX 5070 Ti" },
-		{ label: m.uses_mobo(), product: "Gigabyte B650M" },
+		{ label: m.uses_mobo(), product: "ASRock B850M-X" },
 		{ label: m.uses_ram(), product: "32GB (2×16) Crucial DDR5 5600MHz" },
 		{
 			label: m.uses_rom(),
-			product: "2TB Crucial NVMe SSD + 480GB Crucial SATA SSD",
+			product: "2TB Crucial NVMe SSD",
 		},
 		{ label: m.uses_psu(), product: "Cooler Master GX Gold 850" },
 		{ label: m.uses_case(), product: "NZXT H5 Flow" },
 		{ label: m.uses_cooling(), product: "NZXT Kraken 240 RGB Water Cooler" },
+	];
+
+	const HOME_SERVER = [
+		{ label: m.uses_cpu(), product: "AMD Ryzen 3600X" },
+		{ label: m.uses_gpu(), product: "EVGA GTX 1660" },
+		{ label: m.uses_mobo(), product: "Gigabyte B450M DS3H" },
+		{ label: m.uses_ram(), product: "24GB (3x8) Crucial DDR4 3000MHz" },
+		{
+			label: m.uses_rom(),
+			product: "480GB Crucial SATA SSD", // + 2TB WD Red Plus HDD
+		},
+		{ label: m.uses_psu(), product: "Corsair CV650" }, // Corsair SF850L
+		{ label: m.uses_case(), product: "Corsair SPEC-DELTA RGB" }, // C3Tech Aquarius MT-G710WH
+		// { label: m.uses_cooling(), product: "NZXT Kraken 240 RGB Water Cooler" },
 	];
 
 	const PERIPHERALS = [
@@ -247,6 +261,8 @@
 	/>
 	<hr />
 	<ProductsGrid label={m.uses_gaming_pc()} items={PC_PARTS} />
+	<hr />
+	<ProductsGrid label={m.uses_home_server()} items={HOME_SERVER} />
 	<hr />
 	<ProductsGrid label={m.uses_peripherals()} items={PERIPHERALS} />
 	<hr />

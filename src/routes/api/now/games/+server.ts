@@ -121,20 +121,26 @@ const getSteamGames = async (
 					async (x: {
 						name: string;
 						appid: number;
-						playtime_2weeks: string;
+						playtime_2weeks: number;
 					}) => {
-						let lastPlayed: string | undefined = undefined;
+						let lastPlayed = new Date().toISOString();
+
 						const id = x.appid.toString();
 						const cachedGame = cachedGames.find((cached) => cached.id === id);
-						const lastPlayed2WeeksAgo =
+
+						const cachedPlaytime = cachedGame?.playtime_2weeks || 0;
+						// haven't played more, so we can keep the previous date
+						if (x.playtime_2weeks === cachedPlaytime) {
+							lastPlayed = cachedGame?.last_played || lastPlayed;
+						}
+
+						const hasPlayedWithin2Weeks =
 							new Date(cachedGame?.last_played || 0).getTime() >=
 							new Date().getTime() - 14 * 24 * 60 * 60 * 1000;
-						if (!lastPlayed2WeeksAgo) {
-							// our responses are cached for 24h. if the game wasn't played within 2 weeks, we
-							// assume it was played sometime since yesterday. set to 12h ago as a rough estimation.
-							const playedWithin12Hours = new Date();
-							playedWithin12Hours.setHours(playedWithin12Hours.getHours() - 12);
-							lastPlayed = playedWithin12Hours.toISOString();
+						if (!hasPlayedWithin2Weeks) {
+							const twoWeeksAgo = new Date();
+							twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+							lastPlayed = twoWeeksAgo.toISOString();
 						}
 						return {
 							id,

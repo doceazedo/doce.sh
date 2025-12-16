@@ -26,7 +26,7 @@
 	import { Progress } from "$lib/components/ui/progress";
 	import { SOCIALS } from "$lib/constants";
 	import { cn } from "$lib/utils";
-	import { daysAgo } from "$lib/utils/date";
+	import { timeAgo } from "$lib/utils/date";
 	import Seo from "$lib/components/common/seo.svelte";
 	import { browser } from "$app/environment";
 	import { elasticFly } from "$lib/utils/transitions";
@@ -516,7 +516,7 @@
 												})}
 											{:else if game.last_played}
 												{@html m.last_played_game({
-													date: daysAgo(new Date(game.last_played)),
+													date: timeAgo(new Date(game.last_played)),
 												})}
 											{:else if game.updated}
 												{@html m.updated_at({

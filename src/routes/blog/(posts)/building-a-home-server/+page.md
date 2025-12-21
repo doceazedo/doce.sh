@@ -2,8 +2,8 @@
 title: "Building a server at home that (almost) anyone can access"
 date: "2025/12/21"
 icon: "/img/icons/parrot-emoji.svg"
-blueskyPostId: ""
-mastodonPostId: ""
+blueskyPostId: "3majieddzkk2e"
+mastodonPostId: "115759283324143038"
 ---
 
 I have been using my old gaming PC as a home server for about 4 months now, and having my own sandbox where I can host stuff, share on the internet, and not bother with renting a third party for it was something I really wanted to have and knew I would use a lot.

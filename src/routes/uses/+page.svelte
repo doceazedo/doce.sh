@@ -29,11 +29,11 @@
 		{ label: m.uses_ram(), product: "24GB (3x8) Crucial DDR4 3000MHz" },
 		{
 			label: m.uses_rom(),
-			product: "480GB Crucial SATA SSD", // + 2TB WD Red Plus HDD
+			product: "480GB Crucial SATA SSD + 2TB WD Red Plus HDD",
 		},
-		{ label: m.uses_psu(), product: "Corsair CV650" }, // Corsair SF850L
-		{ label: m.uses_case(), product: "Corsair SPEC-DELTA RGB" }, // C3Tech Aquarius MT-G710WH
-		// { label: m.uses_cooling(), product: "NZXT Kraken 240 RGB Water Cooler" },
+		{ label: m.uses_psu(), product: "Corsair SF850L" },
+		{ label: m.uses_case(), product: "C3Tech Aquarius MT-G710WH" },
+		{ label: m.uses_cooling(), product: "NZXT Kraken 240 RGB Water Cooler" },
 	];
 
 	const PERIPHERALS = [

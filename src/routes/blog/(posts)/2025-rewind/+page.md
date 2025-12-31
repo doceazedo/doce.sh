@@ -2,8 +2,8 @@
 title: "Year in Review: 2025"
 date: "2025/12/31"
 icon: "/img/icons/crystal-ball-emoji.svg"
-blueskyPostId: ""
-mastodonPostId: ""
+blueskyPostId: "3mbcrde7zuc2o"
+mastodonPostId: "115816212171132028"
 ---
 
 2025 was an amazing year for me, and I hope it was great for you too! I thought it would be cool to compile my 2025 highlights in a more personal blog post.

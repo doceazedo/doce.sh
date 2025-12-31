@@ -30,7 +30,7 @@
 	};
 
 	const NAVBAR_OFFSET = 80;
-	const WPM = 250;
+	const WPM = 200;
 
 	let { children, data } = $props();
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { DOMAIN, WORK } from "$lib/constants";
+	import { DOMAIN, SOCIALS, WORK } from "$lib/constants";
 	import { m } from "$lib/paraglide/messages";
 
 	const BASE_URL = `https://${DOMAIN}`;
@@ -27,4 +27,6 @@
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content="{BASE_URL}{thumbnail}" />
+
+	<link href={SOCIALS.mastodon.url} rel="me" />
 </svelte:head>

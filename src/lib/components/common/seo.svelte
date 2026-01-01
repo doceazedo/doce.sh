@@ -8,7 +8,13 @@
 		title = "Doce Fernandes",
 		description = m.excerpt_clean({ company: WORK.company }),
 		thumbnail = "/img/thumbnail.jpg",
-	}: { title?: string; description?: string; thumbnail?: string } = $props();
+		isArticle = false,
+	}: {
+		title?: string;
+		description?: string;
+		thumbnail?: string;
+		isArticle?: boolean;
+	} = $props();
 </script>
 
 <svelte:head>
@@ -27,6 +33,10 @@
 	<meta property="twitter:title" content={title} />
 	<meta property="twitter:description" content={description} />
 	<meta property="twitter:image" content="{BASE_URL}{thumbnail}" />
+
+	{#if isArticle}
+		<meta name="fediverse:creator" content="@{SOCIALS.mastodon.handle}" />
+	{/if}
 
 	<link href={SOCIALS.mastodon.url} rel="me" />
 </svelte:head>

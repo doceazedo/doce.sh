@@ -113,6 +113,7 @@
 <Seo
 	title="{data.metadata.title} • Doce Fernandes"
 	thumbnail="/blog/{data.slug}.png"
+	isArticle
 />
 
 {#key data.slug}

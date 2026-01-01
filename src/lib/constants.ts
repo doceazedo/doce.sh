@@ -45,7 +45,7 @@ export const SOCIALS = {
 		instance: "https://bolha.us",
 		url: "https://bolha.us/@doceazedo",
 		label: "Mastodon",
-		handle: "doceazedo",
+		handle: "doceazedo@bolha.us",
 		id: "110323544038456583",
 	},
 	instagram: {

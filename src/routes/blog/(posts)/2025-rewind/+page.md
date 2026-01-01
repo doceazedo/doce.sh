@@ -14,8 +14,8 @@ This, just like many parts of this website, was inspired by [Tania Rascia](https
 
 I finally **moved to Belo Horizonte**, the state capital. That's something I was planning for so long. I'm in love with the neighborhood I live in, and with having trees outside my office window, and living next to so many good friends...
 
-<div class="flex gap-3">
-  <img src="/img/blog/2025-rewind/living-room.webp" class="w-1/3 aspect-4/5 object-cover shrink-0" />
+<div class="flex flex-col md:flex-row md:gap-3">
+  <img src="/img/blog/2025-rewind/living-room.webp" class="md:w-1/3 md:aspect-4/5 object-cover shrink-0" />
   <img src="/img/blog/2025-rewind/office.webp" class="w-full object-cover" />
 </div>
 

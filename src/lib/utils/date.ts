@@ -39,7 +39,7 @@ export const timeAgo = (date: Date) => {
 	const months = Math.floor(days / 30);
 	const years = Math.floor(days / 365);
 
-	if (years) {
+	if (years >= 1) {
 		return years === 1 ? m.this_year() : m.years_ago({ years });
 	}
 
@@ -67,7 +67,7 @@ export const timeAgo = (date: Date) => {
 		return m.today();
 	}
 
-	if (hours) {
+	if (hours >= 1) {
 		return hours === 1 ? m.hour_ago() : m.hours_ago({ hours });
 	}
 

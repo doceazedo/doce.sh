@@ -137,7 +137,7 @@ const getSteamGames = async (
 						const hasPlayedWithin2Weeks =
 							new Date(cachedGame?.last_played || 0).getTime() >=
 							new Date().getTime() - 14 * 24 * 60 * 60 * 1000;
-						if (!hasPlayedWithin2Weeks) {
+						if (cachedGame && !hasPlayedWithin2Weeks) {
 							const twoWeeksAgo = new Date();
 							twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
 							lastPlayed = twoWeeksAgo.toISOString();

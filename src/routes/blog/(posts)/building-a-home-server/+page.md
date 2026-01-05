@@ -1,5 +1,5 @@
 ---
-title: "Building a server at home that (almost) anyone can access"
+title: "Upgrading my old PC into a home server for torrenting, Docker & game servers"
 date: "2025/12/21"
 icon: "/img/icons/parrot-emoji.svg"
 blueskyPostId: "3majieddzkk2e"

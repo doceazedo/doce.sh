@@ -22,7 +22,7 @@
 	} from "svelte-remix";
 	import SectionTitleWithIcon from "$lib/components/common/section-title-with-icon.svelte";
 	import { Button } from "$lib/components/ui/button";
-	import { LAST_PLAYED_TRACKS } from "$lib/stores";
+	import { IS_DESKTOP, LAST_PLAYED_TRACKS } from "$lib/stores";
 	import { Progress } from "$lib/components/ui/progress";
 	import { SOCIALS } from "$lib/constants";
 	import { cn } from "$lib/utils";
@@ -470,7 +470,8 @@
 						{@const lastPlayed2WeeksAgo =
 							new Date(game.last_played || 0).getTime() >=
 							new Date().getTime() - 14 * 24 * 60 * 60 * 1000}
-						<Tooltip.Provider delayDuration={300}>
+						{#if i !== 5 || !$IS_DESKTOP}
+							<Tooltip.Provider delayDuration={300}>
 							<Tooltip.Root>
 								<Tooltip.Trigger>
 									<a
@@ -530,6 +531,7 @@
 								</Tooltip.Content>
 							</Tooltip.Root>
 						</Tooltip.Provider>
+						{/if}
 					{/each}
 				{/if}
 			{/await}

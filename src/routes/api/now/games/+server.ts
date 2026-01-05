@@ -41,7 +41,7 @@ export const GET = async () => {
 		lastUpdated = new Date();
 	}
 
-	const games = await pbAdmin.collection("last_played_games").getList(1, 5, {
+	const games = await pbAdmin.collection("last_played_games").getList(1, 6, {
 		sort: "-playtime_2weeks,-last_played",
 	});
 

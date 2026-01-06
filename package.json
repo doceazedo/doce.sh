@@ -75,7 +75,7 @@
 		"remark-table-of-contents": "^2.1.0",
 		"satori": "^0.15.2",
 		"satori-html": "^0.3.2",
-		"steam-user": "^5.3.0",
+		"steam-user": "5.2.3",
 		"three": "^0.177.0",
 		"vite-plugin-arraybuffer": "^0.1.1"
 	},

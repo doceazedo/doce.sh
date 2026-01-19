@@ -64,6 +64,7 @@
 		"@threlte/studio": "^0.1.11",
 		"@turf/turf": "^7.3.1",
 		"@types/three": "^0.177.0",
+		"feed": "^5.2.0",
 		"fflate": "^0.8.2",
 		"mapbox-gl": "^3.17.0",
 		"mode-watcher": "^1.1.0",

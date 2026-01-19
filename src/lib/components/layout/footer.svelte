@@ -10,14 +10,17 @@
 	import { pauseAudio, playAudio } from "$lib/audio";
 	import { MAKE_ELEVATOR_FASTER } from "$lib/settings";
 	import type { LastPlayedTracksRecord } from "$lib/pocketbase-types";
+	import { RssLineDevice } from "svelte-remix";
 
 	const FOOTER_SOCIALS = [
+		{
+			icon: RssLineDevice,
+			url: "/feed",
+		},
 		SOCIALS.github,
-		SOCIALS.linkedin,
 		SOCIALS.bluesky,
-		SOCIALS.instagram,
 		SOCIALS.discord,
-		SOCIALS.soundcloud,
+		SOCIALS.instagram,
 	];
 
 	const COPYLEFT_URL = {

@@ -4,12 +4,12 @@ import type {
 	LastPlayedGamesRecord,
 	LastPlayedGamesResponse,
 } from "$lib/pocketbase-types";
-import { json } from "@sveltejs/kit";
 import SteamUser from "steam-user";
 
 const GAME_COVER_OVERRIDES = {
 	fortnite: "/img/now/games/fortnite.webp",
 	minecraft: "/img/now/games/minecraft.webp",
+	"2xko": "/img/now/games/2xko.webp",
 	480: "/img/now/games/spacewar.webp",
 } as { [appid: number | string]: string };
 const STEAM_BASE_URL = "http://api.steampowered.com";
@@ -45,10 +45,22 @@ export const GET = async () => {
 		sort: "-playtime_2weeks,-last_played",
 	});
 
-	return json({
-		games: games.items,
-		updatedAt: lastUpdated,
-	});
+	const maxAge = Math.round(
+		(24 * 60 * 60 * 1000 - (Date.now() - lastUpdated.getTime())) / 1000,
+	);
+
+	return new Response(
+		JSON.stringify({
+			games: games.items,
+			updatedAt: lastUpdated,
+		}),
+		{
+			headers: {
+				"Content-Type": "application/json",
+				"Cache-Control": `public, max-age=${maxAge}`,
+			},
+		},
+	);
 };
 
 const updateLastPlayedGames = async () => {
@@ -104,6 +116,32 @@ const updateLastPlayedGames = async () => {
 	}
 };
 
+const inferLastPlayedDate = (
+	currentPlaytime: number,
+	cachedGame: LastPlayedGamesRecord | undefined,
+	now: Date,
+): string => {
+	const cachedPlaytime = cachedGame?.playtime_2weeks ?? 0;
+	const playtimeIncreased = currentPlaytime > cachedPlaytime;
+
+	if (playtimeIncreased) {
+		return now.toISOString();
+	}
+
+	const cachedLastPlayed = cachedGame?.last_played
+		? new Date(cachedGame.last_played)
+		: null;
+	const twoWeeksAgo = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000);
+	const cachedDateIsRecent =
+		cachedLastPlayed && cachedLastPlayed >= twoWeeksAgo;
+
+	if (cachedDateIsRecent) {
+		return cachedLastPlayed.toISOString();
+	}
+
+	return now.toISOString();
+};
+
 const getSteamGames = async (
 	cachedGames: LastPlayedGamesRecord[],
 ): Promise<Required<LastPlayedGamesRecord>[]> => {
@@ -114,40 +152,34 @@ const getSteamGames = async (
 		const data = await resp.json();
 		if (!data?.response?.games) return [];
 
+		const now = new Date();
+
 		return await Promise.all(
 			data.response.games
-				.filter((x: { appid: number }) => !STEAM_BLOCKLIST.includes(x.appid))
+				.filter(
+					(steamGame: { appid: number }) =>
+						!STEAM_BLOCKLIST.includes(steamGame.appid),
+				)
 				.map(
-					async (x: {
+					async (steamGame: {
 						name: string;
 						appid: number;
 						playtime_2weeks: number;
 					}) => {
-						let lastPlayed = new Date().toISOString();
-
-						const id = x.appid.toString();
+						const id = steamGame.appid.toString();
 						const cachedGame = cachedGames.find((cached) => cached.id === id);
+						const lastPlayed = inferLastPlayedDate(
+							steamGame.playtime_2weeks,
+							cachedGame,
+							now,
+						);
 
-						const cachedPlaytime = cachedGame?.playtime_2weeks || 0;
-						// haven't played more, so we can keep the previous date
-						if (x.playtime_2weeks === cachedPlaytime) {
-							lastPlayed = cachedGame?.last_played || lastPlayed;
-						}
-
-						const hasPlayedWithin2Weeks =
-							new Date(cachedGame?.last_played || 0).getTime() >=
-							new Date().getTime() - 14 * 24 * 60 * 60 * 1000;
-						if (cachedGame && !hasPlayedWithin2Weeks) {
-							const twoWeeksAgo = new Date();
-							twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-							lastPlayed = twoWeeksAgo.toISOString();
-						}
 						return {
 							id,
-							name: x.name,
-							cover_url: await getGameCover(x.appid),
-							store_url: `https://store.steampowered.com/app/${x.appid}`,
-							playtime_2weeks: x.playtime_2weeks,
+							name: steamGame.name,
+							cover_url: await getGameCover(steamGame.appid),
+							store_url: `https://store.steampowered.com/app/${steamGame.appid}`,
+							playtime_2weeks: steamGame.playtime_2weeks,
 							last_played: lastPlayed,
 						};
 					},

@@ -56,7 +56,7 @@ export const GET = async () => {
 		}),
 		{
 			headers: {
-				"Content-Type": "application/json",
+				"Content-Type": "text/plain", // bunny.net smart cache workaround
 				"Cache-Control": `public, max-age=${maxAge}`,
 			},
 		},

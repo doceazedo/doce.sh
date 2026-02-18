@@ -2,8 +2,8 @@
 title: "Introducing Sprinkles: GPU particle system & editor for Bevy"
 date: "2026/02/18"
 icon: "/img/icons/sprinkles.svg"
-blueskyPostId: ""
-mastodonPostId: ""
+blueskyPostId: "3mf4zn37pic2q"
+mastodonPostId: "116091517048975000"
 ---
 
 <video src="/video/blog/bevy-sprinkles/demo.mp4" muted autoplay loop playsinline controls></video>

@@ -4,6 +4,7 @@ date: "2026/02/18"
 icon: "/img/icons/sprinkles.svg"
 blueskyPostId: "3mf4zn37pic2q"
 mastodonPostId: "116091517048975000"
+redditPostId: "1r818hs"
 ---
 
 <video src="/video/blog/bevy-sprinkles/demo.mp4" muted autoplay loop playsinline controls></video>
@@ -87,7 +88,7 @@ The `update_particle` function runs the full physics update per frame:
 
 Each particle gets a deterministic seed, using a [multiply-xorshift integer hash function by Chris Wellons](https://nullprogram.com/blog/2018/07/31/), just like Godot. Every random decision in the particle's lifetime is derived from this seed with different offsets, so replaying the same `seed` produces identical results.
 
-After simulation, particles need to be ordered so they are rendered correctly. and the render graph enforces ordering (compute runs before sorting, sorting runs before rendering):
+After simulation, particles need to be ordered so they are rendered correctly, then the render graph enforces ordering (compute runs before sorting, sorting runs before rendering):
 
 ```rust title="sort.rs"
 render_graph.add_node_edge(ParticleComputeLabel, ParticleSortLabel);
@@ -174,9 +175,14 @@ For instance, if you change `alpha_curve` on a Godot emitter, nothing will happe
 
 Sprinkles' editor will instead disable `alpha_curve` depending on the alpha mode and explain why.
 
+<div class="flex flex-col md:flex-row md:gap-3">
+  <img src="/img/blog/bevy-sprinkles/alert-alpha-curve.webp" class="w-full" />
+  <img src="/img/blog/bevy-sprinkles/alert-sub-emitter-amount.webp" class="w-full" />
+</div>
+
 Duplicating an emitter in Godot will silently share the same material between both copies. Edit one and the other changes too. You have to be mindful of which resources to share and which to instantiate.
 
-Sprinkles just creates instantiates identical definitions automatically.
+Sprinkles editor doesn't link these definitions, and the library instantiates identical definitions automatically.
 
 Velocity is another one. Initial velocity is under "spawn" in ParticleProcessMaterial. Other velocity types have their own "animated velocities" section somewhere else. You just have to know where to look.
 
@@ -194,6 +200,9 @@ One thing Godot does get right is its in-editor documentation. I would love to b
 
 `egui` is a great choice for building UI for tools. It gives you everything out of the box. The first version of the editor used it, and it worked alright, just looked ugly and lacked some polish.
 
+![](/img/blog/bevy-sprinkles/egui.webp)
+_Screenshot from January 22_
+
 If you want to customize existing widgets tho, you're better off just implementing a new one from scratch. At that point I was fighting the framework, so I switched to native `bevy_ui`.
 
 `bevy_ui` gives you layout, text, images, hover/press detection, and scroll. That's it. No text inputs (I used [`bevy_ui_text_input`](https://github.com/ickshonpe/bevy_ui_text_input) for that), no event handlers, and no data binding.
@@ -202,7 +211,7 @@ Two-way sync between the UI and `EmitterData` became the single largest source o
 
 [Bevy Feathers](https://github.com/bevyengine/bevy/pull/19730) landed in 0.17, but explicitly leaves state management to the app.
 
-[BSN](https://github.com/bevyengine/bevy/pull/20158) promises reactivity eventually™ , but the Bevy team's own [vision doc](https://hackmd.io/@bevy/HkjcMkJFC) says it's not on the near-term roadmap.
+[BSN](https://github.com/bevyengine/bevy/pull/20158) promises reactivity eventually™ , but the Bevy team's [vision doc](https://hackmd.io/@bevy/HkjcMkJFC) from 2024 said it's not on the near-term roadmap.
 
 I wanted to build a particle system and had to write a UI framework. At some point I wasn't even working on the library anymore, just debugging why a checkbox wouldn't sync its state to a nested optional enum field.
 

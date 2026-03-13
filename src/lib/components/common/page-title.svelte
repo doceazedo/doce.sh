@@ -1,14 +1,18 @@
 <script lang="ts">
+	import { cn } from "$lib/utils";
+
 	let {
 		title,
 		subtitle,
+		class: className,
 	}: {
 		title: string;
 		subtitle?: string;
+		class?: string
 	} = $props();
 </script>
 
-<hgroup class="py-3 md:py-6">
+<hgroup class={cn("py-3 md:py-6", className)}>
 	<h1 class="text-4xl lg:text-6xl/18">{title}</h1>
 	{#if subtitle}
 		<p

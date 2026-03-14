@@ -1,0 +1,17 @@
+services:
+  app:
+    build:
+      context: .
+      secrets:
+        - env
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      - ORIGIN=http://localhost:3000
+    restart: unless-stopped
+
+secrets:
+  env:
+    file: .env

@@ -20,7 +20,7 @@
 		"@internationalized/date": "^3.10.1",
 		"@lucide/svelte": "^0.515.0",
 		"@poppanator/sveltekit-svg": "^5.0.1",
-		"@sveltejs/adapter-auto": "^6.1.1",
+		"@sveltejs/adapter-node": "^5.5.4",
 		"@sveltejs/kit": "^2.49.2",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
 		"@tailwindcss/typography": "^0.5.19",

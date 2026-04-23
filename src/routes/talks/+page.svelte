@@ -14,11 +14,11 @@
 
 	const PAST_TALKS = [
 		{
-			title: "Aprenda a programar em Kotlin fazendo plugins para Minecraft",
-			organizer: "Kotlinautas",
-			date: new Date("2022/07/09"),
-			watch: "https://twitch.tv/videos/1537950001",
-			slides: "/slides/plugin-minecraft-futebol-kotlin.pdf",
+			title: "Making a VFX editor with bevy_ui",
+			organizer: "Bevy Meetup",
+			date: new Date("2026/04/23"),
+			watch: "https://www.youtube.com/watch?v=CeaMEDb9hZ8",
+			slides: "/slides/sprinkles-bevy-ui.pdf",
 		},
 		{
 			title: "Mensageria e tarefas assíncronas com Node.js e BullMQ",
@@ -26,6 +26,13 @@
 			date: new Date("2023/10/02"),
 			watch: "https://www.youtube.com/watch?v=CxTTt0zuXuU",
 			slides: "/slides/nodebr-bullmq.pdf",
+		},
+		{
+			title: "Aprenda a programar em Kotlin fazendo plugins para Minecraft",
+			organizer: "Kotlinautas",
+			date: new Date("2022/07/09"),
+			watch: "https://twitch.tv/videos/1537950001",
+			slides: "/slides/plugin-minecraft-futebol-kotlin.pdf",
 		},
 	];
 

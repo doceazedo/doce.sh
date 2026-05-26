@@ -1,0 +1,6 @@
+allowBuilds:
+  '@parcel/watcher': true
+  better-sqlite3: false
+  esbuild: true
+  protobufjs: true
+  sqlite3: true

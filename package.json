@@ -82,7 +82,10 @@
 	},
 	"pnpm": {
 		"onlyBuiltDependencies": [
-			"esbuild"
+			"@parcel/watcher",
+			"esbuild",
+			"protobufjs",
+			"sqlite3"
 		]
 	}
 }

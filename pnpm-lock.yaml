@@ -54,8 +54,8 @@ importers:
         specifier: ^1.1.0
         version: 1.1.0(svelte@5.55.9(@typescript-eslint/types@8.60.0))
       pocketbase:
-        specifier: ^0.26.9
-        version: 0.26.9
+        specifier: ^0.27.0
+        version: 0.27.0
       rehype-external-links:
         specifier: ^3.0.0
         version: 3.0.0
@@ -2824,8 +2824,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  pocketbase@0.26.9:
-    resolution: {integrity: sha512-Tiv1/hNuUzRdvT0d8hF03dfzuefQ1WdSRp1A1q3wzFC/WYhQcbU/Qlaubl/3ZDo6xvFXBS8JAgBS/L+ms7nkVQ==}
+  pocketbase@0.27.0:
+    resolution: {integrity: sha512-K5N6d93UP/BNMbMnlZ6BUfy9VPCIvLyqhJFOsNI8OsZwzvKWEAfyD36boi5K4ECIOl5HMlo0TzuaeGdKpMwizQ==}
 
   point-in-polygon-hao@1.2.4:
     resolution: {integrity: sha512-x2pcvXeqhRHlNRdhLs/tgFapAbSSe86wa/eqmj1G6pWftbEs5aVRJhRGM6FYSUERKu0PjekJzMq0gsI2XyiclQ==}
@@ -6956,7 +6956,7 @@ snapshots:
       commander: 9.5.0
       dotenv-flow: 4.1.0
 
-  pocketbase@0.26.9: {}
+  pocketbase@0.27.0: {}
 
   point-in-polygon-hao@1.2.4:
     dependencies:

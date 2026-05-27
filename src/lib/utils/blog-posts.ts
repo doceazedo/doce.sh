@@ -2,7 +2,7 @@ import type { Post } from "$lib/types";
 
 export const getAllBlogPosts = () => {
 	let posts: Post[] = [];
-	const paths = import.meta.glob("/src/routes/blog/(posts)/*/+page.md", {
+	const paths = import.meta.glob("/src/routes/blog/**/+page.md", {
 		eager: true,
 	});
 	for (const path in paths) {

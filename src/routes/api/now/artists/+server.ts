@@ -27,16 +27,18 @@ const getArtistImage = async (artist: string) => {
 			`${DEEZER_API_BASE_URL}/search/artist?q=${encodeURIComponent(artist)}`,
 		);
 		const data = await resp.json();
-		const artists =
+		const artistImage =
 			data?.data?.find(
 				(x: { name: string /* ... */ }) =>
 					x?.name?.toLowerCase() === artist.toLowerCase(),
 			)?.picture_medium ||
 			data?.data?.[0]?.picture_medium ||
 			"/img/now/lastfm-placeholder.webp";
-		return artists;
+		return artistImage;
 	} catch (_error) {
-		return [];
+		console.error("error fetching artist image:");
+		console.error(_error);
+		return "/img/now/lastfm-placeholder.webp";
 	}
 };
 

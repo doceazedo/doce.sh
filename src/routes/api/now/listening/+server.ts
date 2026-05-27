@@ -1,4 +1,4 @@
-import { LAST_FM_API_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import type { LastPlayedTracksRecord } from "$lib/pocketbase-types.js";
 import { authSuperUser, pbAdmin } from "$lib/pocketbase.js";
 import { json } from "@sveltejs/kit";
@@ -33,7 +33,7 @@ export const GET = async ({ url }) => {
 const updateLastPlayedTracks = async (): Promise<LastPlayedTracksRecord[]> => {
 	try {
 		const resp = await fetch(
-			`${LAST_FM_BASE_URL}/?method=user.getrecenttracks&user=${LAST_FM_USERNAME}&limit=20&api_key=${LAST_FM_API_KEY}&format=json`,
+			`${LAST_FM_BASE_URL}/?method=user.getrecenttracks&user=${LAST_FM_USERNAME}&limit=20&api_key=${env.LAST_FM_API_KEY}&format=json`,
 		);
 		const data = await resp.json();
 

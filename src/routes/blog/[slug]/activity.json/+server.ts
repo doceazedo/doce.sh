@@ -1,8 +1,4 @@
-import {
-	ATP_IDENTIFIER,
-	ATP_PASSWORD,
-	PLAUSIBLE_API_KEY,
-} from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { SOCIALS } from "$lib/constants.js";
 import type {
 	BlueskyRawEmbed,
@@ -56,8 +52,8 @@ const getBlueskyData = async (
 ): Promise<Partial<PostActivity>> => {
 	try {
 		await agent.login({
-			identifier: ATP_IDENTIFIER,
-			password: ATP_PASSWORD,
+			identifier: env.ATP_IDENTIFIER!,
+			password: env.ATP_PASSWORD!,
 		});
 	} catch (_error) {
 		return {};
@@ -260,7 +256,7 @@ const getPageViews = async (page: string) => {
 		const res = await fetch("https://plausible.io/api/v2/query", {
 			method: "POST",
 			headers: {
-				Authorization: `Bearer ${PLAUSIBLE_API_KEY}`,
+				Authorization: `Bearer ${env.PLAUSIBLE_API_KEY}`,
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({

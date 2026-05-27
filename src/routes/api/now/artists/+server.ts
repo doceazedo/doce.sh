@@ -1,4 +1,4 @@
-import { LAST_FM_API_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { json } from "@sveltejs/kit";
 
 const LAST_FM_BASE_URL = "http://ws.audioscrobbler.com/2.0";
@@ -9,7 +9,7 @@ const getTopArtists = async (): Promise<
 > => {
 	try {
 		const resp = await fetch(
-			`${LAST_FM_BASE_URL}/?method=user.gettopartists&user=${LAST_FM_USERNAME}&period=3month&api_key=${LAST_FM_API_KEY}&format=json`,
+			`${LAST_FM_BASE_URL}/?method=user.gettopartists&user=${LAST_FM_USERNAME}&period=3month&api_key=${env.LAST_FM_API_KEY}&format=json`,
 		);
 		const data = await resp.json();
 		const artists = data?.topartists?.artist || [];

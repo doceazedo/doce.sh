@@ -1,4 +1,4 @@
-import { FORTNITE_API_KEY, STEAM_API_KEY } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { authSuperUser, pbAdmin } from "$lib/pocketbase";
 import type {
 	LastPlayedGamesRecord,
@@ -147,7 +147,7 @@ const getSteamGames = async (
 ): Promise<Required<LastPlayedGamesRecord>[]> => {
 	try {
 		const resp = await fetch(
-			`${STEAM_BASE_URL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`,
+			`${STEAM_BASE_URL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${env.STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`,
 		);
 		const data = await resp.json();
 		if (!data?.response?.games) return [];
@@ -216,7 +216,7 @@ const getFortniteLastPlayedAt = async (): Promise<string | undefined> => {
 			`${FORTNITE_API_BASE_URL}/stats/br/v2?name=${FORTNITE_USERNAME}`,
 			{
 				headers: {
-					Authorization: FORTNITE_API_KEY,
+					Authorization: env.FORTNITE_API_KEY!,
 				},
 			},
 		);

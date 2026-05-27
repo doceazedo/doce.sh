@@ -1,10 +1,10 @@
-import { POCKETBASE_PASSWORD, POCKETBASE_USER } from "$env/static/private";
-import { PUBLIC_POCKETBASE_URL } from "$env/static/public";
+import { env } from "$env/dynamic/private";
+import { env as publicEnv } from "$env/dynamic/public";
 import PocketBase from "pocketbase";
 import type { TypedPocketBase } from "$lib/pocketbase-types";
 
 export function createInstance() {
-	return new PocketBase(PUBLIC_POCKETBASE_URL) as TypedPocketBase;
+	return new PocketBase(publicEnv.PUBLIC_POCKETBASE_URL) as TypedPocketBase;
 }
 
 export const pb = createInstance();
@@ -12,7 +12,24 @@ export const pb = createInstance();
 export const pbAdmin = createInstance();
 
 export const authSuperUser = async () => {
-	await pbAdmin
-		.collection("_superusers")
-		.authWithPassword(POCKETBASE_USER, POCKETBASE_PASSWORD);
+	try {
+		await pbAdmin
+			.collection("_superusers")
+			.authWithPassword(env.POCKETBASE_USER!, env.POCKETBASE_PASSWORD!);
+	} catch (err) {
+		const e = err as {
+			url?: string;
+			status?: number;
+			message?: string;
+			originalError?: { message?: string; cause?: unknown };
+		};
+		console.error("authSuperUser failed", {
+			url: e?.url,
+			status: e?.status,
+			message: e?.message,
+			original: e?.originalError?.message,
+			cause: e?.originalError?.cause,
+		});
+		throw err;
+	}
 };

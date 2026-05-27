@@ -1,4 +1,4 @@
-import { GITHUB_PERSONAL_ACCESS_TOKEN } from "$env/static/private";
+import { env } from "$env/dynamic/private";
 import { error } from "@sveltejs/kit";
 import { json } from "@sveltejs/kit";
 
@@ -11,7 +11,7 @@ export const GET = async ({ url }) => {
 	try {
 		const resp = await fetch(`${GITHUB_BASE_URL}/repos/${repo}/commits`, {
 			headers: {
-				Authorization: `Bearer ${GITHUB_PERSONAL_ACCESS_TOKEN}`,
+				Authorization: `Bearer ${env.GITHUB_PERSONAL_ACCESS_TOKEN}`,
 			},
 		});
 		const data = await resp.json();

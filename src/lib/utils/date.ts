@@ -63,7 +63,7 @@ export const timeAgo = (date: Date) => {
 		return m.days_ago({ days });
 	}
 
-	if (hours >= 12) {
+	if (hours >= 18) {
 		return m.today();
 	}
 

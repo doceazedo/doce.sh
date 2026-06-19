@@ -85,7 +85,7 @@ const updateLastPlayedGames = async () => {
 		getFortniteLastPlayedAt(),
 	]);
 	const games: LastPlayedGamesRecord[] = [
-		...steamGames.slice(0, 4),
+		...steamGames,
 		{
 			id: "fortnite",
 			name: "Fortnite",

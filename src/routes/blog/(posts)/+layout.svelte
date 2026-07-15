@@ -117,8 +117,8 @@
 />
 
 {#key data.slug}
-	<div class="flex w-full flex-col gap-12 py-12">
-		<div class="flex w-full gap-12 pt-12 md:pb-12">
+	<div class="flex w-full flex-col gap-12">
+		<div class="flex w-full gap-12">
 			<main class="mx-auto flex w-full max-w-2xl shrink-0 flex-col gap-12">
 				<header class="flex gap-3">
 					<img src={data.metadata.icon} alt="" class="size-12" />

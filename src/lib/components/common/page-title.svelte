@@ -12,7 +12,7 @@
 	} = $props();
 </script>
 
-<hgroup class={cn("py-3 md:py-6", className)}>
+<hgroup class={cn("pt-6 md:pt-0", className)}>
 	<h1 class="text-4xl lg:text-6xl/18">{title}</h1>
 	{#if subtitle}
 		<p

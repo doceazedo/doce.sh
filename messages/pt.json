@@ -24,7 +24,7 @@
 	"portfolio_gachapon_pretitle": "Máquina Misteriosa",
 	"portfolio_gachapon_title": "O que você vai pegar?",
 	"portfolio_gachapon_description": "Faz barulhinhos felizes quando você não está prestando atenção...",
-	"articles": "Artigos",
+	"articles": "Postagens",
 	"articles_subtitle": "Guias, tutoriais e notas pessoais",
 	"see_all_articles": "Ver mais artigos",
 	"newsletter": "Newsletter",
@@ -295,8 +295,8 @@
 	"acknowledgements_bulk_resize_photos": "Ferramenta super útil pra redimensionar e comprimir imagens.",
 	"acknowledgements_cobalt": "Trecho sobre analytics.",
 	"loading": "Segura aí...",
-	"contact_in_person_title": "Se você tá em BH, me chama pra um café.",
-	"contact_email_title": "Se não, um e-mail deve resolver.",
+	"contact_in_person_title": "Se você tá em BH, bora tomar uma!",
+	"contact_email_title": "Se não, um e-mail também serve.",
 	"contact_call_title": "Prefere falar cara a cara?",
 	"book_a_call": "Agende uma call comigo",
 	"contact_socials_title": "Vamos amigar",
@@ -532,5 +532,6 @@
 	"deezer_api_description": "Fotos dos meus top artistas do mês.",
 	"backfeeding_api_description": "Comentários externos para posts do blog.",
 	"pocketbase_description": "Além disso, eu hospedo uma instância do <a class=\"group\" href=\"https://pocketbase.io\" target=\"_blank\" rel=\"noopener noreferrer\">{icon} PocketBase</a> no meu home server pra fazer cache de APIs externas e, potencialmente, codar mais coisas divertidas que dependem de um backend no futuro.",
-	"uses_home_server": "Home server"
+	"uses_home_server": "Home server",
+	"say_hi": "Manda um oi!"
 }

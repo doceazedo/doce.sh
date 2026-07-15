@@ -29,7 +29,7 @@
 	>
 		<GlobalLineBusiness class="size-5" />
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content class="min-w-48" align={$IS_DESKTOP ? "end" : "start"}>
+	<DropdownMenu.Content class="min-w-48" align="start">
 		<DropdownMenu.Group>
 			<DropdownMenu.Label>{m.select_language()}</DropdownMenu.Label>
 			<DropdownMenu.Separator />

@@ -15,7 +15,7 @@
 	let visible = $state(!browser);
 </script>
 
-<section class="mb-12 flex flex-col gap-12 border-t pt-12 md:mb-24 md:pt-24">
+<section class="mb-12 flex flex-col gap-12 pt-12 md:mb-24 md:pt-24">
 	<header
 		class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between"
 	>

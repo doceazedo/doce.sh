@@ -3,14 +3,13 @@
 	import ElevatorUp from "$lib/components/icons/elevator-up.svg?component";
 	import { cn } from "$lib/utils";
 	import Memoji from "$lib/components/misc/memoji.svelte";
-	import { LAST_PLAYED_TRACKS } from "$lib/stores";
 	import { SOCIALS } from "$lib/constants";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { sineOut } from "svelte/easing";
 	import { pauseAudio, playAudio } from "$lib/audio";
 	import { MAKE_ELEVATOR_FASTER } from "$lib/settings";
-	import type { LastPlayedTracksRecord } from "$lib/pocketbase-types";
 	import { RssLineDevice } from "svelte-remix";
+	import NowPlaying from "../misc/now-playing.svelte";
 
 	const FOOTER_SOCIALS = [
 		{
@@ -69,19 +68,15 @@
 
 		requestAnimationFrame(animation);
 	};
-
-	let currentTrack = $derived<LastPlayedTracksRecord | null>(
-		$LAST_PLAYED_TRACKS?.[0] || null,
-	);
 </script>
 
 <svelte:window bind:scrollY bind:innerHeight />
 <svelte:body bind:clientHeight />
 
 <footer
-	class="mt-12 mb-6 flex flex-col justify-between gap-6 border-t py-12 text-center md:flex-row md:pt-6 md:pb-0 md:text-left"
+	class="mt-12 mb-6 flex flex-col justify-between gap-6 border-t py-12 text-center md:pt-6 md:pb-0 md:mb-0"
 >
-	<div class="text-body flex flex-col items-center text-sm md:items-start">
+	<div class="text-body flex flex-col items-center text-sm">
 		<Memoji class="mb-1.5 size-14" />
 		<p class="-mb-1.5">
 			<a
@@ -96,14 +91,13 @@
 		<p>{m.licensed_under({ license: "GPLv3" })}</p>
 	</div>
 
-	<div class="text-body mx-auto mt-auto flex translate-y-1.5">
-		{#each FOOTER_SOCIALS as social, i}
+	<div class="text-body mx-auto mt-auto flex translate-y-1.5 md:hidden">
+		{#each FOOTER_SOCIALS as social}
 			<a
 				href={social.url}
 				target="_blank"
 				class={cn(
-					"hover:text-foreground ease-elastic p-1.5 transition-all hover:scale-115",
-					i % 2 ? "hover:rotate-6" : "hover:-rotate-6",
+					"hover:text-foreground ease-elastic p-1.5 transition-all ",
 				)}
 			>
 				<social.icon class="size-6 transition-all" />
@@ -111,38 +105,9 @@
 		{/each}
 	</div>
 
-	{#if currentTrack}
-		<a
-			href="/now"
-			class="hover:bg-muted group relative mx-auto mt-auto flex h-fit flex-row-reverse items-center gap-2 rounded-xs p-1 transition-all hover:shadow-[0_0_0_4px_var(--muted)] md:mx-0 md:translate-1 md:flex-row"
-		>
-			<hgroup class="text-left md:text-right">
-				<p class="text-body -mb-1 text-xs">
-					{currentTrack.artist}
-				</p>
-				<p class="text-sm font-medium">
-					{currentTrack.track}
-				</p>
-			</hgroup>
-			<img
-				src={currentTrack.cover_url}
-				alt=""
-				class="bg-muted size-10 rounded"
-			/>
-			{#if currentTrack.now_playing}
-				<div
-					class="absolute top-0 left-10 flex size-2.5 items-center justify-center md:right-0 md:left-auto"
-				>
-					<span
-						class="group-hover:border-muted border-background absolute size-full rounded-full border-2 bg-red-500 transition-all"
-					></span>
-					<span
-						class="border-background animation-duration-[2s] absolute size-2 animate-ping rounded-full bg-red-500 opacity-80 transition-all"
-					></span>
-				</div>
-			{/if}
-		</a>
-	{/if}
+	<div class="block md:hidden">
+		<NowPlaying />
+	</div>
 </footer>
 
 <button

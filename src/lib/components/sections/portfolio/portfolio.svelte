@@ -144,24 +144,13 @@
 	onMount(() => (mounted = true));
 </script>
 
-<section class="relative z-0 flex flex-col gap-12 py-12 md:py-24">
+<section class="relative z-0 flex flex-col gap-12 pt-12 mt-12 border-t">
 	<h2 class="text-4xl">
 		{m.select_work()}
-		<span class="text-primary">/</span>
-		{m.case_studies()}
 	</h2>
 
 	{#if mounted}
-		<ul class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:gap-12">
-			<li class="md:col-span-2">
-				<PortfolioItem project={workProjects.afterparty} />
-			</li>
-			<li class="md:col-span-2 xl:-ml-32 xl:w-7xl">
-				<PortfolioItem project={workProjects.godotWry} direction="row" />
-			</li>
-			<li>
-				<PortfolioItem project={workProjects.powershift} type="mobile" />
-			</li>
+		<ul class="grid grid-cols-1 gap-6 lg:gap-12">
 			<li class="">
 				<PortfolioItem project={workProjects.gachapon} type="gachapon" />
 			</li>

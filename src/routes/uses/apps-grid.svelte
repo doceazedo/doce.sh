@@ -27,7 +27,7 @@
 			{label}
 		</h2>
 		<ul
-			class="grid w-full grid-cols-3 gap-x-8 gap-y-8 md:gap-x-12 lg:grid-cols-6"
+			class="grid w-full grid-cols-3 gap-x-8 gap-y-8 md:gap-x-12 lg:grid-cols-5"
 		>
 			{#each items as item, i (i)}
 				<li class="flex flex-col items-center text-center">

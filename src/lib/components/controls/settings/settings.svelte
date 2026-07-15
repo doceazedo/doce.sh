@@ -48,7 +48,7 @@
 	</DropdownMenu.Trigger>
 	<DropdownMenu.Content
 		class="w-[calc(100dvw-3rem)] md:w-md"
-		align={$IS_DESKTOP ? "end" : "start"}
+		align="start"
 		alignOffset={!$IS_DESKTOP ? -30 : 0}
 	>
 		<DropdownMenu.Group>

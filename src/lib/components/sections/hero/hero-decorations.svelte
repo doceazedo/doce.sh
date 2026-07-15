@@ -17,7 +17,7 @@
 
 {#if mode.current === _mode}
 	<div
-		class="pointer-none absolute -top-52 -right-96 hidden lg:block"
+		class="pointer-events-none absolute -top-52 -right-96 hidden lg:block"
 		in:fade={{ easing: cubicOut, duration: 800, delay: 600 }}
 		out:fade={{ easing: cubicOut, duration: 100 }}
 	>
@@ -25,7 +25,7 @@
 			{#each Array(12 * 9).fill(null) as _uwu}
 				<div
 					class={cn(
-						"size-24 border-t border-r opacity-40 transition-all dark:opacity-80",
+						"size-24 border-t border-r opacity-40 transition-all dark:opacity-60",
 					)}
 				></div>
 			{/each}

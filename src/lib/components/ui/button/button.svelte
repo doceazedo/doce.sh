@@ -19,7 +19,7 @@
 				secondary:
 					"bg-foreground text-background shadow-xs hover:bg-foreground/80",
 				ghost:
-					"hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
+					"hover:bg-accent text-foreground/80 hover:text-foreground dark:hover:bg-accent/50",
 				link: "text-primary border-b border-b-primary rounded-none px-0! h-8! hover:text-foreground hover:border-b-foreground hover:[&_svg]:translate-x-0.75 [&_svg]:ease-elastic",
 				"primary-ghost": "hover:bg-primary/10 text-primary",
 			},

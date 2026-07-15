@@ -8,6 +8,6 @@
 
 <Seo title="Doce Fernandes • Unicorn Developer, Designer & DJ" />
 <Hero />
-<Portfolio />
 <BlogPosts />
 <Newsletter />
+<Portfolio />

@@ -55,8 +55,8 @@
 <Dialog.Root onOpenChange={() => type === "gachapon" && resetGachaponState()}>
 	<Dialog.Trigger
 		class={cn(
-			"group hover:bg-primary/5 dark:hover:bg-primary/10 aspect-square w-full cursor-pointer overflow-hidden rounded transition-all",
-			type === "desktop" ? "md:aspect-video" : "md:aspect-[4/5]",
+			"group hover:bg-primary/5 dark:hover:bg-primary/10 w-full cursor-pointer overflow-hidden rounded transition-all",
+			type === "desktop" ? "md:aspect-video" : "",
 		)}
 	>
 		<div class="flex size-full" use:onVisible={handleVisibilityChange}>

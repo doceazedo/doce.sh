@@ -11,7 +11,6 @@
 		CodeSSlashLineDevelopment,
 		EmotionHappyFillUserFaces,
 		EmotionUnhappyFillUserFaces,
-		GraduationCapLineOthers,
 		ShakeHandsLineBusiness,
 		SoundcloudLineLogos,
 	} from "svelte-remix";
@@ -58,13 +57,6 @@
 			pretitle: m.work(),
 			title: WORK.company,
 			description: m.work_position(),
-		},
-		{
-			icon: GraduationCapLineOthers,
-			color: "green",
-			pretitle: m.education(),
-			title: m.computer_science(),
-			description: "2024 - 2028",
 		},
 	];
 
@@ -127,7 +119,7 @@
 	class="mt-6 -ml-6 flex w-dvw flex-col gap-6 overflow-x-hidden px-6 md:ml-0 md:w-full md:gap-12 md:overflow-x-visible md:px-0"
 >
 	<div
-		class="-ml-24 flex w-[calc(100%+12rem)] py-12 md:mb-6 md:gap-12 md:py-0 lg:-ml-12 lg:w-[calc(100%+6rem)]"
+		class="flex w-full py-12 md:mb-6 md:gap-12 md:py-0"
 	>
 		{#if mounted}
 			{#each PHOTOS as photo, i (i)}
@@ -160,7 +152,7 @@
 	<hr />
 
 	<SectionTitle title="TL;DR" />
-	<ul class="grid gap-3 md:grid-cols-2 md:flex-row md:gap-6 lg:grid-cols-4">
+	<ul class="grid gap-3 md:grid-cols-3 md:gap-6 lg:flex-row">
 		{#if mounted}
 			{#each TLDR as card, i (i)}
 				<li

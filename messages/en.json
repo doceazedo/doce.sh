@@ -7,7 +7,7 @@
 	"select_language": "Select language:",
 	"greetings": "I’m Doce Fernandes",
 	"lets_work_together": "Let's work\ntogether",
-	"select_work": "Select projects",
+	"select_work": "My coolest projects",
 	"case_studies": "Case studies",
 	"portfolio_afterparty_pretitle": "SaaS",
 	"portfolio_afterparty_title": "Afterparty",
@@ -24,7 +24,7 @@
 	"portfolio_gachapon_pretitle": "Mysterious Device",
 	"portfolio_gachapon_title": "What will you get?",
 	"portfolio_gachapon_description": "It makes tiny happy noises when you're not paying attention...",
-	"articles": "Articles",
+	"articles": "Blog posts",
 	"articles_subtitle": "Guides, tutorials and personal notes",
 	"see_all_articles": "See all articles",
 	"newsletter": "Newsletter",
@@ -532,5 +532,6 @@
 	"deezer_api_description": "Photos of my top artists of the month.",
 	"backfeeding_api_description": "Backfeeding comments to blog posts.",
 	"pocketbase_description": "Additionally, I self-host a <a class=\"group\" href=\"https://pocketbase.io\" target=\"_blank\" rel=\"noopener noreferrer\">{icon} PocketBase</a> instance on my home server for caching external API responses, and for possibly building more fun stuff that depends on a backend in the future.",
-	"uses_home_server": "Home server"
+	"uses_home_server": "Home server",
+	"say_hi": "Say hi!"
 }

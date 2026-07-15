@@ -36,21 +36,20 @@
 
 {#if mounted}
 	<section
-		class="relative flex w-full flex-col justify-between py-6 md:flex-row md:py-24"
+		class="relative flex w-full flex-col justify-between md:items-end py-6 md:flex-row md:pt-12 md:pb-24"
 	>
 		<HeroDecorations mode="dark" />
 		<HeroDecorations mode="light" />
 
-		<div class="relative z-0 flex flex-col">
+		<div class="relative z-0 flex flex-col gap-6">
 			<h1
 				in:elasticFly={{ opacity: 0, x: -24, duration: 800, delay: 100 }}
-				class="max-w-[12ch] text-6xl/18 md:text-4xl lg:text-6xl/18"
+				class="max-w-[12ch] text-6xl/18 md:text-4xl lg:text-6xl"
 			>
 				{m.greetings()}
 			</h1>
-			<a
-				href="/contact"
-				class="border-b-primary text-primary hover:text-foreground hover:border-b-foreground group my-6 ml-auto flex w-fit gap-1.5 border-b pb-1 leading-5 font-medium transition-all md:mt-11 md:mr-24 md:mb-0"
+			<p
+				class="text-body [&>span]:text-foreground [&>a]:text-foreground [&>a]:hover:text-primary max-w-[48ch] [&>a]:underline [&>a]:transition-all ml-1"
 				in:elasticFly={{
 					opacity: 0,
 					x: -24,
@@ -58,15 +57,15 @@
 					delay: 200,
 				}}
 			>
-				<span class="whitespace-pre">{m.lets_work_together()}</span>
-				<ArrowRightUpLineArrows
-					class="ease-elastic size-5 transition-all group-hover:translate-x-0.75 group-hover:-translate-y-0.75"
-				/>
-			</a>
+				{@html m.excerpt({
+					companyName: WORK.company,
+					companyUrl: WORK.url,
+				})}
+			</p>
 		</div>
 		<figure
 			class={cn(
-				"relative z-0 mb-12 aspect-[4/5] w-full md:mb-0 md:w-60 md:scale-90 lg:scale-100",
+				"relative z-0 mb-12 aspect-[4/5] w-[calc(100%-48px)] mx-auto mt-12 md:m-0 md:w-60 md:scale-90 lg:scale-100",
 				finishedAnimations && "group",
 			)}
 			oncontextmenu={(e) => {
@@ -133,19 +132,5 @@
 				style="left:{mouseX + PET_OFFSET}px;top:{mouseY + PET_OFFSET}px"
 			/>
 		{/if}
-		<p
-			class="text-body [&>span]:text-foreground [&>a]:text-foreground [&>a]:hover:text-primary relative z-0 mt-auto max-w-[27ch] translate-y-6 [&>a]:underline [&>a]:transition-all"
-			in:elasticFly={{
-				opacity: 0,
-				x: 24,
-				duration: 800,
-				delay: 400,
-			}}
-		>
-			{@html m.excerpt({
-				companyName: WORK.company,
-				companyUrl: WORK.url,
-			})}
-		</p>
 	</section>
 {/if}

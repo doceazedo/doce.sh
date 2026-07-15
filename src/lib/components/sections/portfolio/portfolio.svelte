@@ -180,7 +180,7 @@
 			<li class="">
 				<PortfolioItem project={workProjects.sprinkles} type="desktop" />
 			</li>
-			<li class="col-span-2">
+			<li class="md:col-span-2">
 				<PortfolioItem project={workProjects.gachapon} type="gachapon" />
 			</li>
 		</ul>

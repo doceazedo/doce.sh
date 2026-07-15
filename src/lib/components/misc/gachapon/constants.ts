@@ -400,13 +400,6 @@ export const PIGGYBANK = {
 
 export const TABS = [
 	{
-		id: "rewards" as const,
-		label: m.rewards(),
-		icon: GiftLineFinance,
-		iconActive: GiftFillFinance,
-		content: Rewards,
-	},
-	{
 		id: "play" as const,
 		label: m.play_tab(),
 		icon: SparklingLineWeather,
@@ -419,6 +412,13 @@ export const TABS = [
 		icon: ArchiveStackLineBusiness,
 		iconActive: ArchiveStackFillBusiness,
 		content: Inventory,
+	},
+	{
+		id: "rewards" as const,
+		label: m.rewards(),
+		icon: GiftLineFinance,
+		iconActive: GiftFillFinance,
+		content: Rewards,
 	},
 ];
 

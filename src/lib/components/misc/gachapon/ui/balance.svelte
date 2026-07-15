@@ -24,9 +24,9 @@
 			duration: 200,
 		}}
 		class={cn(
-			"bg-background absolute top-6 z-30 flex items-center gap-1.5 rounded border px-3 py-1.5",
+			"bg-background flex items-center gap-1.5 rounded border px-3 py-1.5 w-fit absolute top-32",
 			$ACTIVE_TAB !== "play" &&
-				"top-0 w-full justify-center rounded-none border-0 border-b lg:top-6 lg:w-fit lg:rounded lg:border",
+				"w-full justify-center rounded-none border-0 border-b lg:w-fit lg:rounded lg:border",
 		)}
 	>
 		<CopperCoinLineFinance class="size-5 text-amber-500" />

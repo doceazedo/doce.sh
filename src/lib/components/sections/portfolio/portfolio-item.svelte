@@ -4,12 +4,7 @@
 	import GumballOutline from "$lib/components/icons/gumball-outline.svg?component";
 	import type { Project } from "$lib/types";
 	import * as Dialog from "$lib/components/ui/dialog";
-	import {
-		GAME_DATA,
-		GAME_STATE,
-		GIFT_ITEM,
-	} from "$lib/components/misc/gachapon/stores";
-	import Gachapon from "$lib/components/misc/gachapon/index";
+	import { GAME_DATA } from "$lib/components/misc/gachapon/stores";
 	import { m } from "$lib/paraglide/messages";
 	import { Button } from "$lib/components/ui/button";
 	import { QuestionMarkEditor } from "svelte-remix";
@@ -45,21 +40,10 @@
 		await sleep(800);
 		showVideo = true;
 	};
-
-	const resetGachaponState = () => {
-		$GAME_STATE = "idle";
-		$GIFT_ITEM = null;
-	};
 </script>
 
-<Dialog.Root onOpenChange={() => type === "gachapon" && resetGachaponState()}>
-	<Dialog.Trigger
-		class={cn(
-			"group hover:bg-primary/5 dark:hover:bg-primary/10 w-full cursor-pointer overflow-hidden rounded transition-all",
-			type === "desktop" ? "md:aspect-video" : "",
-		)}
-	>
-		<div class="flex size-full" use:onVisible={handleVisibilityChange}>
+{#snippet tile()}
+	<div class="flex size-full" use:onVisible={handleVisibilityChange}>
 			{#if visible}
 				<div
 					class={cn(
@@ -207,22 +191,36 @@
 				</div>
 			{/if}
 		</div>
-	</Dialog.Trigger>
-	<Dialog.Content
-		class="h-[calc(100%-3rem)] max-w-[calc(100%-3rem)] sm:h-[calc(100%-6rem)] sm:max-w-[calc(100%-6rem)] 2xl:max-w-[96rem]"
-		disableCloseButton={$GAME_STATE === "drawing"}
-		escapeKeydownBehavior={$GAME_STATE === "drawing" ? "ignore" : "close"}
-		onOpenAutoFocus={() => null}
+{/snippet}
+
+{#if type === "gachapon"}
+	<a
+		href="/gachapon"
+		class={cn(
+			"group hover:bg-primary/5 dark:hover:bg-primary/10 block w-full cursor-pointer overflow-hidden rounded transition-all",
+		)}
 	>
-		<Dialog.Header>
-			<Dialog.Description class="-mb-1.5 text-sm uppercase"
-				>{project.pretitle}</Dialog.Description
-			>
-			<Dialog.Title>{project.title}</Dialog.Title>
-		</Dialog.Header>
-		{#if type === "gachapon"}
-			<Gachapon />
-		{:else}
+		{@render tile()}
+	</a>
+{:else}
+	<Dialog.Root>
+		<Dialog.Trigger
+			class={cn(
+				"group hover:bg-primary/5 dark:hover:bg-primary/10 w-full cursor-pointer overflow-hidden rounded transition-all",
+				type === "desktop" ? "md:aspect-video" : "",
+			)}
+		>
+			{@render tile()}
+		</Dialog.Trigger>
+		<Dialog.Content
+			class="h-[calc(100%-3rem)] max-w-[calc(100%-3rem)] sm:h-[calc(100%-6rem)] sm:max-w-[calc(100%-6rem)] 2xl:max-w-[96rem]"
+		>
+			<Dialog.Header>
+				<Dialog.Description class="-mb-1.5 text-sm uppercase"
+					>{project.pretitle}</Dialog.Description
+				>
+				<Dialog.Title>{project.title}</Dialog.Title>
+			</Dialog.Header>
 			<Dialog.Body class="gap-6 overflow-y-scroll lg:flex-row">
 				<aside
 					class="flex w-full shrink-0 flex-col gap-6 lg:sticky lg:top-0 lg:max-w-lg"
@@ -299,6 +297,6 @@
 					{/if}
 				</main>
 			</Dialog.Body>
-		{/if}
-	</Dialog.Content>
-</Dialog.Root>
+		</Dialog.Content>
+	</Dialog.Root>
+{/if}

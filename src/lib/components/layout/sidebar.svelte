@@ -36,14 +36,14 @@
 		setTimeout(() => (showAchievement = false), 5000);
 	});
 
-	const PAGES = [
+	let pages = $derived([
 		{ label: m.blog(), href: "/blog", icon: NewsLineDocument },
 		{ label: m.about_me(), href: "/me", icon: User5LineUserFaces },
 		{ label: m.now_short(), href: "/now", icon: HourglassLineSystem },
 		{ label: m.uses_short(), href: "/uses", icon: MouseLineDevice },
 		{ label: m.contact(), href: "/contact", icon: Chat1LineCommunication },
 		{ label: m.colophon(), href: "/colophon", icon: CodeSSlashLineDevelopment },
-	];
+	]);
 
 	const SIDEBAR_SOCIALS = [
 		{
@@ -86,7 +86,7 @@
     <hr class="w-full hidden md:block">
 
     <div class="text-body hidden md:flex md:flex-col w-full">
-      {#each PAGES as _page}
+      {#each pages as _page}
         {@const isCurrentPage = page.url.pathname.startsWith(_page.href)}
         {@const Icon = _page.icon}
 
@@ -139,7 +139,7 @@
       </Drawer.Trigger>
       <Drawer.Content>
         <nav class="flex flex-col">
-          {#each PAGES as _page}
+          {#each pages as _page}
             {@const isCurrentPage = page.url.pathname.startsWith(_page.href)}
             {@const Icon = _page.icon}
 

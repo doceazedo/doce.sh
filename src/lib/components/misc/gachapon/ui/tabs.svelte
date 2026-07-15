@@ -26,9 +26,9 @@
 	<Button
 		variant="ghost"
 		class={cn(
-			"h-auto flex-col gap-0.5 rounded-none py-4 text-sm transition-all md:size-[99px] md:border-b md:border-b-transparent",
+			"h-auto flex-col gap-0.5 rounded-none py-4 text-sm transition-all md:size-[97px] md:border-b md:border-b-transparent md:bg-linear-to-t!",
 			isActive &&
-				"text-primary! hover:bg-primary/10! md:border-b-primary md:bg-primary/10! md:border-primary/40!",
+				"text-primary! md:border-b-primary bg-primary/10! md:border-primary/40! md:bg-transparent! md:from-primary/10! md:to-primary/0!",
 		)}
 		onclick={() => ($ACTIVE_TAB = tab.id)}
 		disabled={$GAME_STATE !== "idle"}

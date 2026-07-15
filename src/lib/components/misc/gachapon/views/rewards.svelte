@@ -124,7 +124,7 @@
 </script>
 
 <div
-	class="mt-auto flex size-full h-[calc(100%-2.25rem)] flex-col gap-6 overflow-y-auto scroll-smooth p-6 md:border-t-0 lg:h-[calc(100%-86px)]"
+	class="mt-12 flex size-full h-[calc(100%-2.25rem)] flex-col gap-6 overflow-y-auto scroll-smooth p-6 md:border-t-0 lg:h-[calc(100%-86px)]"
 >
 	<div class="mx-auto flex w-full max-w-3xl flex-col gap-6">
 		<h2 class="text-center text-lg font-semibold md:text-xl">

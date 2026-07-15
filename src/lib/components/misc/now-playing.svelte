@@ -29,7 +29,7 @@
     </hgroup>
     {#if currentTrack.now_playing}
       <div
-        class="absolute top-0 left-10 flex size-2.5 items-center justify-center md:right-0 md:left-auto"
+        class="absolute top-1 left-[42px] flex size-2.5 items-center justify-center"
       >
         <span
           class="group-hover:border-muted border-background absolute size-full rounded-full border-2 bg-red-500 transition-all"

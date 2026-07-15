@@ -253,7 +253,7 @@ const OLD_PAGE_VIEWS = {
 
 const getPageViews = async (page: string) => {
 	try {
-		const res = await fetch("https://plausible.io/api/v2/query", {
+		const res = await fetch("https://a.doce.sh/api/v2/query", {
 			method: "POST",
 			headers: {
 				Authorization: `Bearer ${env.PLAUSIBLE_API_KEY}`,

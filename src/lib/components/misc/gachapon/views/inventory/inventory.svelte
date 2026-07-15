@@ -139,7 +139,7 @@
 	<div
 		class="pointer-events-none top-0 left-0 flex size-full flex-col gap-6 p-6 pb-0 md:gap-12 md:p-12 md:pb-0 lg:absolute lg:grid lg:grid-cols-12 lg:pb-12"
 	>
-		<aside class="pointer-events-auto col-span-3 flex flex-col items-center">
+		<aside class="pointer-events-auto col-span-4 flex flex-col items-center">
 			<div
 				class="bg-background z-10 flex aspect-square size-36 flex-col items-center justify-center rounded-full border p-12 text-center xl:size-44"
 			>
@@ -254,9 +254,9 @@
 		class="text-body pointer-events-none grid size-full grid-cols-1 items-center justify-center gap-6 p-6 pt-0 md:gap-12 md:p-12 md:pt-0 lg:grid-cols-12 lg:overflow-y-scroll lg:pt-12"
 		bind:this={scrollEl}
 	>
-		<aside class="col-span-3"></aside>
+		<aside class="col-span-4"></aside>
 		<main
-			class="pointer-events-auto col-span-9 mb-6 flex size-full flex-col gap-6 md:mb-12 lg:mb-0"
+			class="pointer-events-auto col-span-8 mb-6 flex size-full flex-col gap-6 md:mb-12 lg:mb-0"
 		>
 			<div class="flex flex-col gap-6 md:gap-12">
 				{#each orderByOption.orderedItems as group, i}
@@ -292,7 +292,7 @@
 							>
 						{/if}
 					</h2>
-					<div class="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-6">
+					<div class="grid grid-cols-2 gap-3 md:grid-cols-3">
 						{#each group.items as item (item.id)}
 							{@const quantity =
 								$GAME_DATA.inventory.find((x) => x.item === item.id)
@@ -304,7 +304,7 @@
 								disabled={!owned}
 								onclick={() => owned && (viewItem = item)}
 								class={cn(
-									"relative flex aspect-[3/4] flex-col items-center justify-center overflow-hidden rounded border p-3",
+									"relative flex aspect-[4/5] flex-col items-center justify-center overflow-hidden rounded border p-3",
 									owned &&
 										"group ease-elastic cursor-pointer transition-all hover:scale-105",
 								)}

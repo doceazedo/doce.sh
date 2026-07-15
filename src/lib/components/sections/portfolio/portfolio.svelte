@@ -9,6 +9,8 @@
 		siFlutter,
 		siSupabase,
 		siBackblaze,
+		siBevy,
+		siWebgpu,
 	} from "simple-icons";
 	import { m } from "$lib/paraglide/messages";
 	import PortfolioItem from "./portfolio-item.svelte";
@@ -73,6 +75,27 @@
 				{
 					url: "https://www.youtube-nocookie.com/embed/cqKBvl5a1-o?si=PM7I2T4YPH4q6Fvv&loop=1&playlist=cqKBvl5a1-o",
 					label: m.portfolio_godot_wry_media_cas(),
+				},
+			],
+		},
+		sprinkles: {
+			pretitle: m.portfolio_sprinkles_pretitle(),
+			title: m.portfolio_sprinkles_title(),
+			description: m.portfolio_sprinkles_description(),
+			thumbnail: "/img/portfolio/sprinkles.webp",
+			stack: [siRust, siBevy, siWebgpu],
+			role: m.portfolio_sprinkles_role(),
+			details: m.portfolio_sprinkles_details(),
+			links: [
+				{
+					label: m.source_code(),
+					url: "https://github.com/doceazedo/sprinkles",
+				},
+			],
+			media: [
+				{
+					url: "/video/portfolio/sprinkles.mp4",
+					label: m.portfolio_sprinkles_media_editor(),
 				},
 			],
 		},
@@ -150,8 +173,14 @@
 	</h2>
 
 	{#if mounted}
-		<ul class="grid grid-cols-1 gap-6 lg:gap-12">
+		<ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
 			<li class="">
+				<PortfolioItem project={workProjects.godotWry} type="desktop" />
+			</li>
+			<li class="">
+				<PortfolioItem project={workProjects.sprinkles} type="desktop" />
+			</li>
+			<li class="col-span-2">
 				<PortfolioItem project={workProjects.gachapon} type="gachapon" />
 			</li>
 		</ul>

@@ -128,8 +128,8 @@
 								type === "desktop"
 									? "rounded-lg border"
 									: "w-48 lg:w-[calc(100%-6rem)]",
-								direction === "row" &&
-									"md:-mr-20 md:group-hover:-translate-x-4 md:group-hover:translate-y-0",
+								direction === "row" ?
+									"md:-mr-20 md:group-hover:-translate-x-4 md:group-hover:translate-y-0" : "-mb-6",
 							)}
 							in:elasticFly|global={{
 								x: direction === "row" ? 24 : 0,
@@ -207,7 +207,6 @@
 		<Dialog.Trigger
 			class={cn(
 				"group hover:bg-primary/5 dark:hover:bg-primary/10 w-full cursor-pointer overflow-hidden rounded transition-all",
-				type === "desktop" ? "md:aspect-video" : "",
 			)}
 		>
 			{@render tile()}
@@ -283,6 +282,16 @@
 											allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
 											referrerpolicy="strict-origin-when-cross-origin"
 										></iframe>
+									{:else if media.url.endsWith(".mp4")}
+										<video
+											class="size-full object-cover"
+											src={media.url}
+											muted
+											autoplay
+											controls={false}
+											playsinline
+											loop
+										></video>
 									{:else}
 										<img
 											src={media.url}

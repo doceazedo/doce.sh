@@ -265,7 +265,7 @@
 	"hosting": "Hospedagem",
 	"hosting_subtitle": "Serviços que colocam esse site no ar pra você.",
 	"web_hosting_description": "Hospedagem web gratuita.",
-	"dns_description": "Provedor de DNS.",
+	"dns_description": "Provedor de DNS e hospedagem web.",
 	"third_party_apis": "APIs de terceiros",
 	"third_party_apis_subtitle": "Serviços que eu uso para alimentar dados nesse site.",
 	"lastfm_api_description": "Faixas sendo reproduzidas e reproduzidas recentemente.",
@@ -275,7 +275,7 @@
 	"steamgriddb_api_description": "Capas mais bonitas para alguns jogos.",
 	"fortnite_api_description": "Última vez que joguei Fortnite (API não oficial).",
 	"analytics": "Analytics anônimos",
-	"analytics_description": "<p>Esse site usa o <a href=\"https://plausible.io\" target=\"_blank\" rel=\"noopener noreferrer\">Plausible</a> para que eu possa ter uma noção geral da quantidade de visitas, de forma totalmente anônima. Nenhuma informação identificável sobre você ou seus acessos é armazenada. Todos os dados são anonimizados e agregados.</p><p>O Plausible não usa cookies e é totalmente compatível com a 🇧🇷 LGPD, 🇪🇺 GDPR, 🇺🇸 CCPA, e 🇬🇧 PECR.</p> <a href=\"https://plausible.io/privacy-focused-web-analytics\" target=\"_blank\" rel=\"noopener noreferrer\">Saiba mais sobre o compromisso do Plausible com a privacidade.</a>",
+	"analytics_description": "<p>Esse site usa uma instância self-hosted do <a href=\"https://plausible.io\" target=\"_blank\" rel=\"noopener noreferrer\">Plausible</a> para que eu possa ter uma noção geral da quantidade de visitas, de forma totalmente anônima. Nenhuma informação identificável sobre você ou seus acessos é armazenada. Todos os dados são anonimizados e agregados.</p><p>O Plausible não usa cookies e é totalmente compatível com a 🇧🇷 LGPD, 🇪🇺 GDPR, 🇺🇸 CCPA, e 🇬🇧 PECR.</p> <a href=\"https://plausible.io/privacy-focused-web-analytics\" target=\"_blank\" rel=\"noopener noreferrer\">Saiba mais sobre o compromisso do Plausible com a privacidade.</a>",
 	"ai_usage_summary": "<p>Tudo o que você vê aqui foi feito por mim. O código, o design, os textos, tudo. Eu uso IA e LLMs pontualmente como ferramenta.</p><p>Leia meu <a href=\"/ai\">manifesto sobre IA</a>.</p>",
 	"design": "Design",
 	"design_description": "Eu usei o <a href=\"https://www.figma.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"group\">{technology}</a> pra fazer o design do site.",
@@ -537,7 +537,8 @@
 	"just_now": "agora mesmo",
 	"deezer_api_description": "Fotos dos meus top artistas do mês.",
 	"backfeeding_api_description": "Comentários externos para posts do blog.",
-	"pocketbase_description": "Além disso, eu hospedo uma instância do <a class=\"group\" href=\"https://pocketbase.io\" target=\"_blank\" rel=\"noopener noreferrer\">{icon} PocketBase</a> no meu home server pra fazer cache de APIs externas e, potencialmente, codar mais coisas divertidas que dependem de um backend no futuro.",
+	"pocketbase_description": "Backend self-hosted (cache de APIs externas, etc).",
 	"uses_home_server": "Home server",
-	"say_hi": "Manda um oi!"
+	"say_hi": "Manda um oi!",
+	"uses_headset": "Headset"
 }

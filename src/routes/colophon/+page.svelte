@@ -38,6 +38,7 @@
 		siMastodon,
 		siReddit,
 		siPocketbase,
+		siBunnydotnet,
 	} from "simple-icons";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { Button } from "$lib/components/ui/button";
@@ -135,24 +136,19 @@
 		<List
 			items={[
 				{
-					label: "Vercel",
+					label: "bunny.net",
 					description: m.web_hosting_description(),
-					icon: siVercel.svg,
-					url: "https://vercel.com",
+					icon: siBunnydotnet.svg,
+					url: "https://bunny.net",
 				},
 				{
-					label: "CloudFlare",
-					description: m.dns_description(),
-					icon: siCloudflare.svg,
-					url: "https://cloudflare.com",
+					label: "Pocketbase",
+					description: m.pocketbase_description(),
+					icon: siPocketbase.svg,
+					url: "https://pocketbase.io",
 				},
 			]}
 		/>
-		<p
-			class="[&_svg]:fill-body [&_svg]:group-hover:fill-primary [&_svg]:size-4 [&_svg]:transition-all [&>a]:inline-flex [&>a]:translate-y-0.5 [&>a]:items-center [&>a]:gap-1"
-		>
-			{@html m.pocketbase_description({ icon: siPocketbase.svg })}
-		</p>
 	</Prose>
 
 	<hr />

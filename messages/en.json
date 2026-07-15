@@ -265,7 +265,7 @@
 	"hosting": "Hosting",
 	"hosting_subtitle": "Services that brings this website to you.",
 	"web_hosting_description": "Free web hosting.",
-	"dns_description": "DNS provider.",
+	"dns_description": "DNS provider and web hosting.",
 	"third_party_apis": "Third-party APIs",
 	"third_party_apis_subtitle": "Services that I use to feed data to this website.",
 	"lastfm_api_description": "Current playing and last played tracks.",
@@ -275,7 +275,7 @@
 	"steamgriddb_api_description": "Better cover arts for some games.",
 	"fortnite_api_description": "Last time I played Fortnite (unofficial API).",
 	"analytics": "Anonymous analytics",
-	"analytics_description": "<p>This site uses <a href=\"https://plausible.io\" target=\"_blank\" rel=\"noopener noreferrer\">Plausible</a> to get an approximate number of visitors, fully anonymously. No identifiable information about you or your requests is ever stored. All data is anonymized and aggregated.</p> <p>Plausible doesn't use cookies and is fully compliant with 🇪🇺 GDPR, 🇺🇸CCPA, 🇬🇧 PECR and 🇧🇷 LGPD.</p> <a href=\"https://plausible.io/privacy-focused-web-analytics\" target=\"_blank\" rel=\"noopener noreferrer\">Learn more about Plausible's dedication to privacy.</a>",
+	"analytics_description": "<p>This site uses a self-hosted <a href=\"https://plausible.io\" target=\"_blank\" rel=\"noopener noreferrer\">Plausible</a> instance to get an approximate number of visitors, fully anonymously. No identifiable information about you or your requests is ever stored. All data is anonymized and aggregated.</p> <p>Plausible doesn't use cookies and is fully compliant with 🇪🇺 GDPR, 🇺🇸CCPA, 🇬🇧 PECR and 🇧🇷 LGPD.</p> <a href=\"https://plausible.io/privacy-focused-web-analytics\" target=\"_blank\" rel=\"noopener noreferrer\">Learn more about Plausible's dedication to privacy.</a>",
 	"ai_usage_summary": "<p>Everything you see here was made by me. The code, the design, the writing, everything. I do lightly use LLMs and AI as a tool.</p><p>Please read my <a href=\"/ai\">AI manifesto</a>.</p>",
 	"design": "Design",
 	"design_description": "I used <a href=\"https://www.figma.com\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"group\">{technology}</a> for designing this website.",
@@ -537,7 +537,8 @@
 	"just_now": "just now",
 	"deezer_api_description": "Photos of my top artists of the month.",
 	"backfeeding_api_description": "Backfeeding comments to blog posts.",
-	"pocketbase_description": "Additionally, I self-host a <a class=\"group\" href=\"https://pocketbase.io\" target=\"_blank\" rel=\"noopener noreferrer\">{icon} PocketBase</a> instance on my home server for caching external API responses, and for possibly building more fun stuff that depends on a backend in the future.",
+	"pocketbase_description": "Self-hosted backend (external APIs cache, etc).",
 	"uses_home_server": "Home server",
-	"say_hi": "Say hi!"
+	"say_hi": "Say hi!",
+	"uses_headset": "Headset"
 }

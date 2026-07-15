@@ -81,9 +81,9 @@
 			product: "Edifier S360DB",
 		},
 		{
-			image: "/img/uses/headphones.webp",
-			label: m.uses_headphones(),
-			product: "AirPods Max",
+			image: "/img/uses/headset.webp",
+			label: m.uses_headset(),
+			product: "Logitech PRO X",
 		},
 		{
 			image: "/img/uses/microphone.webp",
@@ -109,19 +109,19 @@
 
 	const DEVELOPMENT_SOFTWARE = [
 		{
-			icon: "/img/uses/vscode.webp",
-			name: "VS Code",
+			icon: "/img/uses/vscodium.webp",
+			name: "VSCodium",
 			label: m.uses_code_editor(),
-		},
-		{
-			icon: "/img/uses/intellij.webp",
-			name: "IntelliJ IDEA",
-			label: m.uses_kotlin_ide(),
 		},
 		{
 			icon: "/img/uses/rustrover.webp",
 			name: "RustRover",
 			label: m.uses_rust_ide(),
+		},
+		{
+			icon: "/img/uses/intellij.webp",
+			name: "IntelliJ IDEA",
+			label: m.uses_kotlin_ide(),
 		},
 		{
 			icon: "/img/uses/warp.webp",

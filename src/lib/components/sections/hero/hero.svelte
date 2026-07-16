@@ -49,7 +49,7 @@
 				{m.greetings()}
 			</h1>
 			<p
-				class="text-body [&>span]:text-foreground [&>a]:text-foreground [&>a]:hover:text-primary max-w-[48ch] [&>a]:underline [&>a]:transition-all ml-1"
+				class="text-body [&>span]:text-foreground [&>a]:text-foreground [&>a]:hover:text-primary max-w-[36ch] [&>a]:underline [&>a]:transition-all ml-1"
 				in:elasticFly={{
 					opacity: 0,
 					x: -24,

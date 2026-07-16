@@ -1,9 +1,8 @@
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { html } from "satori-html";
-import GabaritoRegular from "$lib/fonts/Gabarito-Regular.ttf?arraybuffer";
-import GabaritoBold from "$lib/fonts/Gabarito-Bold.ttf?arraybuffer";
-import GabaritoMedium from "$lib/fonts/Gabarito-Medium.ttf?arraybuffer";
+import AtkinsonHyperlegibleRegular from "$lib/fonts/AtkinsonHyperlegible-Regular.ttf?arraybuffer";
+import AtkinsonHyperlegibleBold from "$lib/fonts/AtkinsonHyperlegible-Bold.ttf?arraybuffer";
 import type { Post } from "$lib/types.js";
 import { error } from "@sveltejs/kit";
 import type { EntryGenerator } from "./$types";
@@ -32,7 +31,7 @@ export const GET = async ({ params }) => {
       <div class="flex items-center mt-auto">
         <img src="${BASE_URL}/img/avatar.jpg" width="112" height="112" class="rounded-full mr-6" />
         <div class="flex flex-col">
-          <p class="text-4xl m-0 font-medium">Doce Fernandes</p>
+          <p class="text-4xl m-0 font-bold">Doce Fernandes</p>
           <p class="text-3xl opacity-70 m-0">${publishedAt}</p>
         </div>
       </div>
@@ -45,18 +44,13 @@ export const GET = async ({ params }) => {
 		height: 630,
 		fonts: [
 			{
-				name: "Gabarito",
-				data: GabaritoRegular,
+				name: "Atkinson Hyperlegible",
+				data: AtkinsonHyperlegibleRegular,
 				weight: 400,
 			},
 			{
-				name: "Gabarito",
-				data: GabaritoMedium,
-				weight: 500,
-			},
-			{
-				name: "Gabarito",
-				data: GabaritoBold,
+				name: "Atkinson Hyperlegible",
+				data: AtkinsonHyperlegibleBold,
 				weight: 700,
 			},
 		],

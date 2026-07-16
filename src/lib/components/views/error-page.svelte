@@ -19,7 +19,6 @@
 	let { status }: { status: number } = $props();
 
 	const CULPRITS: ErrorMessages = {
-		"1xx": m.status_1xx_culprit(),
 		"2xx": m.status_2xx_culprit(),
 		"3xx": m.status_3xx_culprit(),
 		"4xx": m.status_4xx_culprit(),
@@ -28,19 +27,11 @@
 	};
 
 	const STATUS_DESCRIPTIONS: ErrorMessages = {
-		"100": m.status_100_description(),
-		"101": m.status_101_description(),
-		"102": m.status_102_description(),
-		"103": m.status_103_description(),
 		"200": m.status_200_description(),
 		"201": m.status_201_description(),
 		"202": m.status_202_description(),
-		"203": m.status_203_description(),
 		"204": m.status_204_description(),
-		"205": m.status_205_description(),
 		"206": m.status_206_description(),
-		"207": m.status_207_description(),
-		"208": m.status_208_description(),
 		"300": m.status_300_description(),
 		"301": m.status_301_description(),
 		"302": m.status_302_description(),
@@ -60,19 +51,15 @@
 		"409": m.status_409_description(),
 		"410": m.status_410_description(),
 		"411": m.status_411_description(),
-		"412": m.status_412_description(),
 		"413": m.status_413_description(),
 		"414": m.status_414_description(),
 		"415": m.status_415_description(),
-		"416": m.status_416_description(),
 		"417": m.status_417_description(),
 		"418": m.status_418_description(),
 		"420": m.status_420_description(),
 		"421": m.status_421_description(),
 		"422": m.status_422_description(),
 		"425": m.status_425_description(),
-		"426": m.status_426_description(),
-		"428": m.status_428_description(),
 		"429": m.status_429_description(),
 		"431": m.status_431_description(),
 		"451": m.status_451_description(),
@@ -82,7 +69,6 @@
 		"503": m.status_503_description(),
 		"504": m.status_504_description(),
 		"505": m.status_505_description(),
-		"506": m.status_506_description(),
 		unknown: m.status_unknown_description(),
 	};
 

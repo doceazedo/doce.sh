@@ -27,6 +27,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Write build env file
+        env:
+          DOTENV: ${{ secrets.DOTENV }}
+        run: |
+          printf '%s' "$DOTENV" > "${RUNNER_TEMP}/dotenv"
+
       - name: Build and push
         id: build
         uses: docker/build-push-action@v6
@@ -37,8 +43,8 @@ jobs:
           tags: |
             doceazedo/doce.sh:${{ github.sha }}
             doceazedo/doce.sh:latest
-          secrets: |
-            env=${{ secrets.DOTENV }}
+          secret-files: |
+            env=${{ runner.temp }}/dotenv
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

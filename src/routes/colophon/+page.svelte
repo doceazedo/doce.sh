@@ -137,7 +137,7 @@
 			items={[
 				{
 					label: "bunny.net",
-					description: m.web_hosting_description(),
+					description: m.dns_description(),
 					icon: siBunnydotnet.svg,
 					url: "https://bunny.net",
 				},

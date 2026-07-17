@@ -121,3 +121,5 @@ export const WORK = {
 export const EMAIL = "doce@doceazedo.com";
 
 export const MEMOJI_HOVER_ACHIEVEMENT_THRESHOLD = 5;
+
+export const BIRTHDAY = new Date("2003/01/21");

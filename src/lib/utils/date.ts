@@ -1,3 +1,4 @@
+import { BIRTHDAY } from "$lib/constants";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 
@@ -89,4 +90,10 @@ export const readyInDays = (date: Date) => {
 		});
 	if (days === 1) return m.tommorow();
 	return m.ready_in_x_days({ days });
+};
+
+export const myAge = () => {
+	const diff = Date.now() - BIRTHDAY.getTime();
+	const ageDate = new Date(diff);
+	return Math.abs(ageDate.getUTCFullYear() - 1970);
 };

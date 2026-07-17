@@ -11,6 +11,7 @@
 		CodeSSlashLineDevelopment,
 		EmotionHappyFillUserFaces,
 		EmotionUnhappyFillUserFaces,
+		Heart3LineHealthMedical,
 		ShakeHandsLineBusiness,
 		SoundcloudLineLogos,
 	} from "svelte-remix";
@@ -26,6 +27,10 @@
 	import { onVisible } from "$lib/utils/actions";
 	import PageTitle from "$lib/components/common/page-title.svelte";
 	import SectionTitle from "$lib/components/common/section-title.svelte";
+	import Cat from "$lib/components/icons/cat.svg?component";
+	import PrideFlag from "./pride-flag.svelte";
+	import { myAge } from "$lib/utils/date";
+	import Prose from "$lib/components/common/prose.svelte";
 
 	let { data } = $props();
 
@@ -39,24 +44,20 @@
 	const TLDR = [
 		{
 			icon: Cake2LineFood,
-			color: "pink",
-			pretitle: m.cake_day(),
-			title: m.birthday_short(),
-			description: `${m.aquarius()} • INFJ`,
+			text: `I'm <span>${myAge()}</span>! I was born in <span>January 21</span>, so that would make me an <span>Aquarius</span>.`,
 		},
 		{
-			icon: ShakeHandsLineBusiness,
-			color: "yellow",
-			pretitle: m.pronouns(),
-			title: m.my_pronouns(),
-			description: m.im_non_binary(),
+			icon: Cake2LineFood,
+			prideFlag: true,
+			text: "I'm a non-binary person and my pronouns are <span>he/they</span>.",
 		},
 		{
-			icon: CodeSSlashLineDevelopment,
-			color: "blue",
-			pretitle: m.work(),
-			title: WORK.company,
-			description: m.work_position(),
+			icon: Heart3LineHealthMedical,
+			text: "I'm interested in coding, music, DJing, videogames & tennis.",
+		},
+		{
+			icon: Cat,
+			text: "I have two cute little prick boy cats called <span>Billy</span> & <span>Salsicha</span>!",
 		},
 	];
 
@@ -152,91 +153,96 @@
 	<hr />
 
 	<SectionTitle title="TL;DR" />
-	<ul class="grid gap-3 md:grid-cols-3 md:gap-6 lg:flex-row">
-		{#if mounted}
-			{#each TLDR as card, i (i)}
-				<li
-					class={cn(
-						"flex gap-3 rounded border p-3",
-						card.color === "pink" &&
-							"border-pink-500 bg-pink-500/20 [&_h3]:text-pink-500 [&_i]:bg-pink-500",
-						card.color === "yellow" &&
-							"border-yellow-500 bg-yellow-500/20 [&_h3]:text-yellow-500 [&_i]:bg-yellow-500",
-						card.color === "blue" &&
-							"border-blue-500 bg-blue-500/20 [&_h3]:text-blue-500 [&_i]:bg-blue-500",
-						card.color === "green" &&
-							"border-emerald-500 bg-emerald-500/20 [&_h3]:text-emerald-500 [&_i]:bg-emerald-500",
-					)}
-					in:elasticFly|global={{
-						opacity: 0,
-						y: 24,
-						duration: 1200,
-						delay: 300 + 100 * i,
-					}}
-				>
-					<i
-						class="flex size-8 shrink-0 items-center justify-center rounded text-white md:size-10"
+	<div class="flex flex-col gap-6 lg:flex-row">
+		<ul class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-2 gap-x-6 gap-y-12 w-full">
+			{#if mounted}
+				{#each TLDR as card, i (i)}
+					<li
+						class={cn("flex flex-col justify-center items-center border rounded p-4 lg:py-6 lg:px-3 relative",
+												i === 0 && "-rotate-0.5deg lg:-rotate-1",
+												i === 1 && "rotate-0.5deg lg:rotate-1 lg:translate-x-0.5",
+												i === 2 && "rotate-1 lg:rotate-2 lg:-translate-x-1",
+												i === 3 && "-rotate-0.5deg lg:-rotate-1",)}
+						in:elasticFly|global={{
+							opacity: 0,
+							y: 24,
+							duration: 1200,
+							delay: 300 + 100 * i,
+						}}
 					>
-						<card.icon class="size-5 md:size-6" />
-					</i>
-					<hgroup>
-						<h3 class="-mb-1 text-xs font-medium uppercase">
-							{card.pretitle}
-						</h3>
-						<p class="mb-0.5">{card.title}</p>
-						<p class="text-foreground/80 text-sm leading-4">
-							{card.description}
-						</p>
-					</hgroup>
-				</li>
-			{/each}
+						{#if "prideFlag" in card && card.prideFlag}
+							<div class="absolute -top-5 -rotate-1">
+								<PrideFlag />
+							</div>
+						{:else}
+							<div
+								class={cn("bg-[color-mix(in_srgb,var(--background),var(--primary)_20%)] border-primary flex size-8 items-center justify-center rounded border lg:size-12 absolute", 
+									i === 0 && "-top-6",
+									i === 2 && "-top-6",
+									i === 3 && "-top-6"
+								)}
+							>
+								<card.icon class="text-primary size-5 lg:size-6" />
+							</div>
+						{/if}
+						<p class={cn("text-center text-foreground/80 [&>span]:text-foreground md:mt-1", card.prideFlag && "mt-1 md:mt-0")}>{@html card.text}</p>
+					</li>
+				{/each}
+			{/if}
+		</ul>
+		{#if mounted}
+			<div
+				class="text-body flex shrink-0 flex-col gap-3 rounded border p-3 text-center lg:w-1/3"
+				in:elasticFly|global={{
+					opacity: 0,
+					y: 24,
+					duration: 1200,
+					delay: 800,
+				}}
+			>
+				<div
+					class="bg-muted relative aspect-video lg:aspect-auto lg:h-full w-full overflow-hidden rounded before:pointer-events-none before:absolute before:top-0 before:left-0 before:z-10 before:size-full before:rounded before:border before:border-white/10"
+				>
+					<Map userLocation={data.location} />
+				</div>
+				<p class="[&>span]:text-foreground">
+					{#if data.location}
+						{@html m.map_distance({
+							km: Math.floor(
+								distance(MY_LOCATION, data.location, { units: "kilometers" }),
+							).toLocaleString(getLocale()),
+						})}
+					{:else}
+						{@html m.map_distance_fallback()}
+						{/if}
+				</p>
+			</div>
 		{/if}
-	</ul>
+	</div>
 
 	<hr />
 
-	<SectionTitle title={m.personally()} />
-	<div class="grid grid-cols-1 gap-6 md:grid-cols-2">
-		<main
-			class="prose prose-neutral dark:prose-invert prose-a:hover:text-primary prose-a:transition-all"
-		>
-			<p>
-				{m.personally_intro()}
-			</p>
-			<p>
-				{@html m.personally_work({
-					companyName: WORK.company,
-					companyUrl: WORK.url,
-				})}
-			</p>
-			<p>
-				{m.personally_early_days()}
-			</p>
-			<p>
-				{m.personally_hobbies()}
-			</p>
-		</main>
-		<div
-			class="text-body flex h-fit shrink-0 flex-col gap-3 rounded border p-3 text-center"
-		>
-			<div
-				class="bg-muted relative aspect-video w-full overflow-hidden rounded before:pointer-events-none before:absolute before:top-0 before:left-0 before:z-10 before:size-full before:rounded before:border before:border-white/10"
-			>
-				<Map userLocation={data.location} />
-			</div>
-			<p class="[&>span]:text-foreground">
-				{#if data.location}
-					{@html m.map_distance({
-						km: Math.floor(
-							distance(MY_LOCATION, data.location, { units: "kilometers" }),
-						).toLocaleString(getLocale()),
-					})}
-				{:else}
-					{@html m.map_distance_fallback()}
-				{/if}
-			</p>
-		</div>
-	</div>
+	<SectionTitle title="Personal life" />
+	<Prose>
+		<p>
+			{m.personally_intro()}
+		</p>
+		<p>
+			{@html m.personally_work({
+				companyName: WORK.company,
+				companyUrl: WORK.url,
+			})}
+		</p>
+		<p>
+			{m.personally_early_days()}
+		</p>
+		<p>
+			{m.personally_hobbies()}
+		</p>
+		<p>Intro</p>
+		<p>Cats</p>
+		<p>Hobbies</p>
+	</Prose>
 
 	<hr />
 

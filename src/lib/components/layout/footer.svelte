@@ -74,15 +74,15 @@
 <svelte:body bind:clientHeight />
 
 <footer
-	class="mt-12 mb-6 flex flex-col justify-between gap-6 border-t py-12 text-center md:pt-6 md:pb-0 md:mb-0"
+	class="mt-12 mb-6 flex flex-col justify-between gap-6 border-t py-12 text-center md:mb-0 md:pt-6 md:pb-0"
 >
 	<div class="text-body flex flex-col items-center text-sm">
 		<Memoji class="mb-1.5 size-14" />
-		<p class="-mb-1.5">
+		<p>
 			<a
 				href={COPYLEFT_URL[getLocale()]}
 				target="_blank"
-				class="hover:text-primary inline-flex -translate-y-0.75 rotate-180"
+				class="hover:text-primary inline-flex rotate-180"
 			>
 				&copy;
 			</a>
@@ -96,9 +96,7 @@
 			<a
 				href={social.url}
 				target="_blank"
-				class={cn(
-					"hover:text-foreground ease-elastic p-1.5 transition-all ",
-				)}
+				class={cn("hover:text-foreground ease-elastic p-1.5 transition-all ")}
 			>
 				<social.icon class="size-6 transition-all" />
 			</a>

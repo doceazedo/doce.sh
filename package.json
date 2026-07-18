@@ -38,7 +38,7 @@
 		"pocketbase-typegen": "^1.5.0",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^3.5.2",
-		"prettier-plugin-tailwindcss": "^0.6.14",
+		"prettier-plugin-tailwindcss": "^0.8.1",
 		"simple-icons": "^15.22.0",
 		"svelte": "^5.55.9",
 		"svelte-check": "^4.4.8",

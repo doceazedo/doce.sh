@@ -148,7 +148,7 @@
 	<SectionTitle title="TL;DR" />
 	<div class="flex flex-col gap-6 lg:flex-row">
 		<ul
-			class="grid w-full grid-cols-1 gap-x-6 gap-y-12 md:grid-cols-2 md:grid-rows-2"
+			class="mt-6 grid w-full grid-cols-2 gap-x-6 gap-y-12 md:mt-0 md:grid-rows-2"
 		>
 			{#if mounted}
 				{#each TLDR as card, i (i)}
@@ -168,7 +168,7 @@
 						}}
 					>
 						{#if "prideFlag" in card && card.prideFlag}
-							<div class="absolute -top-5 -rotate-1">
+							<div class="absolute -top-4 -rotate-1 md:-top-5">
 								<PrideFlag />
 							</div>
 						{:else}
@@ -241,7 +241,7 @@
 		<div class="mx-auto aspect-3/4 h-fit w-xs shrink-0">
 			{#if isPersonalLifeVisible}
 				<figure
-					class="bg-muted size-full rounded"
+					class="bg-muted ease-elastic relative size-full rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 hover:rotate-2"
 					in:elasticFly|global={{
 						opacity: 0,
 						y: 24,

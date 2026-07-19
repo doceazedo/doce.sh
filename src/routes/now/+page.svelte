@@ -6,24 +6,18 @@
 	import { toFixedIfNecessary } from "$lib/utils/numbers";
 	import {
 		ArrowRightLineArrows,
-		BookMarkedFillDocument,
 		CalendarCheckLineBusiness,
 		TargetFillOthers,
 		GamepadLineDevice,
 		HeadphoneFillMedia,
-		UserLineUserFaces,
-		Progress4LineSystem,
-		CircleLineDesign,
-		CheckboxCircleFillSystem,
-		BookReadFillDocument,
-		ThumbUpFillSystem,
 		PlayFillMedia,
 		Game2FillOthers,
+		CodeSSlashLineDevelopment,
+		VerifiedBadgeFillBusiness,
 	} from "svelte-remix";
 	import SectionTitleWithIcon from "$lib/components/common/section-title-with-icon.svelte";
 	import { Button } from "$lib/components/ui/button";
 	import { IS_DESKTOP, LAST_PLAYED_TRACKS } from "$lib/stores";
-	import { Progress } from "$lib/components/ui/progress";
 	import { SOCIALS } from "$lib/constants";
 	import { cn } from "$lib/utils";
 	import { timeAgo } from "$lib/utils/date";
@@ -32,31 +26,27 @@
 	import { elasticFly } from "$lib/utils/transitions";
 	import { onVisible } from "$lib/utils/actions";
 	import type { LastPlayedGamesRecord } from "$lib/pocketbase-types";
-	import { siBevy } from "simple-icons";
-	import Backlog from "$lib/components/icons/backlog.svg?component";
+	import { siGodotengine } from "simple-icons";
+	import TennisPlayer from "$lib/components/icons/tennis-player.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
+	import Prose from "$lib/components/common/prose.svelte";
 
-	const FOCUS_UPDATED_AT = new Date("2025/12/15");
+	const ACTIVITIES_UPDATED_AT = new Date("2026/07/19 12:45:00 GMT-3");
 
-	const BOOK = {
-		title: {
-			en: "The Name of the Wind",
-			pt: "O Nome do Vento",
+	const ACTIVITIES = $derived([
+		{
+			description: m.activity_making_game(),
+			icon: siGodotengine.svg,
 		},
-		subtitle: {
-			en: "The Kingkiller Chronicle: Day One",
-			pt: "A Crônica do Matador do Rei: Primeiro Dia",
+		{
+			description: m.activity_playing_tennis(),
+			icon: TennisPlayer,
 		},
-		author: "Patrick Rothfuss",
-		cover: "/img/now/books/o-nome-do-vento.webp",
-		url: "https://www.goodreads.com/book/show/8480575-o-nome-do-vento",
-		pages: {
-			read: 153,
-			total: 656,
-			updatedAt: new Date("2025/07/17 GMT-3"),
+		{
+			description: m.activity_revamping_site(),
+			icon: CodeSSlashLineDevelopment,
 		},
-		startedAt: new Date("2025/06/13 GMT-3"),
-	};
+	]);
 
 	let lastPlayedGamesUpdatedAt = $state<Date>();
 	const getLastPlayedGames = async () => {
@@ -97,7 +87,6 @@
 		}
 	};
 
-	let isReadingVisible = $state(!browser);
 	let isListeningVisible = $state(!browser);
 	let isPlayingGamesVisible = $state(!browser);
 </script>
@@ -111,184 +100,156 @@
 		icon={TargetFillOthers}
 		title={m.current_focus()}
 		subtitle={m.current_focus_description()}
-		updatedAt={FOCUS_UPDATED_AT}
+		updatedAt={ACTIVITIES_UPDATED_AT}
 	/>
-	<ul class="flex flex-col gap-12">
-		<li class="flex flex-col-reverse gap-6 lg:flex-row lg:gap-24">
-			<figure
-				class="bg-muted ease-elastic relative aspect-video w-full shrink-0 -rotate-1 rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 hover:rotate-0 lg:w-1/2"
-				in:elasticFly|global={{
-					opacity: 0,
-					y: 24,
-					duration: 800,
-					delay: 100,
-				}}
-			>
-				<img
-					src="/img/now/youma-screenshot.webp"
-					alt=""
-					class="size-full rounded object-cover transition-all"
-				/>
-			</figure>
-			<div class="flex flex-col">
-				<span
-					class="[&>svg]:fill-foreground mb-1.5 [&>svg]:size-6 lg:[&>svg]:size-8"
-				>
-					{@html siBevy.svg}
-				</span>
-				<h3 class="mb-1.5 text-2xl md:text-3xl">{m.youma()}</h3>
-				<p
-					class="text-body [&>a]:text-foreground [&>a]:hover:text-primary mb-6 [&>a]:font-medium [&>a]:underline [&>a]:transition-all"
-				>
-					{@html m.youma_description()}
-				</p>
-				<ul class="grid grid-cols-4 gap-3">
-					<li class="flex gap-1.5">
-						<Backlog class="text-foreground/80 size-4" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">{m.task_status_backlog()}</p>
-							<p class="">17</p>
-						</div>
-					</li>
-					<li class="flex gap-1.5">
-						<CircleLineDesign class="text-foreground/80 size-4" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">{m.task_status_next()}</p>
-							<p class="">12</p>
-						</div>
-					</li>
-					<li class="flex gap-1.5">
-						<Progress4LineSystem class="size-4 text-amber-400" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">
-								{m.task_status_in_progress()}
-							</p>
-							<p class="">5</p>
-						</div>
-					</li>
-					<li class="flex gap-1.5">
-						<CheckboxCircleFillSystem class="text-primary size-4" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">{m.task_status_done()}</p>
-							<p class="">9</p>
-						</div>
-					</li>
-				</ul>
-			</div>
-		</li>
 
-		<li class="flex flex-col gap-6 lg:flex-row lg:items-center lg:gap-24">
-			<div class="flex flex-col">
-				<img
-					src="/img/icons/sewing.png"
-					alt=""
-					class="mb-1.5 size-6 transition-all lg:size-8 dark:invert"
-				/>
-				<h3 class="mb-1.5 text-2xl md:text-3xl">{m.sewing()}</h3>
-				<p
-					class="text-body [&>a]:text-foreground [&>a]:hover:text-primary mb-6 max-w-[60ch] [&>a]:font-medium [&>a]:underline [&>a]:transition-all"
-				>
-					{m.sewing_description()}
+	<div class="flex flex-col-reverse gap-12 lg:flex-row">
+		<ul class="flex w-full flex-col gap-12">
+			{#each ACTIVITIES as activity}
+				<li class="flex gap-4">
+					<span class="[&>svg]:fill-foreground/70 shrink-0 [&>svg]:size-7">
+						{#if typeof activity.icon === "string"}
+							{@html activity.icon}
+						{:else}
+							<activity.icon class="text-foreground/70 size-7" />
+						{/if}
+					</span>
+					<Prose>{@html activity.description}</Prose>
+				</li>
+			{/each}
+		</ul>
+
+		<div class="relative flex h-fit w-full shrink-0 items-center lg:w-md">
+			<div
+				class="border-primary z-10 flex w-fit shrink-0 flex-col gap-1 rounded border bg-[color-mix(in_srgb,var(--background),var(--primary)_20%)] p-1"
+			>
+				<img src="/img/avatar.jpg" alt="" class="size-24 rounded" />
+				<p class="text-primary text-center font-medium tracking-wide">
+					{m.update()}
 				</p>
 			</div>
-			<figure
-				class="bg-muted ease-elastic relative mx-auto aspect-4/5 w-1/2 shrink-0 rotate-2 rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 hover:rotate-0 lg:mx-0 lg:ml-auto lg:w-1/3"
-				in:elasticFly|global={{
-					opacity: 0,
-					y: 24,
-					duration: 800,
-					delay: 200,
-				}}
+			<div
+				class="-ml-14 flex size-full flex-col gap-1.5 rounded border p-6 pb-2.5 pl-20"
 			>
-				<img
-					src="/img/now/sewing-studies.webp"
-					alt=""
-					class="size-full rounded object-cover transition-all"
-				/>
-			</figure>
-		</li>
-	</ul>
+				<p class="text-foreground flex items-center gap-1 font-medium">
+					<span class="text-lg">DoceAzedo</span>
+					<VerifiedBadgeFillBusiness class="text-primary size-4" />
+					<span class="text-muted-foreground/80 scale-50">&bull;</span>
+					<span class="text-body flex items-center gap-1.5 text-sm">
+						{timeAgo(ACTIVITIES_UPDATED_AT)}
+					</span>
+				</p>
+				<p class="text-foreground/80">
+					{m.update_placeholder()}
+				</p>
+				<div
+					class="mt-3 -ml-20 flex w-[calc(100%+6.5rem)] items-center justify-between border-t pt-2.5 pr-3 pl-20"
+				>
+					<span class="mb-0.5 font-medium tracking-wide">{m.feeling()}:</span>
+					<span class="text-xl">😴</span>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<hr />
 
 	<SectionTitleWithIcon
-		icon={BookMarkedFillDocument}
-		title={m.reading()}
-		subtitle={m.reading_subtitle()}
-		updatedAt={BOOK.startedAt}
+		icon={Game2FillOthers}
+		title={m.playing_games()}
+		subtitle={m.playing_games_subtitle()}
+		updatedAt={lastPlayedGamesUpdatedAt}
 	/>
 	<div
-		class={cn(
-			"ease-elastic-heavy transition-all duration-800",
-			!isReadingVisible && "-translate-y-12",
-		)}
-		use:onVisible={() => (isReadingVisible = true)}
+		class="flex flex-col gap-3 md:gap-6"
+		use:onVisible={() => (isPlayingGamesVisible = true)}
 	>
-		<div
-			class={cn(
-				"flex gap-6 transition-all duration-800",
-				!isReadingVisible && "opacity-0",
-			)}
-		>
-			<a
-				href={BOOK.url}
-				target="_blank"
-				rel="noopener noreferrer"
-				class="ease-elastic relative h-fit w-1/4 shrink-0 transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/20 hover:scale-105 hover:-rotate-1 lg:w-1/6"
-			>
-				<img src={BOOK.cover} alt="" class="w-full rounded" />
-			</a>
-			<div class="col-span-5 flex w-full flex-col gap-1.5 md:gap-3">
-				<hgroup>
-					<h3 class="text-2xl md:-mb-px md:text-3xl">
-						{BOOK.title[getLocale()]}
-					</h3>
-					<p class="text-body">
-						{BOOK.subtitle[getLocale()]}
-					</p>
-				</hgroup>
-				<hr />
-				<ul class="hidden gap-12 md:flex">
-					<li class="flex gap-1.5">
-						<UserLineUserFaces class="text-primary size-4" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">{m.author()}</p>
-							<p class="">{BOOK.author}</p>
-						</div>
-					</li>
-					<li class="flex gap-1.5">
-						<BookReadFillDocument class="text-primary size-4" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">{m.started_reading()}</p>
-							<p class="">{BOOK.startedAt.toLocaleDateString(getLocale())}</p>
-						</div>
-					</li>
-					<li class="flex gap-1.5">
-						<ThumbUpFillSystem class="text-primary size-4" />
-						<div class="flex flex-col">
-							<p class="text-body -my-0.5 text-sm">{m.do_i_recommend()}</p>
-							<p class="">—</p>
-						</div>
-					</li>
-				</ul>
-				<div class="mt-auto flex flex-col gap-1.5">
-					<div class="flex items-center justify-between text-sm md:text-base">
-						<p class="text-body [&>span]:text-foreground">
-							{@html m.pages_read({
-								current: BOOK.pages.read,
-								total: BOOK.pages.total,
-							})}
-						</p>
-						<p>{Math.ceil((BOOK.pages.read / BOOK.pages.total) * 100)}%</p>
-					</div>
-					<Progress
-						value={BOOK.pages.read}
-						max={BOOK.pages.total}
-						class="rounded-full lg:h-3"
-					/>
-				</div>
-			</div>
+		<div class="grid grid-cols-3 gap-3 md:grid-cols-5 lg:gap-6">
+			{#await getLastPlayedGames()}
+				{#each Array(5).fill(null) as _uwu}
+					<Skeleton class="aspect-[6/9] rounded" />
+				{/each}
+			{:then games}
+				{#if isPlayingGamesVisible}
+					{#each games as game, i (i)}
+						{@const lastPlayed2WeeksAgo =
+							new Date(game.last_played || 0).getTime() >=
+							new Date().getTime() - 14 * 24 * 60 * 60 * 1000}
+						{#if i !== 5 || !$IS_DESKTOP}
+							<Tooltip.Provider delayDuration={300}>
+								<Tooltip.Root>
+									<Tooltip.Trigger>
+										<a
+											href={game.store_url}
+											target="_blank"
+											rel="noopener noreferrer"
+											class="bg-muted ease-elastic relative flex aspect-[6/9] rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 lg:hover:scale-115"
+											in:elasticFly|global={{
+												opacity: 0,
+												y: 12,
+												duration: 800,
+												delay: 50 * (i + 1),
+											}}
+										>
+											<img
+												src={game.cover_url}
+												alt={game.name}
+												class="size-full rounded object-cover"
+												data-appid={game.id}
+												onerror={handleMissingGameCover}
+											/>
+										</a></Tooltip.Trigger
+									>
+									<Tooltip.Content side="bottom" class="justify-center">
+										<p class="mx-auto mb-px max-w-[20ch] text-center leading-5">
+											{game.name}
+										</p>
+										<div class="flex items-center justify-center gap-1">
+											{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
+												<GamepadLineDevice class="text-body size-4" />
+											{:else}
+												<CalendarCheckLineBusiness class="text-body size-4" />
+											{/if}
+											<p
+												class="text-body [&>span]:text-foreground text-center text-sm"
+											>
+												{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
+													{@html m.played_last_two_weeks({
+														time:
+															game.playtime_2weeks >= 60
+																? `${toFixedIfNecessary(game.playtime_2weeks / 60)}h`
+																: `${game.playtime_2weeks}min`,
+													})}
+												{:else if game.last_played}
+													{@html m.last_played_game({
+														date: timeAgo(new Date(game.last_played)),
+													})}
+												{:else if game.updated}
+													{@html m.updated_at({
+														date: new Date(game.updated).toLocaleDateString(
+															getLocale(),
+														),
+													})}
+												{/if}
+											</p>
+										</div>
+									</Tooltip.Content>
+								</Tooltip.Root>
+							</Tooltip.Provider>
+						{/if}
+					{/each}
+				{/if}
+			{/await}
 		</div>
+		<Button
+			href="https://steamcommunity.com/id/doceazedo911"
+			target="_blank"
+			variant="link"
+			class="w-fit md:ml-auto"
+		>
+			{m.add_me_on_steam()}
+			<ArrowRightLineArrows class="size-5" />
+		</Button>
 	</div>
 
 	<hr />
@@ -443,106 +404,6 @@
 			class="ml-auto"
 		>
 			{m.see_on_lastfm()}
-			<ArrowRightLineArrows class="size-5" />
-		</Button>
-	</div>
-
-	<hr />
-
-	<SectionTitleWithIcon
-		icon={Game2FillOthers}
-		title={m.playing_games()}
-		subtitle={m.playing_games_subtitle()}
-		updatedAt={lastPlayedGamesUpdatedAt}
-	/>
-	<div
-		class="flex flex-col gap-3 md:gap-6"
-		use:onVisible={() => (isPlayingGamesVisible = true)}
-	>
-		<div class="grid grid-cols-3 gap-3 md:grid-cols-5 lg:gap-6">
-			{#await getLastPlayedGames()}
-				{#each Array(5).fill(null) as _uwu}
-					<Skeleton class="aspect-[6/9] rounded" />
-				{/each}
-			{:then games}
-				{#if isPlayingGamesVisible}
-					{#each games as game, i (i)}
-						{@const lastPlayed2WeeksAgo =
-							new Date(game.last_played || 0).getTime() >=
-							new Date().getTime() - 14 * 24 * 60 * 60 * 1000}
-						{#if i !== 5 || !$IS_DESKTOP}
-							<Tooltip.Provider delayDuration={300}>
-							<Tooltip.Root>
-								<Tooltip.Trigger>
-									<a
-										href={game.store_url}
-										target="_blank"
-										rel="noopener noreferrer"
-										class="bg-muted ease-elastic relative flex aspect-[6/9] rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 lg:hover:scale-115"
-										in:elasticFly|global={{
-											opacity: 0,
-											y: 12,
-											duration: 800,
-											delay: 50 * (i + 1),
-										}}
-									>
-										<img
-											src={game.cover_url}
-											alt={game.name}
-											class="size-full rounded object-cover"
-											data-appid={game.id}
-											onerror={handleMissingGameCover}
-										/>
-									</a></Tooltip.Trigger
-								>
-								<Tooltip.Content side="bottom" class="justify-center">
-									<p class="mx-auto mb-px max-w-[20ch] text-center leading-5">
-										{game.name}
-									</p>
-									<div class="flex items-center justify-center gap-1">
-										{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
-											<GamepadLineDevice class="text-body size-4" />
-										{:else}
-											<CalendarCheckLineBusiness class="text-body size-4" />
-										{/if}
-										<p
-											class="text-body [&>span]:text-foreground text-center text-sm"
-										>
-											{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
-												{@html m.played_last_two_weeks({
-													time:
-														game.playtime_2weeks >= 60
-															? `${toFixedIfNecessary(game.playtime_2weeks / 60)}h`
-															: `${game.playtime_2weeks}min`,
-												})}
-											{:else if game.last_played}
-												{@html m.last_played_game({
-													date: timeAgo(new Date(game.last_played)),
-												})}
-											{:else if game.updated}
-												{@html m.updated_at({
-													date: new Date(game.updated).toLocaleDateString(
-														getLocale(),
-													),
-												})}
-											{/if}
-										</p>
-									</div>
-								</Tooltip.Content>
-							</Tooltip.Root>
-						</Tooltip.Provider>
-						{/if}
-					{/each}
-				{/if}
-			{/await}
-		</div>
-		<Button
-			href="https://steamcommunity.com/id/doceazedo911"
-			target="_blank"
-			variant="link"
-			class="w-fit md:ml-auto"
-		>
-			{m.add_me_on_steam()}
 			<ArrowRightLineArrows class="size-5" />
 		</Button>
 	</div>

@@ -2,6 +2,8 @@
 title: "I love websites with sidebars!"
 date: "2026/07/15"
 icon: "/img/icons/dizzy-emoji.svg"
+blueskyPostId: "3mqzaxq5h722j"
+mastodonPostId: "116947711427938530"
 ---
 
 And that's true!

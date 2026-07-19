@@ -51,11 +51,13 @@
 	let innerHeight = $state(0);
 
 	const onscroll = () => {
-		const topVisibleTitle = headingEls.find(
-			(x) => x.getBoundingClientRect().top >= NAVBAR_OFFSET,
-		);
-		if (!topVisibleTitle) return;
-		activeHeading = topVisibleTitle.id;
+		const threshold = innerHeight / 2;
+		let active = "";
+		for (const el of headingEls) {
+			if (el.getBoundingClientRect().top > threshold) break;
+			active = el.id;
+		}
+		activeHeading = active;
 	};
 
 	let activity = $state<PostActivity>();
@@ -262,13 +264,12 @@
 				</ul>
 			</main>
 			<aside
-				class="sticky top-32 hidden h-fit w-full max-w-[19rem] flex-col gap-3 border-l lg:flex"
+				class="sticky top-6 hidden h-fit w-full max-w-[19rem] flex-col gap-3 border-l lg:flex"
 			>
 				<h1 class="ml-6 font-medium">{m.toc()}</h1>
 				<div class="relative flex flex-col gap-1.5">
 					{#each headings as heading, i}
-						{@const isActive =
-							activeHeading === heading.id || (activeHeading === "" && i === 0)}
+						{@const isActive = activeHeading === heading.id}
 						<a
 							href="#{heading.id}"
 							onclick={(e) => {
@@ -304,7 +305,10 @@
 						</a>
 					{/each}
 					<span
-						class="bg-primary ease-elastic absolute top-0 -left-px h-6 w-px transition-all duration-300"
+						class={cn(
+							"bg-primary ease-elastic absolute top-0 -left-px h-6 w-px transition-all duration-300",
+							activeHeadingIdx < 0 && "opacity-0",
+						)}
 						style="top:{activeHeadingIdx >= 0 ? activeHeadingIdx * 30 : 0}px"
 					></span>
 				</div>

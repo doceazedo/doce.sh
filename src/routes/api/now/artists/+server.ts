@@ -1,5 +1,6 @@
 import { env } from "$env/dynamic/private";
 import { json } from "@sveltejs/kit";
+import { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 const LAST_FM_BASE_URL = "http://ws.audioscrobbler.com/2.0";
 const LAST_FM_USERNAME = "doceazedo911";
@@ -19,22 +20,30 @@ const getTopArtists = async (): Promise<
 	}
 };
 
-const DEEZER_API_BASE_URL = "https://api.deezer.com";
+let spotify: SpotifyApi | null = null;
+
+const getSpotify = () => {
+	if (!spotify) {
+		spotify = SpotifyApi.withClientCredentials(
+			env.SPOTIFY_CLIENT_ID,
+			env.SPOTIFY_CLIENT_SECRET,
+		);
+	}
+	return spotify;
+};
 
 const getArtistImage = async (artist: string) => {
 	try {
-		const resp = await fetch(
-			`${DEEZER_API_BASE_URL}/search/artist?q=${encodeURIComponent(artist)}`,
+		const { artists } = await getSpotify().search(artist, ["artist"], undefined, 5);
+		const match =
+			artists.items.find(
+				(x) => x.name.toLowerCase() === artist.toLowerCase(),
+			) || artists.items[0];
+		return (
+			match?.images?.[1]?.url ||
+			match?.images?.[0]?.url ||
+			"/img/now/lastfm-placeholder.webp"
 		);
-		const data = await resp.json();
-		const artistImage =
-			data?.data?.find(
-				(x: { name: string /* ... */ }) =>
-					x?.name?.toLowerCase() === artist.toLowerCase(),
-			)?.picture_medium ||
-			data?.data?.[0]?.picture_medium ||
-			"/img/now/lastfm-placeholder.webp";
-		return artistImage;
 	} catch (_error) {
 		console.error("error fetching artist image:");
 		console.error(_error);

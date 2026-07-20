@@ -21,7 +21,6 @@
 	} from "svelte-remix";
 	import List from "./list.svelte";
 	import {
-		siCloudflare,
 		siDiscogs,
 		siFigma,
 		siFortnite,
@@ -33,19 +32,17 @@
 		siSvelte,
 		siSvg,
 		siTailwindcss,
-		siVercel,
 		siBluesky,
 		siMastodon,
 		siReddit,
 		siPocketbase,
 		siBunnydotnet,
+		siSpotify,
 	} from "simple-icons";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { Button } from "$lib/components/ui/button";
 	import Threlte from "$lib/components/icons/threlte.svg?component";
-	import Deezer from "$lib/components/icons/deezer.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
-	import { cn } from "$lib/utils";
 </script>
 
 <Seo title={m.colophon_seo_title()} />
@@ -168,9 +165,9 @@
 					url: "https://www.last.fm/api",
 				},
 				{
-					label: "Deezer",
-					description: m.deezer_api_description(),
-					icon: Deezer,
+					label: "Spotify",
+					description: m.spotify_api_description(),
+					icon: siSpotify.svg,
 					url: "https://developers.deezer.com/api",
 				},
 				{

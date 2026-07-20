@@ -505,7 +505,7 @@
 	"this_year": "esse ano",
 	"years_ago": "há {years} anos",
 	"just_now": "agora mesmo",
-	"deezer_api_description": "Fotos dos meus top artistas do mês.",
+	"spotify_api_description": "Fotos dos meus top artistas do mês.",
 	"backfeeding_api_description": "Comentários externos para posts do blog.",
 	"pocketbase_description": "Backend self-hosted (cache de APIs externas, etc).",
 	"uses_home_server": "Home server",

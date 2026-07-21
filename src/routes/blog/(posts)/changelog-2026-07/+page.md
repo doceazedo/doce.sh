@@ -10,7 +10,7 @@ And that's true!
 
 When I'm browsing someone's personal website, I probably want to explore all their pages, and I feel like a sidebar helps much better than a navbar at doing so. There is so much more real estate that links don't feel cramped. The vertical nature of it makes it feel like a checklist as I visit each page.
 
-I also really like narrow web pages. My website always had a considerably small `max-width`. It easier for reading, it's easier to handle breakpoints, and it feels so charming!
+I also really like narrow web pages. My website always had a considerably small `max-width`. It's easier for reading, it's easier to handle breakpoints, and it feels so charming!
 
 A sidebar, naturally, makes it easier to narrow a web page width while adding some content to the previously empty sides.
 
@@ -23,6 +23,21 @@ It's been a few years since I wanted my website to feel more like a personal pag
 Most notably, of course, is the **sidebar**. Links are now vertical, my socials and currently playing music are not hidden on the footer anymore which I really like:
 
 <img src="/img/blog/changelog-2026-07/sidebar.webp" class="w-48 mx-auto" />
+
+### New font
+
+I changed the font from Gabarito to **Atkinson Hyperlegible Next**. It prouds itself on being... hyper-legible, which is great for a text-heavy website like mine:
+
+<div class="grid md:grid-cols-2 gap-6">
+  <div class="text-center">
+    <img src="/img/blog/changelog-2026-07/font-before.webp" />
+    <em>Before (Gabarito)</em>
+  </div>
+  <div class="text-center">
+    <img src="/img/blog/changelog-2026-07/font-after.webp" />
+    <em>After (Atkinson Hyperlegible Next)</em>
+  </div>
+</div>
 
 ### Home
 

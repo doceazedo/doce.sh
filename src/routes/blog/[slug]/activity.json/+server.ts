@@ -10,7 +10,12 @@ import type {
 	RedditUserResponse,
 } from "$lib/types.js";
 import { escapeHTML, removeEmojiCodes } from "$lib/utils/string";
-import { AppBskyFeedGetPostThread, AtpAgent, type Facet } from "@atproto/api";
+import {
+	AppBskyFeedDefs,
+	AppBskyFeedGetPostThread,
+	AtpAgent,
+	type Facet,
+} from "@atproto/api";
 import { error, json } from "@sveltejs/kit";
 
 const agent = new AtpAgent({
@@ -206,36 +211,42 @@ const getBlueskyData = async (
 		return parts.join("");
 	};
 
+	const mapComment = (x: AppBskyFeedDefs.ThreadViewPost): PostComment => {
+		const did = x.post.uri.split("app.bsky.feed.post/")[1];
+		return {
+			id: did,
+			author: {
+				id: x.post.author.did,
+				displayName: x.post.author.displayName || `@${x.post.author.handle}`,
+				url: `https://bsky.app/profile/${x.post.author.handle}`,
+				avatar: x.post.author.avatar || `/img/avatar-fallback.webp`,
+				isOp: x.post.author.did === SOCIALS.bluesky.id,
+			},
+			content: parseMessageFacets(
+				(x.post.record?.text as string) || "",
+				(x.post.record.facets as Facet[]) || [],
+			),
+			embed: parseEmbed(x.post.embed as BlueskyRawEmbed),
+			likesCount: x.post.likeCount || 0,
+			url: `https://bsky.app/profile/${x.post.author.handle}/post/${did}`,
+			postedAt:
+				(x.post.record?.createdAt as string) || new Date(0).toString(),
+			replies: (x.replies || [])
+				.filter((r) => "post" in r)
+				.map((r) => mapComment(r as AppBskyFeedDefs.ThreadViewPost))
+				.sort(
+					(a, b) =>
+						new Date(a.postedAt).getTime() - new Date(b.postedAt).getTime(),
+				),
+			source: "bluesky",
+		};
+	};
+
 	return {
 		likesCount: data.thread.post.likeCount,
-		comments:
-			data.thread.replies
-				?.filter((x) => "post" in x)
-				.map((x) => {
-					const did = x.post.uri.split("app.bsky.feed.post/")[1];
-					return {
-						id: did,
-						author: {
-							id: x.post.author.did,
-							displayName:
-								x.post.author.displayName || `@${x.post.author.handle}`,
-							url: `https://bsky.app/profile/${x.post.author.handle}`,
-							avatar: x.post.author.avatar || `/img/avatar-fallback.webp`,
-							isOp: x.post.author.did === SOCIALS.bluesky.id,
-						},
-						content: parseMessageFacets(
-							(x.post.record?.text as string) || "",
-							(x.post.record.facets as Facet[]) || [],
-						),
-						embed: parseEmbed(x.post.embed as BlueskyRawEmbed),
-						likesCount: x.post.likeCount || 0,
-						url: `https://bsky.app/profile/${x.post.author.handle}/post/${did}`,
-						postedAt:
-							(x.post.record?.createdAt as string) || new Date(0).toString(),
-						replies: [],
-						source: "bluesky",
-					};
-				}) || [],
+		comments: (data.thread.replies || [])
+			.filter((x) => "post" in x)
+			.map((x) => mapComment(x as AppBskyFeedDefs.ThreadViewPost)),
 	};
 };
 

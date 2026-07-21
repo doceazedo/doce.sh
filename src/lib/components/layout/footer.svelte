@@ -10,6 +10,7 @@
 	import { MAKE_ELEVATOR_FASTER } from "$lib/settings";
 	import { RssLineDevice } from "svelte-remix";
 	import NowPlaying from "../misc/now-playing.svelte";
+	import Webring from "../misc/webring.svelte";
 
 	const FOOTER_SOCIALS = [
 		{
@@ -103,7 +104,8 @@
 		{/each}
 	</div>
 
-	<div class="block md:hidden">
+	<div class="flex flex-col items-center gap-3 md:hidden">
+		<Webring />
 		<NowPlaying />
 	</div>
 </footer>

@@ -23,7 +23,7 @@
 	import { SOCIALS } from "$lib/constants";
 	import { fly } from "svelte/transition";
 	import NowPlaying from "../misc/now-playing.svelte";
-
+	import Webring from "../misc/webring.svelte";
 
 	let scrollY = $state(0);
 	let isDrawerOpen = $state(false);
@@ -64,109 +64,110 @@
 <svelte:window bind:scrollY />
 
 <aside
-  class={cn(
-    "bg-background/70 fixed z-40 h-16 w-full border-b px-3 backdrop-blur-md transition-colors md:h-full md:w-3xs md:border-r md:border-b-transparent md:bg-transparent md:backdrop-blur-none md:py-6 md:px-6 xl:pl-0 shrink-0 flex items-center md:flex-col md:items-start gap-6",
-    scrollY > 24 &&
-      "md:bg-background/70 md:border-b-border md:backdrop-blur-md",
-  )}
+	class={cn(
+		"bg-background/70 fixed z-40 flex h-16 w-full shrink-0 items-center gap-6 border-b px-3 backdrop-blur-md transition-colors md:h-full md:w-3xs md:flex-col md:items-start md:border-r md:border-b-transparent md:bg-transparent md:px-6 md:py-6 md:backdrop-blur-none xl:pl-0",
+		scrollY > 24 &&
+			"md:bg-background/70 md:border-b-border md:backdrop-blur-md",
+	)}
 >
-    <div class="flex items-center w-full">
-      <a href="/" class="flex items-center gap-1.5 font-sans! text-2xl mr-auto">
-        <Memoji />
-        <span>
-          doce<span class="text-body/70">.sh</span>
-        </span>
-      </a>
-      <div class="hidden md:flex">
-        <Settings class="-mr-1.5" />
-        <LanguageSelector />
-      </div>
-    </div>
+	<div class="flex w-full items-center">
+		<a href="/" class="mr-auto flex items-center gap-1.5 font-sans! text-2xl">
+			<Memoji />
+			<span>
+				doce<span class="text-body/70">.sh</span>
+			</span>
+		</a>
+		<div class="hidden md:flex">
+			<Settings class="-mr-1.5" />
+			<LanguageSelector />
+		</div>
+	</div>
 
-    <hr class="w-full hidden md:block">
+	<hr class="hidden w-full md:block" />
 
-    <div class="text-body hidden md:flex md:flex-col w-full">
-      {#each pages as _page}
-        {@const isCurrentPage = page.url.pathname.startsWith(_page.href)}
-        {@const Icon = _page.icon}
+	<div class="text-body hidden w-full md:flex md:flex-col">
+		{#each pages as _page}
+			{@const isCurrentPage = page.url.pathname.startsWith(_page.href)}
+			{@const Icon = _page.icon}
 
-        <Button
-          href={_page.href}
-          variant={isCurrentPage ? "primary-ghost" : "ghost"}
-          size="lg"
-          class={cn(
-            "justify-start text-left px-2! w-[calc(100%+16px)] -ml-2",
-            isCurrentPage && "text-primary",
-          )}
-        >
-          <Icon
-            class={cn("text-body/80 size-5", isCurrentPage && "text-primary")}
-          />
-          {_page.label}
-        </Button>
-      {/each}
-    </div>
+			<Button
+				href={_page.href}
+				variant={isCurrentPage ? "primary-ghost" : "ghost"}
+				size="lg"
+				class={cn(
+					"-ml-2 w-[calc(100%+16px)] justify-start px-2! text-left",
+					isCurrentPage && "text-primary",
+				)}
+			>
+				<Icon
+					class={cn("text-body/80 size-5", isCurrentPage && "text-primary")}
+				/>
+				{_page.label}
+			</Button>
+		{/each}
+	</div>
 
-    <hr class="w-full hidden md:block">
+	<hr class="hidden w-full md:block" />
 
-    <div class="hidden gap-1 md:flex md:flex-col">
-      <p class="text-lg">{m.say_hi()}</p>
-      <div class="text-body flex -ml-1.5">
-        {#each SIDEBAR_SOCIALS as social, i}
-          <a
-            href={social.url}
-            target="_blank"
-            class={cn(
-              "hover:text-foreground ease-elastic p-1.5 transition-all hover:scale-120",
-              i % 2 ? "hover:rotate-6" : "hover:-rotate-6",
-            )}
-          >
-            <social.icon class="size-5 transition-all" />
-          </a>
-        {/each}
-      </div>
-    </div>
+	<div class="hidden gap-1 md:flex md:flex-col">
+		<p class="text-lg">{m.say_hi()}</p>
+		<div class="text-body -ml-1.5 flex">
+			{#each SIDEBAR_SOCIALS as social, i}
+				<a
+					href={social.url}
+					target="_blank"
+					class={cn(
+						"hover:text-foreground ease-elastic p-1.5 transition-all hover:scale-120",
+						i % 2 ? "hover:rotate-6" : "hover:-rotate-6",
+					)}
+				>
+					<social.icon class="size-5 transition-all" />
+				</a>
+			{/each}
+		</div>
+	</div>
 
-    <div class="hidden w-full mt-auto md:block">
-      <NowPlaying />
-    </div>
+	<div class="mt-auto hidden w-full md:flex md:flex-col md:gap-3">
+		<Webring />
+		<NowPlaying />
+	</div>
 
-    <Drawer.Root bind:open={isDrawerOpen}>
-      <Drawer.Trigger
-        class="-mr-1.5 ml-auto flex size-12 items-center justify-center md:hidden"
-      >
-        <MenuFillSystem class="size-6" />
-      </Drawer.Trigger>
-      <Drawer.Content>
-        <nav class="flex flex-col">
-          {#each pages as _page}
-            {@const isCurrentPage = page.url.pathname.startsWith(_page.href)}
-            {@const Icon = _page.icon}
+	<Drawer.Root bind:open={isDrawerOpen}>
+		<Drawer.Trigger
+			class="-mr-1.5 ml-auto flex size-12 items-center justify-center md:hidden"
+		>
+			<MenuFillSystem class="size-6" />
+		</Drawer.Trigger>
+		<Drawer.Content>
+			<nav class="flex flex-col">
+				{#each pages as _page}
+					{@const isCurrentPage = page.url.pathname.startsWith(_page.href)}
+					{@const Icon = _page.icon}
 
-            <Button
-              href={_page.href}
-              onclick={() => (isDrawerOpen = false)}
-              variant="ghost"
-              size="lg"
-              class={cn(
-                "justify-start text-left",
-                isCurrentPage && "text-primary",
-              )}
-            >
-              <Icon
-                class={cn("text-body size-5", isCurrentPage && "text-primary")}
-              />
-              {_page.label}
-            </Button>
-          {/each}
-        </nav>
-        <hr />
-        <div class="flex">
-          <LanguageSelector />
-          <Settings class="-mr-1.5" />
-        </div>
-      </Drawer.Content>
-    </Drawer.Root>
+					<Button
+						href={_page.href}
+						onclick={() => (isDrawerOpen = false)}
+						variant="ghost"
+						size="lg"
+						class={cn(
+							"justify-start text-left",
+							isCurrentPage && "text-primary",
+						)}
+					>
+						<Icon
+							class={cn("text-body size-5", isCurrentPage && "text-primary")}
+						/>
+						{_page.label}
+					</Button>
+				{/each}
+			</nav>
+			<hr />
+			<div class="flex">
+				<LanguageSelector />
+				<Settings class="-mr-1.5" />
+			</div>
+		</Drawer.Content>
+	</Drawer.Root>
 </aside>
 
 {#if showAchievement}

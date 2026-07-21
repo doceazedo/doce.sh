@@ -196,7 +196,7 @@
 						class="text-body flex flex-col gap-1.5 md:flex-row md:items-center"
 					>
 						{getJoinConversationLabel(activity?.comments?.length || 0)}
-						<div class="flex gap-1.5">
+						<div class="flex items-center gap-1.5">
 							<Button
 								href="https://bsky.app/profile/{SOCIALS.bluesky
 									.handle}/post/{data.metadata?.blueskyPostId || ''}"

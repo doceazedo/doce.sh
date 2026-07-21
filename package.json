@@ -4,7 +4,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "concurrently -n svelte,pocketbase -p name -c bgYellow,bgCyan 'pnpm vite dev' './pocketbase/pocketbase serve'",
+		"dev": "concurrently -n svelte,pocketbase -p name -c bgYellow,bgCyan \"vite dev\" \"node scripts/pocketbase.js serve\"",
 		"build": "vite build",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",

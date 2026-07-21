@@ -28,4 +28,5 @@ project.inlang/cache
 
 # Pocketbase
 pocketbase/pocketbase
+pocketbase/pocketbase.exe
 pocketbase/pb_data

@@ -36,7 +36,7 @@
 
 {#if mounted}
 	<section
-		class="relative flex w-full flex-col justify-between md:items-end py-6 md:flex-row md:pt-12 md:pb-24"
+		class="relative flex w-full flex-col justify-between py-6 md:flex-row md:items-end md:pt-12 md:pb-24"
 	>
 		<HeroDecorations mode="dark" />
 		<HeroDecorations mode="light" />
@@ -49,7 +49,7 @@
 				{m.greetings()}
 			</h1>
 			<p
-				class="text-body [&>span]:text-foreground [&>a]:text-foreground [&>a]:hover:text-primary max-w-[36ch] [&>a]:underline [&>a]:transition-all ml-1"
+				class="text-body [&>span]:text-foreground [&>a]:text-foreground [&>a]:hover:text-primary ml-1 max-w-[38ch] [&>a]:underline [&>a]:transition-all"
 				in:elasticFly={{
 					opacity: 0,
 					x: -24,
@@ -65,7 +65,7 @@
 		</div>
 		<figure
 			class={cn(
-				"relative z-0 mb-12 aspect-[4/5] w-[calc(100%-48px)] mx-auto mt-12 md:m-0 md:w-60 md:scale-90 lg:scale-100",
+				"relative z-0 mx-auto mt-12 mb-12 aspect-[4/5] w-[calc(100%-48px)] md:m-0 md:w-60 md:scale-90 lg:scale-100",
 				finishedAnimations && "group",
 			)}
 			oncontextmenu={(e) => {

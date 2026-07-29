@@ -13,6 +13,7 @@ export const Collections = {
 	Superusers: "_superusers",
 	LastPlayedGames: "last_played_games",
 	LastPlayedTracks: "last_played_tracks",
+	Status: "status",
 	Users: "users",
 } as const
 export type Collections = typeof Collections[keyof typeof Collections]
@@ -117,6 +118,16 @@ export type LastPlayedTracksRecord = {
 	updated: IsoAutoDateString
 }
 
+export type StatusRecord = {
+	created: IsoAutoDateString
+	feeling_en?: string
+	feeling_pt?: string
+	id: string
+	text_en?: string
+	text_pt?: string
+	updated: IsoAutoDateString
+}
+
 export type UsersRecord = {
 	avatar?: FileNameString
 	created: IsoAutoDateString
@@ -138,6 +149,7 @@ export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemF
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
 export type LastPlayedGamesResponse<Texpand = unknown> = Required<LastPlayedGamesRecord> & BaseSystemFields<Texpand>
 export type LastPlayedTracksResponse<Texpand = unknown> = Required<LastPlayedTracksRecord> & BaseSystemFields<Texpand>
+export type StatusResponse<Texpand = unknown> = Required<StatusRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
 // Types containing all Records and Responses, useful for creating typing helper functions
@@ -150,6 +162,7 @@ export type CollectionRecords = {
 	_superusers: SuperusersRecord
 	last_played_games: LastPlayedGamesRecord
 	last_played_tracks: LastPlayedTracksRecord
+	status: StatusRecord
 	users: UsersRecord
 }
 
@@ -161,6 +174,7 @@ export type CollectionResponses = {
 	_superusers: SuperusersResponse
 	last_played_games: LastPlayedGamesResponse
 	last_played_tracks: LastPlayedTracksResponse
+	status: StatusResponse
 	users: UsersResponse
 }
 

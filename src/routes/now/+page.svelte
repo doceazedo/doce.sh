@@ -25,7 +25,10 @@
 	import { browser } from "$app/environment";
 	import { elasticFly } from "$lib/utils/transitions";
 	import { onVisible } from "$lib/utils/actions";
-	import type { LastPlayedGamesRecord } from "$lib/pocketbase-types";
+	import type {
+		LastPlayedGamesRecord,
+		StatusRecord,
+	} from "$lib/pocketbase-types";
 	import { siGodotengine } from "simple-icons";
 	import TennisPlayer from "$lib/components/icons/tennis-player.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
@@ -87,8 +90,26 @@
 		}
 	};
 
+	const getStatusUpdate = async () => {
+		try {
+			const resp = await fetch("/api/now/status");
+			const data = (await resp.json()) as StatusRecord;
+			return data;
+		} catch (_error) {
+			return null;
+		}
+	};
+
+	const isEmojiOnly = (str: string) => {
+		const stringToTest = str.replace(/ /g, "");
+		const emojiRegex =
+			/^(?:(?:\p{RI}\p{RI}|\p{Emoji}(?:\p{Emoji_Modifier}|\u{FE0F}\u{20E3}?|[\u{E0020}-\u{E007E}]+\u{E007F})?(?:\u{200D}\p{Emoji}(?:\p{Emoji_Modifier}|\u{FE0F}\u{20E3}?|[\u{E0020}-\u{E007E}]+\u{E007F})?)*)|[\u{1f900}-\u{1f9ff}\u{2600}-\u{26ff}\u{2700}-\u{27bf}])+$/u;
+		return emojiRegex.test(stringToTest) && Number.isNaN(Number(stringToTest));
+	};
+
 	let isListeningVisible = $state(!browser);
 	let isPlayingGamesVisible = $state(!browser);
+	let locale = $state(getLocale());
 </script>
 
 <Seo title={m.now_seo_title()} />
@@ -123,7 +144,11 @@
 			<div
 				class="border-primary z-10 flex w-fit shrink-0 flex-col gap-1 rounded border bg-[color-mix(in_srgb,var(--background),var(--primary)_20%)] p-1"
 			>
-				<img src="/img/avatar.jpg" alt="" class="size-24 rounded" />
+				<img
+					src="/img/avatar.jpg?t=1785290245"
+					alt=""
+					class="size-24 rounded"
+				/>
 				<p class="text-primary text-center font-medium tracking-wide">
 					{m.update()}
 				</p>
@@ -131,23 +156,56 @@
 			<div
 				class="-ml-14 flex size-full flex-col gap-1.5 rounded border p-6 pb-2.5 pl-20"
 			>
-				<p class="text-foreground flex items-center gap-1 font-medium">
-					<span class="text-lg">DoceAzedo</span>
-					<VerifiedBadgeFillBusiness class="text-primary size-4" />
-					<span class="text-muted-foreground/80 scale-50">&bull;</span>
-					<span class="text-body flex items-center gap-1.5 text-sm">
-						{timeAgo(ACTIVITIES_UPDATED_AT)}
-					</span>
-				</p>
-				<p class="text-foreground/80">
-					{m.update_placeholder()}
-				</p>
-				<div
-					class="mt-3 -ml-20 flex w-[calc(100%+6.5rem)] items-center justify-between border-t pt-2.5 pr-3 pl-20"
-				>
-					<span class="mb-0.5 font-medium tracking-wide">{m.feeling()}:</span>
-					<span class="text-xl">😴</span>
-				</div>
+				{#await getStatusUpdate()}
+					<p class="text-foreground flex items-center gap-1 font-medium">
+						<span class="text-lg">DoceAzedo</span>
+						<VerifiedBadgeFillBusiness class="text-primary size-4" />
+						<span class="text-muted-foreground/80 scale-50">&bull;</span>
+						<span class="text-body flex items-center gap-1.5 text-sm">
+							<Skeleton class="h-5 w-24 rounded" />
+						</span>
+					</p>
+					<div class="flex flex-col gap-1">
+						<Skeleton class="h-5.5 w-full rounded" />
+						<Skeleton class="h-5.5 w-1/3 rounded" />
+					</div>
+					<div
+						class="mt-3 -ml-20 flex w-[calc(100%+6.5rem)] items-center justify-between border-t pt-2.5 pr-3 pl-20"
+					>
+						<span class="mb-0.5 font-medium tracking-wide">{m.feeling()}:</span>
+						<Skeleton class="size-7 rounded" />
+					</div>
+				{:then status}
+					{#if status}
+						<p class="text-foreground flex items-center gap-1 font-medium">
+							<span class="text-lg">DoceAzedo</span>
+							<VerifiedBadgeFillBusiness class="text-primary size-4" />
+							<span class="text-muted-foreground/80 scale-50">&bull;</span>
+							<span class="text-body flex items-center gap-1.5 text-sm">
+								{timeAgo(new Date(status.created))}
+							</span>
+						</p>
+						<p class="text-foreground/80">
+							{locale == "en" ? status.text_en : status.text_pt}
+						</p>
+						<div
+							class="mt-3 -ml-20 flex w-[calc(100%+6.5rem)] items-center justify-between border-t pt-2.5 pr-3 pl-20"
+						>
+							<span class="mb-0.5 font-medium tracking-wide">
+								{m.feeling()}:
+							</span>
+							<span
+								class={cn(
+									isEmojiOnly(status.feeling_en || "")
+										? "text-xl"
+										: "text-base",
+								)}
+							>
+								{locale == "en" ? status.feeling_en : status.feeling_pt}
+							</span>
+						</div>
+					{/if}
+				{/await}
 			</div>
 		</div>
 	</div>

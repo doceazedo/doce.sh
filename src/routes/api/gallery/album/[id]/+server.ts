@@ -1,4 +1,10 @@
-import { getAlbumAssets, getPublicAlbums, toGalleryPhoto } from "$lib/immich";
+import {
+	getAlbumAssets,
+	getPublicAlbums,
+	toGalleryAlbum,
+	toGalleryPhoto,
+} from "$lib/immich";
+import type { GalleryAlbumWithItems } from "$lib/immich-types";
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
 
@@ -7,10 +13,16 @@ export const GET: RequestHandler = async ({ params }) => {
 	const publicAlbum = albums.find(({ album }) => album.id === params.id);
 	if (!publicAlbum) error(404, "Album not found");
 
+	let items: GalleryAlbumWithItems["items"] = [];
 	try {
 		const assets = await getAlbumAssets(publicAlbum.album.id);
-		return json(assets.map((asset) => toGalleryPhoto(asset, publicAlbum.key)));
+		items = assets.map((asset) => toGalleryPhoto(asset, publicAlbum.key));
 	} catch (_error) {
-		return json([]);
+		/* empty */
 	}
+
+	return json({
+		...toGalleryAlbum(publicAlbum),
+		items,
+	} satisfies GalleryAlbumWithItems);
 };

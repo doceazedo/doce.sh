@@ -97,3 +97,16 @@ export const myAge = () => {
 	const ageDate = new Date(diff);
 	return Math.abs(ageDate.getUTCFullYear() - 1970);
 };
+
+export const fullDate = (date: Date) => {
+	return date.toLocaleDateString(
+		getLocale(),
+		getLocale() === "en"
+			? {
+					day: "numeric",
+					month: "short",
+					year: "numeric",
+				}
+			: undefined,
+	);
+};

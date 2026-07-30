@@ -511,5 +511,6 @@
 	"uses_home_server": "Home server",
 	"say_hi": "Say hi!",
 	"uses_headset": "Headset",
-	"update_placeholder": "this is not setup yet, waiting for my status.cafe registration to be approved ig"
+	"update_placeholder": "this is not setup yet, waiting for my status.cafe registration to be approved ig",
+	"gallery": "Gallery"
 }

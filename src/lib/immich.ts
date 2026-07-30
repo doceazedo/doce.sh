@@ -6,12 +6,13 @@ import {
 	init,
 	searchAssets,
 	SharedLinkType,
-	type AlbumResponseDto,
 	type AssetResponseDto,
-	type ExifResponseDto,
 } from "@immich/sdk";
+import type { PublicAlbum, GalleryAlbum, GalleryPhoto } from "./immich-types";
 
 const PAGE_SIZE = 1000;
+
+export const FAVORITES_ALBUM_ID = "favorites";
 
 let initialized = false;
 
@@ -27,32 +28,6 @@ export const initImmich = () => {
 	initialized = true;
 };
 
-export type PublicAlbum = {
-	album: AlbumResponseDto;
-	key: string;
-};
-
-export type GalleryAlbum = {
-	id: string;
-	title: string;
-	description: string;
-	thumbnailUrl: string | null;
-	count: number;
-};
-
-export type GalleryPhoto = {
-	id: string;
-	type: string;
-	url: string;
-	thumbnailUrl: string;
-	width: number | null;
-	height: number | null;
-	thumbhash: string | null;
-	duration: number | null;
-	takenAt: string;
-	exif?: ExifResponseDto;
-};
-
 export const getImageUrl = (assetId: string, key: string, preview = false) => {
 	const size = preview ? "&size=preview" : "";
 	return `${env.IMMICH_BASE_URL}/api/assets/${assetId}/thumbnail?key=${key}${size}`;
@@ -65,6 +40,8 @@ export const toGalleryAlbum = ({ album, key }: PublicAlbum): GalleryAlbum => ({
 	thumbnailUrl: album.albumThumbnailAssetId
 		? getImageUrl(album.albumThumbnailAssetId, key)
 		: null,
+	startDate: album.startDate || album.createdAt,
+	endDate: album.endDate || null,
 	count: album.assetCount,
 });
 
@@ -134,8 +111,10 @@ const searchAllAssets = async (
 export const getAlbumAssets = (albumId: string) =>
 	searchAllAssets({ albumIds: [albumId] });
 
-export const getFavoritePhotos = async (): Promise<GalleryPhoto[]> => {
-	const albums = await getPublicAlbums();
+export const getFavoritePhotos = async (
+	publicAlbums?: PublicAlbum[],
+): Promise<GalleryPhoto[]> => {
+	const albums = publicAlbums ?? (await getPublicAlbums());
 	const [favorites, ...albumAssets] = await Promise.all([
 		searchAllAssets({ isFavorite: true }),
 		...albums.map(({ album }) => getAlbumAssets(album.id)),
@@ -151,4 +130,24 @@ export const getFavoritePhotos = async (): Promise<GalleryPhoto[]> => {
 	return favorites
 		.filter((asset) => keys.has(asset.id))
 		.map((asset) => toGalleryPhoto(asset, keys.get(asset.id)!));
+};
+
+export const toFavoritesAlbum = (
+	photos: GalleryPhoto[],
+): GalleryAlbum | null => {
+	if (!photos.length) return null;
+
+	const sorted = [...photos].sort((a, b) => b.takenAt.localeCompare(a.takenAt));
+	const newest = sorted[0];
+	const oldest = sorted[sorted.length - 1];
+
+	return {
+		id: FAVORITES_ALBUM_ID,
+		title: "Favorites",
+		description: "",
+		thumbnailUrl: newest.thumbnailUrl,
+		startDate: oldest.takenAt,
+		endDate: newest.takenAt === oldest.takenAt ? null : newest.takenAt,
+		count: photos.length,
+	};
 };

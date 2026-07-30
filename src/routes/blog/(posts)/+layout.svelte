@@ -22,6 +22,7 @@
 		VerifiedBadgeFillBusiness,
 	} from "svelte-remix";
 	import Comment from "./comment.svelte";
+	import { fullDate } from "$lib/utils/date";
 
 	type Heading = {
 		label: string;
@@ -135,18 +136,7 @@
 								<CalendarLineBusiness class="size-4" />
 								<p class="[&>span]:text-foreground">
 									{@html m.published_at({
-										date: new Date(
-											`${data.metadata.date} GMT-3`,
-										).toLocaleDateString(
-											getLocale(),
-											getLocale() === "en"
-												? {
-														day: "numeric",
-														month: "short",
-														year: "numeric",
-													}
-												: undefined,
-										),
+										date: fullDate(new Date(`${data.metadata.date} GMT-3`)),
 									})}
 								</p>
 							</div>

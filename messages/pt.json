@@ -511,5 +511,6 @@
 	"uses_home_server": "Home server",
 	"say_hi": "Manda um oi!",
 	"uses_headset": "Headset",
-	"update_placeholder": "isso ainda não funciona, aguardando meu registro no status.cafe ser aprovado"
+	"update_placeholder": "isso ainda não funciona, aguardando meu registro no status.cafe ser aprovado",
+	"gallery": "Galeria"
 }

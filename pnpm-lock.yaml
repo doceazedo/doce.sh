@@ -14,6 +14,9 @@ importers:
       '@dimforge/rapier3d-compat':
         specifier: ^0.17.3
         version: 0.17.3
+      '@immich/sdk':
+        specifier: ^3.0.3
+        version: 3.0.3
       '@inlang/paraglide-js':
         specifier: ^2.18.1
         version: 2.18.1(typescript@5.9.3)
@@ -486,6 +489,9 @@ packages:
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
 
+  '@immich/sdk@3.0.3':
+    resolution: {integrity: sha512-nbtCG/8Bt7tllfAcxPoRzyijxzypS1f3prwPYXE8GVmxbatQiBYUPwFH/JwOBCzXEIFmWma4l1UEcfAyA4STWQ==}
+
   '@inlang/paraglide-js@2.18.1':
     resolution: {integrity: sha512-YzIrJ34KbsJwzvVKBzcBEgp4AqmhNYD1EF2pOV+g87L024XTFmcmikI4/NMfb63H9zJ6UeEPTOmEK7Nzu/4E2Q==}
     hasBin: true
@@ -609,6 +615,9 @@ packages:
     resolution: {integrity: sha512-E7xCFVEEm5Ctnj2udTJy1b9oaTvjz1zi1mYdEtE8rB5BVwq6kHisosDS+zdWN5PMfEMjtbsOV9Cl6tsNSAD1sA==}
     peerDependencies:
       svelte: ^3.0.0 || ^4.0.0 || ^5.0.0
+
+  '@oazapfts/runtime@1.2.0':
+    resolution: {integrity: sha512-fi7dp7dNayyh/vzqhf0ZdoPfC7tJvYfjaE8MBL1yR+iIsH7cFoqHt+DV70VU49OMCqLc7wQa+yVJcSmIRnV4wA==}
 
   '@parcel/watcher-android-arm64@2.5.6':
     resolution: {integrity: sha512-YQxSS34tPF/6ZG7r/Ih9xy+kP/WwediEUsqmtf0cuCV5TPPKw/PQHRhueUo6JdeFJaqV3pyjm0GdYjZotbRt/A==}
@@ -3902,6 +3911,10 @@ snapshots:
 
   '@humanwhocodes/retry@0.4.3': {}
 
+  '@immich/sdk@3.0.3':
+    dependencies:
+      '@oazapfts/runtime': 1.2.0
+
   '@inlang/paraglide-js@2.18.1(typescript@5.9.3)':
     dependencies:
       '@inlang/recommend-sherlock': 0.2.1
@@ -4035,6 +4048,8 @@ snapshots:
   '@neoconfetti/svelte@2.2.2(svelte@5.55.9(@typescript-eslint/types@8.60.0))':
     dependencies:
       svelte: 5.55.9(@typescript-eslint/types@8.60.0)
+
+  '@oazapfts/runtime@1.2.0': {}
 
   '@parcel/watcher-android-arm64@2.5.6':
     optional: true

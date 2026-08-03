@@ -7,6 +7,7 @@
 	import { Skeleton } from "$lib/components/ui/skeleton";
 	import * as Tooltip from "$lib/components/ui/tooltip";
 	import { IS_DESKTOP } from "$lib/stores";
+	import { cn } from "$lib/utils";
 	import { onVisible } from "$lib/utils/actions";
 	import { elasticFly } from "$lib/utils/transitions";
 
@@ -36,6 +37,9 @@
 	} = $props();
 
 	let isVisible = $state(!browser);
+	let hoveredIndex = $state<number | null>(null);
+	let tappedIndex = $state<number | null>(null);
+	const openIndex = $derived($IS_DESKTOP ? hoveredIndex : tappedIndex);
 
 	const handleMissingCoverArt = (event: Event) => {
 		const img = event.target as HTMLImageElement;
@@ -43,7 +47,26 @@
 		if (img.src === placeholder) return;
 		img.src = placeholder;
 	};
+
+	const handlePosterClick = (event: MouseEvent, index: number) => {
+		if ($IS_DESKTOP) return;
+		if (tappedIndex === index) {
+			tappedIndex = null;
+			return;
+		}
+		event.preventDefault();
+		tappedIndex = index;
+	};
+
+	const handleWindowClick = (event: MouseEvent) => {
+		if (tappedIndex === null) return;
+		const target = event.target as HTMLElement | null;
+		if (target?.closest("[data-slot='tooltip-trigger']")) return;
+		tappedIndex = null;
+	};
 </script>
+
+<svelte:window onclick={handleWindowClick} />
 
 <SectionTitleWithIcon {icon} {title} {subtitle} {updatedAt} />
 <div
@@ -60,14 +83,23 @@
 				{#each items as item, i (i)}
 					{@const { id, title, url, image } = poster(item)}
 					{#if i !== 5 || !$IS_DESKTOP}
-						<Tooltip.Provider delayDuration={300}>
-							<Tooltip.Root>
+						<Tooltip.Provider delayDuration={$IS_DESKTOP ? 300 : 0}>
+							<Tooltip.Root
+								bind:open={
+									() => openIndex === i,
+									(open) => (hoveredIndex = open ? i : null)
+								}
+							>
 								<Tooltip.Trigger>
 									<a
 										href={url}
 										target="_blank"
 										rel="noopener noreferrer"
-										class="bg-muted ease-elastic relative flex aspect-[6/9] rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 lg:hover:scale-115"
+										onclick={(event) => handlePosterClick(event, i)}
+										class={cn(
+											"bg-muted ease-elastic relative flex aspect-[6/9] rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 lg:hover:scale-115",
+											!$IS_DESKTOP && tappedIndex === i && "scale-105",
+										)}
 										in:elasticFly|global={{
 											opacity: 0,
 											y: 12,

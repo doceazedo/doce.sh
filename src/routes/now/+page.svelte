@@ -438,12 +438,17 @@
 		subtitle={m.watching_subtitle()}
 		updatedAt={MOVIES_UPDATED_AT}
 		items={lastWatchedMovies}
-		poster={(movie) => ({
-			id: movie.id,
-			title: `${movie.title} (${movie.release_year})`,
-			url: movie.url,
-			image: movie.poster,
-		})}
+		poster={(movie) => {
+			const title = movie.id.endsWith(`-${movie.release_year}`)
+				? `${movie.title} (${movie.release_year})`
+				: movie.title;
+			return {
+				id: movie.id,
+				title,
+				url: movie.url,
+				image: movie.poster,
+			};
+		}}
 		link={{
 			href: SOCIALS.letterboxd.url,
 			label: m.follow_me_on_letterboxd(),

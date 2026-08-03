@@ -37,6 +37,7 @@
 		siPocketbase,
 		siBunnydotnet,
 		siSpotify,
+		siLetterboxd,
 	} from "simple-icons";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { Button } from "$lib/components/ui/button";
@@ -180,6 +181,12 @@
 					description: m.steam_api_description(),
 					icon: siSteam.svg,
 					url: "https://steamcommunity.com/dev",
+				},
+				{
+					label: "letterboxdpy",
+					description: m.letterboxd_api_description(),
+					icon: siLetterboxd.svg,
+					url: "https://github.com/nmcassa/letterboxdpy",
 				},
 				{
 					label: "Bluesky",

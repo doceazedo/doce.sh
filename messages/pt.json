@@ -515,5 +515,6 @@
 	"say_hi": "Manda um oi!",
 	"uses_headset": "Headset",
 	"update_placeholder": "isso ainda não funciona, aguardando meu registro no status.cafe ser aprovado",
-	"gallery": "Galeria"
+	"gallery": "Galeria",
+	"letterboxd_api_description": "Últimos filmes que eu assisti (API não-oficial)."
 }

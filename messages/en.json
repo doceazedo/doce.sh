@@ -515,5 +515,6 @@
 	"say_hi": "Say hi!",
 	"uses_headset": "Headset",
 	"update_placeholder": "this is not setup yet, waiting for my status.cafe registration to be approved ig",
-	"gallery": "Gallery"
+	"gallery": "Gallery",
+	"letterboxd_api_description": "Last watched movies (unofficial API)."
 }

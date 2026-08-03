@@ -64,6 +64,10 @@ export const timeAgo = (date: Date) => {
 		return m.days_ago({ days });
 	}
 
+	if (days == 1) {
+		return m.yesterday();
+	}
+
 	if (hours >= 18) {
 		return m.today();
 	}

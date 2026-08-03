@@ -13,7 +13,7 @@ import {
 	YoutubeLineLogos,
 } from "svelte-remix";
 import { m } from "$lib/paraglide/messages";
-import { siBandcamp, siDiscogs, siLastdotfm } from "simple-icons";
+import { siBandcamp, siDiscogs, siLastdotfm, siLetterboxd } from "simple-icons";
 
 export const DOMAIN = "doce.sh";
 
@@ -68,8 +68,9 @@ export const SOCIALS = {
 	},
 	steam: {
 		icon: SteamLineLogos,
-		url: "https://soundcloud.com/doceazedo",
+		url: "https://steamcommunity.com/id/doceazedo911",
 		label: "Steam",
+		handle: "doceazedo911",
 	},
 	youtube: {
 		icon: YoutubeLineLogos,
@@ -101,6 +102,12 @@ export const SOCIALS = {
 		icon: siDiscogs.svg,
 		url: "https://www.discogs.com/user/doceazedo",
 		label: "Discogs",
+	},
+	letterboxd: {
+		icon: siLetterboxd.svg,
+		url: "https://letterboxd.com/doceazedo911",
+		label: "Letterboxd",
+		handle: "doceazedo911",
 	},
 };
 

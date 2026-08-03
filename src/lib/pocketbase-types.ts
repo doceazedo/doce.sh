@@ -13,6 +13,7 @@ export const Collections = {
 	Superusers: "_superusers",
 	LastPlayedGames: "last_played_games",
 	LastPlayedTracks: "last_played_tracks",
+	Movies: "movies",
 	Status: "status",
 	Users: "users",
 } as const
@@ -118,6 +119,20 @@ export type LastPlayedTracksRecord = {
 	updated: IsoAutoDateString
 }
 
+export type MoviesRecord = {
+	created: IsoAutoDateString
+	id: string
+	liked?: boolean
+	poster?: string
+	rating?: number
+	release_year?: number
+	reviewed?: boolean
+	title: string
+	updated: IsoAutoDateString
+	url: string
+	watched: IsoDateString
+}
+
 export type StatusRecord = {
 	created: IsoAutoDateString
 	feeling_en?: string
@@ -149,6 +164,7 @@ export type OtpsResponse<Texpand = unknown> = Required<OtpsRecord> & BaseSystemF
 export type SuperusersResponse<Texpand = unknown> = Required<SuperusersRecord> & AuthSystemFields<Texpand>
 export type LastPlayedGamesResponse<Texpand = unknown> = Required<LastPlayedGamesRecord> & BaseSystemFields<Texpand>
 export type LastPlayedTracksResponse<Texpand = unknown> = Required<LastPlayedTracksRecord> & BaseSystemFields<Texpand>
+export type MoviesResponse<Texpand = unknown> = Required<MoviesRecord> & BaseSystemFields<Texpand>
 export type StatusResponse<Texpand = unknown> = Required<StatusRecord> & BaseSystemFields<Texpand>
 export type UsersResponse<Texpand = unknown> = Required<UsersRecord> & AuthSystemFields<Texpand>
 
@@ -162,6 +178,7 @@ export type CollectionRecords = {
 	_superusers: SuperusersRecord
 	last_played_games: LastPlayedGamesRecord
 	last_played_tracks: LastPlayedTracksRecord
+	movies: MoviesRecord
 	status: StatusRecord
 	users: UsersRecord
 }
@@ -174,6 +191,7 @@ export type CollectionResponses = {
 	_superusers: SuperusersResponse
 	last_played_games: LastPlayedGamesResponse
 	last_played_tracks: LastPlayedTracksResponse
+	movies: MoviesResponse
 	status: StatusResponse
 	users: UsersResponse
 }

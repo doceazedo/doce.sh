@@ -92,6 +92,19 @@ export const readyInDays = (date: Date) => {
 	return m.ready_in_x_days({ days });
 };
 
+export const lastCronRun = (hours: number[], utcOffset = -3) => {
+	const now = Date.now();
+	const offsetMs = utcOffset * 60 * 60 * 1000;
+	const runs = hours.flatMap((hour) =>
+		[0, 1].map((daysAgo) => {
+			const run = new Date(now + offsetMs);
+			run.setUTCHours(hour, 0, 0, 0);
+			return run.getTime() - daysAgo * 24 * 60 * 60 * 1000 - offsetMs;
+		}),
+	);
+	return new Date(Math.max(...runs.filter((run) => run <= now)));
+};
+
 export const myAge = () => {
 	const diff = Date.now() - BIRTHDAY.getTime();
 	const ageDate = new Date(diff);

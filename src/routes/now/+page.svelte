@@ -14,13 +14,19 @@
 		Game2FillOthers,
 		CodeSSlashLineDevelopment,
 		VerifiedBadgeFillBusiness,
+		Movie2FillMedia,
+		StarFillSystem,
+		StarHalfFillSystem,
+		Heart3FillHealthMedical,
+		AlignLeftEditor,
 	} from "svelte-remix";
 	import SectionTitleWithIcon from "$lib/components/common/section-title-with-icon.svelte";
+	import MediaGridSection from "$lib/components/common/media-grid-section.svelte";
 	import { Button } from "$lib/components/ui/button";
-	import { IS_DESKTOP, LAST_PLAYED_TRACKS } from "$lib/stores";
+	import { LAST_PLAYED_TRACKS } from "$lib/stores";
 	import { SOCIALS } from "$lib/constants";
 	import { cn } from "$lib/utils";
-	import { timeAgo } from "$lib/utils/date";
+	import { lastCronRun, timeAgo } from "$lib/utils/date";
 	import Seo from "$lib/components/common/seo.svelte";
 	import { browser } from "$app/environment";
 	import { elasticFly } from "$lib/utils/transitions";
@@ -28,6 +34,7 @@
 	import type {
 		LastPlayedGamesRecord,
 		StatusRecord,
+		MoviesRecord,
 	} from "$lib/pocketbase-types";
 	import { siGodotengine } from "simple-icons";
 	import TennisPlayer from "$lib/components/icons/tennis-player.svg?component";
@@ -35,6 +42,8 @@
 	import Prose from "$lib/components/common/prose.svelte";
 
 	const ACTIVITIES_UPDATED_AT = new Date("2026/07/19 12:45:00 GMT-3");
+
+	const MOVIES_UPDATED_AT = lastCronRun([6, 18]);
 
 	const ACTIVITIES = $derived([
 		{
@@ -67,13 +76,7 @@
 			return [];
 		}
 	};
-
-	const handleMissingGameCover = (event: Event) => {
-		const img = event.target as HTMLImageElement;
-		const placeholder = `https://placehold.co/600x900?text=${encodeURIComponent(img.alt)}`;
-		if (img.src === placeholder) return;
-		img.src = placeholder;
-	};
+	const lastPlayedGames = getLastPlayedGames();
 
 	const getTopArtists = async () => {
 		try {
@@ -100,6 +103,17 @@
 		}
 	};
 
+	const getLastWatchedMovies = async () => {
+		try {
+			const resp = await fetch("/api/now/movies");
+			const data = (await resp.json()) as MoviesRecord[];
+			return data;
+		} catch (_error) {
+			return [];
+		}
+	};
+	const lastWatchedMovies = getLastWatchedMovies();
+
 	const isEmojiOnly = (str: string) => {
 		const stringToTest = str.replace(/ /g, "");
 		const emojiRegex =
@@ -108,7 +122,6 @@
 	};
 
 	let isListeningVisible = $state(!browser);
-	let isPlayingGamesVisible = $state(!browser);
 	let locale = $state(getLocale());
 </script>
 
@@ -212,103 +225,54 @@
 
 	<hr />
 
-	<SectionTitleWithIcon
+	<MediaGridSection
 		icon={Game2FillOthers}
 		title={m.playing_games()}
 		subtitle={m.playing_games_subtitle()}
 		updatedAt={lastPlayedGamesUpdatedAt}
-	/>
-	<div
-		class="flex flex-col gap-3 md:gap-6"
-		use:onVisible={() => (isPlayingGamesVisible = true)}
+		items={lastPlayedGames}
+		poster={(game) => ({
+			id: game.id,
+			title: game.name,
+			url: game.store_url,
+			image: game.cover_url,
+		})}
+		link={{
+			href: SOCIALS.steam.url,
+			label: m.add_me_on_steam(),
+		}}
 	>
-		<div class="grid grid-cols-3 gap-3 md:grid-cols-5 lg:gap-6">
-			{#await getLastPlayedGames()}
-				{#each Array(5).fill(null) as _uwu}
-					<Skeleton class="aspect-[6/9] rounded" />
-				{/each}
-			{:then games}
-				{#if isPlayingGamesVisible}
-					{#each games as game, i (i)}
-						{@const lastPlayed2WeeksAgo =
-							new Date(game.last_played || 0).getTime() >=
-							new Date().getTime() - 14 * 24 * 60 * 60 * 1000}
-						{#if i !== 5 || !$IS_DESKTOP}
-							<Tooltip.Provider delayDuration={300}>
-								<Tooltip.Root>
-									<Tooltip.Trigger>
-										<a
-											href={game.store_url}
-											target="_blank"
-											rel="noopener noreferrer"
-											class="bg-muted ease-elastic relative flex aspect-[6/9] rounded transition-all before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-105 lg:hover:scale-115"
-											in:elasticFly|global={{
-												opacity: 0,
-												y: 12,
-												duration: 800,
-												delay: 50 * (i + 1),
-											}}
-										>
-											<img
-												src={game.cover_url}
-												alt={game.name}
-												class="size-full rounded object-cover"
-												data-appid={game.id}
-												onerror={handleMissingGameCover}
-											/>
-										</a></Tooltip.Trigger
-									>
-									<Tooltip.Content side="bottom" class="justify-center">
-										<p class="mx-auto mb-px max-w-[20ch] text-center leading-5">
-											{game.name}
-										</p>
-										<div class="flex items-center justify-center gap-1">
-											{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
-												<GamepadLineDevice class="text-body size-4" />
-											{:else}
-												<CalendarCheckLineBusiness class="text-body size-4" />
-											{/if}
-											<p
-												class="text-body [&>span]:text-foreground text-center text-sm"
-											>
-												{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
-													{@html m.played_last_two_weeks({
-														time:
-															game.playtime_2weeks >= 60
-																? `${toFixedIfNecessary(game.playtime_2weeks / 60)}h`
-																: `${game.playtime_2weeks}min`,
-													})}
-												{:else if game.last_played}
-													{@html m.last_played_game({
-														date: timeAgo(new Date(game.last_played)),
-													})}
-												{:else if game.updated}
-													{@html m.updated_at({
-														date: new Date(game.updated).toLocaleDateString(
-															getLocale(),
-														),
-													})}
-												{/if}
-											</p>
-										</div>
-									</Tooltip.Content>
-								</Tooltip.Root>
-							</Tooltip.Provider>
-						{/if}
-					{/each}
+		{#snippet details(game)}
+			{@const lastPlayed2WeeksAgo =
+				new Date(game.last_played || 0).getTime() >=
+				new Date().getTime() - 14 * 24 * 60 * 60 * 1000}
+			<div class="flex items-center justify-center gap-1">
+				{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
+					<GamepadLineDevice class="text-body size-4" />
+				{:else}
+					<CalendarCheckLineBusiness class="text-body size-4" />
 				{/if}
-			{/await}
-		</div>
-		<Button
-			href="https://steamcommunity.com/id/doceazedo911"
-			target="_blank"
-			variant="link"
-			class="w-fit md:ml-auto"
-		>
-			{m.add_me_on_steam()}
-			<ArrowRightLineArrows class="size-5" />
-		</Button>
-	</div>
+				<p class="text-body [&>span]:text-foreground text-center text-sm">
+					{#if game.playtime_2weeks && lastPlayed2WeeksAgo}
+						{@html m.played_last_two_weeks({
+							time:
+								game.playtime_2weeks >= 60
+									? `${toFixedIfNecessary(game.playtime_2weeks / 60)}h`
+									: `${game.playtime_2weeks}min`,
+						})}
+					{:else if game.last_played}
+						{@html m.last_played_game({
+							date: timeAgo(new Date(game.last_played)),
+						})}
+					{:else if game.updated}
+						{@html m.updated_at({
+							date: new Date(game.updated).toLocaleDateString(getLocale()),
+						})}
+					{/if}
+				</p>
+			</div>
+		{/snippet}
+	</MediaGridSection>
 
 	<hr />
 
@@ -465,4 +429,56 @@
 			<ArrowRightLineArrows class="size-5" />
 		</Button>
 	</div>
+
+	<hr />
+
+	<MediaGridSection
+		icon={Movie2FillMedia}
+		title={m.watching()}
+		subtitle={m.watching_subtitle()}
+		updatedAt={MOVIES_UPDATED_AT}
+		items={lastWatchedMovies}
+		poster={(movie) => ({
+			id: movie.id,
+			title: `${movie.title} (${movie.release_year})`,
+			url: movie.url,
+			image: movie.poster,
+		})}
+		link={{
+			href: SOCIALS.letterboxd.url,
+			label: m.follow_me_on_letterboxd(),
+		}}
+	>
+		{#snippet details(movie)}
+			<p
+				class="text-body [&>span]:text-foreground mb-0.5 flex items-center justify-center gap-1 text-center text-sm"
+			>
+				<CalendarCheckLineBusiness class="text-body size-4" />
+				{@html m.last_watched_movie({
+					date: timeAgo(new Date(movie.watched)),
+				})}
+			</p>
+			<div class="flex items-center justify-center gap-1">
+				<div class="flex gap-px">
+					{#if movie.rating && movie.rating >= 0}
+						{@const fullStars = Math.floor(movie.rating)}
+						{#each Array(fullStars) as _}
+							<StarFillSystem class="text-primary size-3" />
+						{/each}
+						{#if movie.rating > fullStars}
+							<StarHalfFillSystem class="text-primary size-3" />
+						{/if}
+					{/if}
+				</div>
+
+				{#if movie.liked}
+					<Heart3FillHealthMedical class="size-3 text-orange-400" />
+				{/if}
+
+				{#if movie.reviewed}
+					<AlignLeftEditor class="text-body size-3" />
+				{/if}
+			</div>
+		{/snippet}
+	</MediaGridSection>
 </div>

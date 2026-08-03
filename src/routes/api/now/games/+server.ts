@@ -7,7 +7,6 @@ import type {
 import SteamUser from "steam-user";
 
 const GAME_COVER_OVERRIDES = {
-	fortnite: "/img/now/games/fortnite.webp",
 	minecraft: "/img/now/games/minecraft.webp",
 	"2xko": "/img/now/games/2xko.webp",
 	480: "/img/now/games/spacewar.webp",
@@ -17,9 +16,6 @@ const STEAM_ID = "76561198111145117";
 const STEAM_BLOCKLIST = [
 	404790, // Godot
 ];
-const FORTNITE_API_BASE_URL = "https://fortnite-api.com/v2";
-const FORTNITE_USERNAME = "DoceAzedo911";
-
 let steam: SteamUser | null = null;
 
 export const GET = async () => {
@@ -80,20 +76,7 @@ const updateLastPlayedGames = async () => {
 		/* empty */
 	}
 
-	const [steamGames, lastPlayedFortniteAt] = await Promise.all([
-		getSteamGames(cachedGames),
-		getFortniteLastPlayedAt(),
-	]);
-	const games: LastPlayedGamesRecord[] = [
-		...steamGames,
-		{
-			id: "fortnite",
-			name: "Fortnite",
-			cover_url: (await getGameCover("fortnite")) || "",
-			store_url: "https://www.fortnite.com",
-			last_played: lastPlayedFortniteAt,
-		},
-	];
+	const games: LastPlayedGamesRecord[] = await getSteamGames(cachedGames);
 
 	await authSuperUser();
 
@@ -208,21 +191,4 @@ const getGameCover = async (appid: number | string) => {
 	if (overrideCover) return overrideCover;
 	if (typeof appid !== "number") return null;
 	return await _gameSteamAppCover(appid);
-};
-
-const getFortniteLastPlayedAt = async (): Promise<string | undefined> => {
-	try {
-		const resp = await fetch(
-			`${FORTNITE_API_BASE_URL}/stats/br/v2?name=${FORTNITE_USERNAME}`,
-			{
-				headers: {
-					Authorization: env.FORTNITE_API_KEY!,
-				},
-			},
-		);
-		const data = await resp.json();
-		return data?.data?.stats?.all?.overall?.lastModified || undefined;
-	} catch (_error) {
-		return undefined;
-	}
 };

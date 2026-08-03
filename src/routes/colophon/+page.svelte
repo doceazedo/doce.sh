@@ -23,7 +23,6 @@
 	import {
 		siDiscogs,
 		siFigma,
-		siFortnite,
 		siLastdotfm,
 		siMapbox,
 		siShadcnui,
@@ -181,12 +180,6 @@
 					description: m.steam_api_description(),
 					icon: siSteam.svg,
 					url: "https://steamcommunity.com/dev",
-				},
-				{
-					label: "Fortnite-API",
-					description: m.fortnite_api_description(),
-					icon: siFortnite.svg,
-					url: "https://dash.fortnite-api.com",
 				},
 				{
 					label: "Bluesky",

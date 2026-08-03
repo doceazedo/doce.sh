@@ -267,7 +267,6 @@
 	"github_api_description": "Last commit on my current side project.",
 	"steam_api_description": "Most played games in the past weeks.",
 	"steamgriddb_api_description": "Better cover arts for some games.",
-	"fortnite_api_description": "Last time I played Fortnite (unofficial API).",
 	"analytics": "Anonymous analytics",
 	"analytics_description": "<p>This site uses a self-hosted <a href=\"https://plausible.io\" target=\"_blank\" rel=\"noopener noreferrer\">Plausible</a> instance to get an approximate number of visitors, fully anonymously. No identifiable information about you or your requests is ever stored. All data is anonymized and aggregated.</p> <p>Plausible doesn't use cookies and is fully compliant with 🇪🇺 GDPR, 🇺🇸CCPA, 🇬🇧 PECR and 🇧🇷 LGPD.</p> <a href=\"https://plausible.io/privacy-focused-web-analytics\" target=\"_blank\" rel=\"noopener noreferrer\">Learn more about Plausible's dedication to privacy.</a>",
 	"ai_usage_summary": "<p>Everything you see here was made by me. The code, the design, the writing, everything. I do lightly use LLMs and AI as a tool.</p><p>Please read my <a href=\"/ai\">AI manifesto</a>.</p>",

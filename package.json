@@ -68,6 +68,7 @@
 		"@threlte/studio": "^0.1.11",
 		"@turf/turf": "^7.3.5",
 		"@types/three": "^0.177.0",
+		"cron-parser": "^5.7.0",
 		"feed": "^5.2.1",
 		"fflate": "^0.8.3",
 		"justified-layout": "^4.1.0",

@@ -42,7 +42,7 @@
 		{ label: m.about_me(), href: "/me", icon: User5LineUserFaces },
 		{ label: m.now_short(), href: "/now", icon: HourglassLineSystem },
 		{ label: m.uses_short(), href: "/uses", icon: MouseLineDevice },
-		// { label: m.gallery(), href: "/gallery", icon: GalleryLineMedia },
+		{ label: m.gallery(), href: "/gallery", icon: GalleryLineMedia },
 		{ label: m.contact(), href: "/contact", icon: Chat1LineCommunication },
 		{ label: m.colophon(), href: "/colophon", icon: CodeSSlashLineDevelopment },
 	]);

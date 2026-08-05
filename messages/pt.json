@@ -516,5 +516,11 @@
 	"uses_headset": "Headset",
 	"update_placeholder": "isso ainda não funciona, aguardando meu registro no status.cafe ser aprovado",
 	"gallery": "Galeria",
-	"letterboxd_api_description": "Últimos filmes que eu assisti (API não-oficial)."
+	"letterboxd_api_description": "Últimos filmes que eu assisti (API não-oficial).",
+	"gallery_subtitle": "Algumas fotos que eu tirei.",
+	"gallery_seo_title": "O rolo da câmera de Doce Fernandes",
+	"gallery_album_seo_title": "{title} • Fotos por Doce Fernandes",
+	"favorites": "Favoritas",
+	"1_photo": "1 foto",
+	"x_photos": "{count} fotos"
 }

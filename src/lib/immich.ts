@@ -33,13 +33,20 @@ export const getImageUrl = (assetId: string, key: string, preview = false) => {
 	return `${env.IMMICH_BASE_URL}/api/assets/${assetId}/thumbnail?key=${key}${size}`;
 };
 
-export const toGalleryAlbum = ({ album, key }: PublicAlbum): GalleryAlbum => ({
+export const toGalleryAlbum = (
+	{ album, key }: PublicAlbum,
+	photos: GalleryPhoto[] = [],
+): GalleryAlbum => ({
 	id: album.id,
 	title: album.albumName,
 	description: album.description,
 	thumbnailUrl: album.albumThumbnailAssetId
 		? getImageUrl(album.albumThumbnailAssetId, key)
 		: null,
+	previewThumbnailUrls: photos
+		.filter((photo) => photo.id !== album.albumThumbnailAssetId)
+		.slice(0, 2)
+		.map((photo) => photo.thumbnailUrl),
 	startDate: album.startDate || album.createdAt,
 	endDate: album.endDate || null,
 	count: album.assetCount,
@@ -111,25 +118,39 @@ const searchAllAssets = async (
 export const getAlbumAssets = (albumId: string) =>
 	searchAllAssets({ albumIds: [albumId] });
 
+export const getAlbumsPhotos = async (
+	albums: PublicAlbum[],
+): Promise<Map<string, GalleryPhoto[]>> => {
+	const albumAssets = await Promise.all(
+		albums.map(({ album }) => getAlbumAssets(album.id)),
+	);
+
+	return new Map(
+		albums.map(({ album, key }, i) => [
+			album.id,
+			albumAssets[i].map((asset) => toGalleryPhoto(asset, key)),
+		]),
+	);
+};
+
 export const getFavoritePhotos = async (
-	publicAlbums?: PublicAlbum[],
+	albumsPhotos?: Map<string, GalleryPhoto[]>,
 ): Promise<GalleryPhoto[]> => {
-	const albums = publicAlbums ?? (await getPublicAlbums());
-	const [favorites, ...albumAssets] = await Promise.all([
+	const [favorites, photos] = await Promise.all([
 		searchAllAssets({ isFavorite: true }),
-		...albums.map(({ album }) => getAlbumAssets(album.id)),
+		albumsPhotos ?? getPublicAlbums().then(getAlbumsPhotos),
 	]);
 
-	const keys = new Map<string, string>();
-	albumAssets.forEach((assets, i) => {
-		for (const asset of assets) {
-			if (!keys.has(asset.id)) keys.set(asset.id, albums[i].key);
+	const publicPhotos = new Map<string, GalleryPhoto>();
+	for (const albumPhotos of photos.values()) {
+		for (const photo of albumPhotos) {
+			if (!publicPhotos.has(photo.id)) publicPhotos.set(photo.id, photo);
 		}
-	});
+	}
 
 	return favorites
-		.filter((asset) => keys.has(asset.id))
-		.map((asset) => toGalleryPhoto(asset, keys.get(asset.id)!));
+		.filter((asset) => publicPhotos.has(asset.id))
+		.map((asset) => publicPhotos.get(asset.id)!);
 };
 
 export const toFavoritesAlbum = (
@@ -146,6 +167,7 @@ export const toFavoritesAlbum = (
 		title: "Favorites",
 		description: "",
 		thumbnailUrl: newest.thumbnailUrl,
+		previewThumbnailUrls: sorted.slice(1, 3).map((photo) => photo.thumbnailUrl),
 		startDate: oldest.takenAt,
 		endDate: newest.takenAt === oldest.takenAt ? null : newest.takenAt,
 		count: photos.length,

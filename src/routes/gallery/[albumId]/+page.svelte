@@ -2,14 +2,19 @@
 	import Seo from "$lib/components/common/seo.svelte";
 	import { fullDate } from "$lib/utils/date.js";
 	import { getLocalizedTextLine } from "$lib/utils/locale";
+	import { m } from "$lib/paraglide/messages";
 	import { CalendarLineBusiness, MultiImageLineMedia } from "svelte-remix";
 	import justifiedLayout from "justified-layout";
+	import Prose from "$lib/components/common/prose.svelte";
 
 	let { data } = $props();
 
+	const isFavorites = $derived(data.album.id === "favorites");
+	const title = $derived(isFavorites ? m.favorites() : data.album.title);
+
 	let containerWidth = $state(0);
 
-	const targetRowHeight = $derived(containerWidth < 640 ? 200 : 320);
+	const targetRowHeight = $derived(containerWidth < 640 ? 320 : 480);
 
 	const layout = $derived(
 		containerWidth
@@ -29,12 +34,12 @@
 	);
 </script>
 
-<Seo title="{data.album.title} • Photos by Doce Fernandes" />
+<Seo title={m.gallery_album_seo_title({ title })} />
 
 <div class="flex flex-col gap-6">
 	<header class="mt-6 flex flex-col gap-1.5 md:mt-0">
 		<h1 class="text-3xl lg:text-4xl">
-			{data.album.title}
+			{title}
 		</h1>
 		<div class="flex flex-col gap-1.5 md:flex-row md:items-center md:gap-3">
 			<div class="text-body flex items-center gap-1.5">
@@ -50,15 +55,18 @@
 			<div class="text-body flex items-center gap-1.5">
 				<MultiImageLineMedia class="size-4" />
 				<p class="[&>span]:text-foreground">
-					{data.album.count} photos
+					{data.album.count === 1
+						? m["1_photo"]()
+						: m.x_photos({ count: data.album.count })}
 				</p>
 			</div>
 		</div>
 	</header>
+	<hr />
 	{#if data.album.description}
-		<p class="text-foreground/80">
+		<Prose>
 			{getLocalizedTextLine(data.album.description)}
-		</p>
+		</Prose>
 	{/if}
 	<ul
 		bind:clientWidth={containerWidth}

@@ -10,6 +10,7 @@ export type GalleryAlbum = {
 	title: string;
 	description: string;
 	thumbnailUrl: string | null;
+	previewThumbnailUrls: string[];
 	startDate: string;
 	endDate: string | null;
 	count: number;

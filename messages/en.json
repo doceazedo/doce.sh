@@ -516,5 +516,11 @@
 	"uses_headset": "Headset",
 	"update_placeholder": "this is not setup yet, waiting for my status.cafe registration to be approved ig",
 	"gallery": "Gallery",
-	"letterboxd_api_description": "Last watched movies (unofficial API)."
+	"letterboxd_api_description": "Last watched movies (unofficial API).",
+	"gallery_subtitle": "Some of the photos I've taken.",
+	"gallery_seo_title": "Doce's camera roll",
+	"gallery_album_seo_title": "{title} • Photos by Doce Fernandes",
+	"favorites": "Favorites",
+	"1_photo": "1 photo",
+	"x_photos": "{count} photos"
 }

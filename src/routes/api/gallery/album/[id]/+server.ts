@@ -22,7 +22,7 @@ export const GET: RequestHandler = async ({ params }) => {
 	}
 
 	return json({
-		...toGalleryAlbum(publicAlbum),
+		...toGalleryAlbum(publicAlbum, items),
 		items,
 	} satisfies GalleryAlbumWithItems);
 };

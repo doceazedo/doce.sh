@@ -7,6 +7,7 @@
 	import justifiedLayout from "justified-layout";
 	import Prose from "$lib/components/common/prose.svelte";
 	import Lightbox from "$lib/components/gallery/lightbox.svelte";
+	import PhotoImage from "$lib/components/gallery/photo-image.svelte";
 	import { goto } from "$app/navigation";
 	import { page } from "$app/state";
 
@@ -106,15 +107,9 @@
 					<a
 						href={photoHref(photo.id)}
 						data-sveltekit-noscroll
-						class="block size-full"
+						class="relative block size-full"
 					>
-						<img
-							src={photo.url}
-							alt={photo.exif?.description || ""}
-							loading="lazy"
-							decoding="async"
-							class="size-full object-cover"
-						/>
+						<PhotoImage {photo} thumbnail loading="lazy" class="object-cover" />
 					</a>
 				</li>
 			{/if}

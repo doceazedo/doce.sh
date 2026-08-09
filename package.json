@@ -84,6 +84,7 @@
 		"satori-html": "^0.3.2",
 		"steam-user": "5.2.3",
 		"three": "^0.177.0",
+		"thumbhash": "^0.1.1",
 		"vite-plugin-arraybuffer": "^0.1.4"
 	}
 }

@@ -19,6 +19,7 @@
 	} from "svelte-remix";
 	import type { Component } from "svelte";
 	import { cn } from "$lib/utils";
+	import PhotoImage from "$lib/components/gallery/photo-image.svelte";
 
 	const SWIPE_THRESHOLD = 50;
 
@@ -196,11 +197,7 @@
 				<ArrowRightLineArrows />
 			</Button>
 		{/if}
-		<img
-			src={photo.url}
-			alt={photo.exif?.description || ""}
-			class="size-full object-contain"
-		/>
+		<PhotoImage {photo} class="object-contain" />
 	</div>
 	{#if $SHOW_PHOTO_INFO}
 		<aside

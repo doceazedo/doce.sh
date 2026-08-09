@@ -6,6 +6,9 @@
 	import { CalendarLineBusiness, MultiImageLineMedia } from "svelte-remix";
 	import justifiedLayout from "justified-layout";
 	import Prose from "$lib/components/common/prose.svelte";
+	import Lightbox from "$lib/components/gallery/lightbox.svelte";
+	import { goto } from "$app/navigation";
+	import { page } from "$app/state";
 
 	let { data } = $props();
 
@@ -13,6 +16,23 @@
 	const title = $derived(isFavorites ? m.favorites() : data.album.title);
 
 	let containerWidth = $state(0);
+
+	const openPhotoId = $derived(page.url.searchParams.get("photo"));
+	const openPhotoIndex = $derived(
+		data.album.items.findIndex((photo) => photo.id === openPhotoId),
+	);
+
+	const photoHref = (photoId: string) =>
+		`${page.url.pathname}?photo=${photoId}`;
+
+	const selectPhoto = (index: number) => {
+		const photo = data.album.items[index];
+		if (!photo) return;
+		goto(photoHref(photo.id), { noScroll: true, keepFocus: true });
+	};
+
+	const closeLightbox = () =>
+		goto(page.url.pathname, { noScroll: true, keepFocus: true });
 
 	const targetRowHeight = $derived(containerWidth < 640 ? 320 : 480);
 
@@ -46,7 +66,7 @@
 				<CalendarLineBusiness class="size-4" />
 				<p class="[&>span]:text-foreground">
 					{fullDate(new Date(data.album.startDate))}
-					{#if data.album.endDate}
+					{#if data.album.endDate && data.album.endDate !== data.album.startDate}
 						- {fullDate(new Date(data.album.endDate))}
 					{/if}
 				</p>
@@ -77,21 +97,36 @@
 			{@const box = layout?.boxes[i]}
 			{#if box}
 				<li
-					class="bg-muted absolute overflow-hidden rounded before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15"
+					class="bg-muted ease-elastic absolute overflow-hidden rounded transition-all before:pointer-events-none before:absolute before:top-0 before:left-0 before:size-full before:rounded before:border before:border-white/15 hover:scale-101"
 					style:top="{box.top}px"
 					style:left="{box.left}px"
 					style:width="{box.width}px"
 					style:height="{box.height}px"
 				>
-					<img
-						src={photo.url}
-						alt={photo.exif?.description || ""}
-						loading="lazy"
-						decoding="async"
-						class="size-full object-cover"
-					/>
+					<a
+						href={photoHref(photo.id)}
+						data-sveltekit-noscroll
+						class="block size-full"
+					>
+						<img
+							src={photo.url}
+							alt={photo.exif?.description || ""}
+							loading="lazy"
+							decoding="async"
+							class="size-full object-cover"
+						/>
+					</a>
 				</li>
 			{/if}
 		{/each}
 	</ul>
 </div>
+
+{#if openPhotoIndex >= 0}
+	<Lightbox
+		photos={data.album.items}
+		index={openPhotoIndex}
+		onclose={closeLightbox}
+		onselect={selectPhoto}
+	/>
+{/if}

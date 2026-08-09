@@ -14,3 +14,5 @@ export const NOISE_SETTING = storage(writable("animated"), "noise");
 export const MAKE_ELEVATOR_FASTER = storage(writable(false), "elevator_speed");
 
 export const USE_DYSLEXIA_FONT = storage(writable(false), "dyslexia_font");
+
+export const SHOW_PHOTO_INFO = storage(writable(false), "photo_info");

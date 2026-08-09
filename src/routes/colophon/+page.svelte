@@ -38,6 +38,7 @@
 		siBunnydotnet,
 		siSpotify,
 		siLetterboxd,
+		siImmich,
 	} from "simple-icons";
 	import { getLocale } from "$lib/paraglide/runtime";
 	import { Button } from "$lib/components/ui/button";
@@ -143,6 +144,12 @@
 					description: m.pocketbase_description(),
 					icon: siPocketbase.svg,
 					url: "https://pocketbase.io",
+				},
+				{
+					label: "Immich",
+					description: m.immich_description(),
+					icon: siImmich.svg,
+					url: "https://immich.app",
 				},
 			]}
 		/>

@@ -41,7 +41,7 @@
 	import PageTitle from "$lib/components/common/page-title.svelte";
 	import Prose from "$lib/components/common/prose.svelte";
 
-	const ACTIVITIES_UPDATED_AT = new Date("2026/07/19 12:45:00 GMT-3");
+	const ACTIVITIES_UPDATED_AT = new Date("2026/10/11 19:10:00 GMT-3");
 	const MOVIES_UPDATED_AT = lastCronRun("0 6 */2 * *");
 
 	const ACTIVITIES = $derived([
@@ -52,10 +52,6 @@
 		{
 			description: m.activity_playing_tennis(),
 			icon: TennisPlayer,
-		},
-		{
-			description: m.activity_revamping_site(),
-			icon: CodeSSlashLineDevelopment,
 		},
 	]);
 

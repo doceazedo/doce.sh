@@ -38,16 +38,21 @@
 	} from "$lib/pocketbase-types";
 	import { siGodotengine } from "simple-icons";
 	import TennisPlayer from "$lib/components/icons/tennis-player.svg?component";
+	import Deadlock from "$lib/components/icons/deadlock.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
 	import Prose from "$lib/components/common/prose.svelte";
 
-	const ACTIVITIES_UPDATED_AT = new Date("2026/10/11 19:10:00 GMT-3");
+	const ACTIVITIES_UPDATED_AT = new Date("2026/10/30 22:00:00 GMT-3");
 	const MOVIES_UPDATED_AT = lastCronRun("0 6 */2 * *");
 
 	const ACTIVITIES = $derived([
 		{
 			description: m.activity_making_game(),
 			icon: siGodotengine.svg,
+		},
+		{
+			description: m.activity_deadlock(),
+			icon: Deadlock,
 		},
 		{
 			description: m.activity_playing_tennis(),
@@ -143,7 +148,7 @@
 							<activity.icon class="text-foreground/70 size-7" />
 						{/if}
 					</span>
-					<Prose>{@html activity.description}</Prose>
+					<Prose class="lg:-mt-0.5">{@html activity.description}</Prose>
 				</li>
 			{/each}
 		</ul>

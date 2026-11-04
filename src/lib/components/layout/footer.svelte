@@ -78,7 +78,7 @@
 	class="mt-12 mb-6 flex flex-col justify-between gap-6 border-t py-12 text-center md:mb-0 md:pt-6 md:pb-0"
 >
 	<div class="text-body flex flex-col items-center text-sm">
-		<Memoji class="mb-1.5 size-14" />
+		<Memoji variant="fullbody" class="mb-1.5" />
 		<p>
 			<a
 				href={COPYLEFT_URL[getLocale()]}

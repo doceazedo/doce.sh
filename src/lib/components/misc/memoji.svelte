@@ -1,42 +1,40 @@
 <script lang="ts">
 	import { MEMOJI_BLINK_COUNT } from "$lib/stores";
 	import { cn } from "$lib/utils";
-	import { onMount } from "svelte";
+	import { prefersReducedMotion } from "svelte/motion";
 
-	let { class: className = "" } = $props();
+	let {
+		class: className = "",
+		variant = "halfbody",
+	}: { class?: string; variant?: "halfbody" | "fullbody" } = $props();
 
-	let video = $state<HTMLVideoElement>();
-	let isSafari = $state(false);
+	let isHovering = $state(false);
 
-	const handleHover = () => {
-		if (!video) return;
-
-		const isPlaying = !!(
-			video.currentTime > 0 &&
-			!video.paused &&
-			!video.ended &&
-			video.readyState > 2
-		);
-		if (isPlaying) return;
-
-		video.play();
-		$MEMOJI_BLINK_COUNT += 1;
-	};
-
-	onMount(() => {
-		isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+	const isHalfBody = $derived(variant == "halfbody");
+	const src = $derived.by(() => {
+		const wantStatic = prefersReducedMotion.current && !isHovering;
+		if (isHalfBody) {
+			return wantStatic
+				? "/img/doce-mii-halfbody-static.webp"
+				: "/img/doce-mii-halfbody-128.webp";
+		}
+		return wantStatic
+			? "/img/doce-mii-fullbody-static.webp"
+			: "/img/doce-mii-fullbody-128.webp";
 	});
 </script>
 
-<!-- svelte-ignore a11y_mouse_events_have_key_events -->
-<video
-	bind:this={video}
-	src="/video/memoji.{isSafari ? 'mov' : 'webm'}"
-	class={cn("-ml-1.5 size-10", className)}
-	controls={false}
-	muted
-	autoplay
-	playsinline
-	onmouseover={handleHover}
->
-</video>
+<img
+	{src}
+	alt=""
+	class={cn(
+		"-ml-1.5 transition-all hover:scale-110",
+		isHalfBody ? "size-10" : "w-20",
+		className,
+	)}
+	onmouseenter={() => {
+		isHovering = true;
+		// $MEMOJI_BLINK_COUNT += 1;
+	}}
+	onmouseleave={() => (isHovering = false)}
+/>

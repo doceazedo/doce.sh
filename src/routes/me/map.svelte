@@ -5,6 +5,7 @@
 	import { MY_LOCATION } from "$lib/constants";
 	import { onVisible } from "$lib/utils/actions";
 	import { getLocale } from "$lib/paraglide/runtime";
+	import { prefersReducedMotion } from "svelte/motion";
 
 	let { userLocation } = $props<{ userLocation: [number, number] | null }>();
 
@@ -70,7 +71,14 @@
 
 <div id="map" class="size-full"></div>
 
-<img src="/img/memoji-wink.webp" alt="" class="size-12" id="doce-marker" />
+<img
+	src={prefersReducedMotion.current
+		? "/img/doce-mii-halfbody-static.webp"
+		: "/img/doce-mii-halfbody-128.webp"}
+	alt=""
+	class="size-12"
+	id="doce-marker"
+/>
 <img src="/img/emoji-apple-you.webp" alt="" class="size-10" id="user-marker" />
 
 {#if loaded}

@@ -73,7 +73,10 @@
 	)}
 >
 	<div class="flex w-full items-center">
-		<a href="/" class="mr-auto flex items-center gap-1.5 font-sans! text-2xl">
+		<a
+			href="/"
+			class="mr-auto flex items-center gap-1.5 font-sans! text-2xl md:gap-0.5"
+		>
 			<Memoji />
 			<span>
 				doce<span class="text-body/70">.sh</span>

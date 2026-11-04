@@ -209,6 +209,7 @@
 	"watching": "Watching",
 	"watching_subtitle": "I'm terrible at rating movies, I either just like them or not.",
 	"last_watched_movie": "Watched <span>{date}</span>",
+	"last_rewatched_movie": "Rewatched <span>{date}</span>",
 	"follow_me_on_letterboxd": "Follow me on Letterboxd",
 	"work_position": "Frontend Developer",
 	"work_description": "I work as a full-time frontend web developer at Rail Europe since {since}!",

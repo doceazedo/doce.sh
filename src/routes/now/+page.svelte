@@ -7,6 +7,7 @@
 	import {
 		ArrowRightLineArrows,
 		CalendarCheckLineBusiness,
+		LoopLeftLineSystem,
 		TargetFillOthers,
 		GamepadLineDevice,
 		HeadphoneFillMedia,
@@ -466,10 +467,17 @@
 			<p
 				class="text-body [&>span]:text-foreground mb-0.5 flex items-center justify-center gap-1 text-center text-sm"
 			>
-				<CalendarCheckLineBusiness class="text-body size-4" />
-				{@html m.last_watched_movie({
-					date: timeAgo(new Date(movie.watched)),
-				})}
+				{#if movie.rewatched}
+					<LoopLeftLineSystem class="text-body size-4" />
+					{@html m.last_rewatched_movie({
+						date: timeAgo(new Date(movie.watched)),
+					})}
+				{:else}
+					<CalendarCheckLineBusiness class="text-body size-4" />
+					{@html m.last_watched_movie({
+						date: timeAgo(new Date(movie.watched)),
+					})}
+				{/if}
 			</p>
 			<div class="flex items-center justify-center gap-1">
 				<div class="flex gap-px">

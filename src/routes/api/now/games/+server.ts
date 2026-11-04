@@ -76,7 +76,8 @@ const updateLastPlayedGames = async () => {
 		/* empty */
 	}
 
-	const games: LastPlayedGamesRecord[] = await getSteamGames(cachedGames);
+	const games = await getSteamGames(cachedGames);
+	if (!games) return;
 
 	await authSuperUser();
 
@@ -127,13 +128,15 @@ const inferLastPlayedDate = (
 
 const getSteamGames = async (
 	cachedGames: LastPlayedGamesRecord[],
-): Promise<Required<LastPlayedGamesRecord>[]> => {
+): Promise<LastPlayedGamesRecord[] | null> => {
 	try {
 		const resp = await fetch(
 			`${STEAM_BASE_URL}/IPlayerService/GetRecentlyPlayedGames/v0001/?key=${env.STEAM_API_KEY}&steamid=${STEAM_ID}&format=json`,
 		);
+		if (!resp.ok) return null;
 		const data = await resp.json();
-		if (!data?.response?.games) return [];
+		if (!data?.response) return null;
+		if (!data.response.games) return [];
 
 		const now = new Date();
 
@@ -160,7 +163,9 @@ const getSteamGames = async (
 						return {
 							id,
 							name: steamGame.name,
-							cover_url: await getGameCover(steamGame.appid),
+							cover_url:
+								(await getGameCover(steamGame.appid).catch(() => null)) ??
+								cachedGame?.cover_url,
 							store_url: `https://store.steampowered.com/app/${steamGame.appid}`,
 							playtime_2weeks: steamGame.playtime_2weeks,
 							last_played: lastPlayed,
@@ -169,7 +174,7 @@ const getSteamGames = async (
 				),
 		);
 	} catch (_error) {
-		return [];
+		return null;
 	}
 };
 

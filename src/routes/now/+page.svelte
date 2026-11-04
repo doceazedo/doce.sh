@@ -38,11 +38,13 @@
 	import type { MoviesApiResponse } from "$lib/types";
 	import { siGodotengine } from "simple-icons";
 	import TennisPlayer from "$lib/components/icons/tennis-player.svg?component";
+	import Deadlock from "$lib/components/icons/deadlock.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
 	import Prose from "$lib/components/common/prose.svelte";
 
-	const ACTIVITIES_UPDATED_AT = new Date("2026/07/19 12:45:00 GMT-3");
+	const ACTIVITIES_UPDATED_AT = new Date("2026/10/30 22:00:00 GMT-3");
 	let moviesUpdatedAt = $state<Date | null>(null);
+	const FALLBACK_STATUS_FEELING = "😵‍💫";
 
 	const ACTIVITIES = $derived([
 		{
@@ -50,12 +52,12 @@
 			icon: siGodotengine.svg,
 		},
 		{
-			description: m.activity_playing_tennis(),
-			icon: TennisPlayer,
+			description: m.activity_deadlock(),
+			icon: Deadlock,
 		},
 		{
-			description: m.activity_revamping_site(),
-			icon: CodeSSlashLineDevelopment,
+			description: m.activity_playing_tennis(),
+			icon: TennisPlayer,
 		},
 	]);
 
@@ -148,7 +150,7 @@
 							<activity.icon class="text-foreground/70 size-7" />
 						{/if}
 					</span>
-					<Prose>{@html activity.description}</Prose>
+					<Prose class="lg:-mt-0.5">{@html activity.description}</Prose>
 				</li>
 			{/each}
 		</ul>
@@ -189,35 +191,41 @@
 						<Skeleton class="size-7 rounded" />
 					</div>
 				{:then status}
-					{#if status}
-						<p class="text-foreground flex items-center gap-1 font-medium">
-							<span class="text-lg">DoceAzedo</span>
-							<VerifiedBadgeFillBusiness class="text-primary size-4" />
-							<span class="text-muted-foreground/80 scale-50">&bull;</span>
-							<span class="text-body flex items-center gap-1.5 text-sm">
-								{timeAgo(new Date(status.created))}
-							</span>
-						</p>
-						<p class="text-foreground/80">
+					<p class="text-foreground flex items-center gap-1 font-medium">
+						<span class="text-lg">DoceAzedo</span>
+						<VerifiedBadgeFillBusiness class="text-primary size-4" />
+						<span class="text-muted-foreground/80 scale-50">&bull;</span>
+						<span class="text-body flex items-center gap-1.5 text-sm">
+							{timeAgo(status ? new Date(status.created) : new Date())}
+						</span>
+					</p>
+					<p class="text-foreground/80">
+						{#if status}
 							{locale == "en" ? status.text_en : status.text_pt}
-						</p>
-						<div
-							class="mt-3 -ml-20 flex w-[calc(100%+6.5rem)] items-center justify-between border-t pt-2.5 pr-3 pl-20"
+						{:else}
+							{m.update_message_fallback()}
+						{/if}
+					</p>
+					<div
+						class="mt-3 -ml-20 flex w-[calc(100%+6.5rem)] items-center justify-between border-t pt-2.5 pr-3 pl-20"
+					>
+						<span class="mb-0.5 font-medium tracking-wide">
+							{m.feeling()}:
+						</span>
+						<span
+							class={cn(
+								isEmojiOnly(status?.feeling_en || FALLBACK_STATUS_FEELING)
+									? "text-xl"
+									: "text-base",
+							)}
 						>
-							<span class="mb-0.5 font-medium tracking-wide">
-								{m.feeling()}:
-							</span>
-							<span
-								class={cn(
-									isEmojiOnly(status.feeling_en || "")
-										? "text-xl"
-										: "text-base",
-								)}
-							>
+							{#if status}
 								{locale == "en" ? status.feeling_en : status.feeling_pt}
-							</span>
-						</div>
-					{/if}
+							{:else}
+								{FALLBACK_STATUS_FEELING}
+							{/if}
+						</span>
+					</div>
 				{/await}
 			</div>
 		</div>

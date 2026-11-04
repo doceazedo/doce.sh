@@ -48,7 +48,7 @@ export const timeAgo = (date: Date) => {
 		return m.months_ago({ months });
 	}
 
-	if (weeks >= 3) {
+	if (weeks >= 4) {
 		return date.getMonth() === now.getMonth() ? m.this_month() : m.last_month();
 	}
 
@@ -56,7 +56,7 @@ export const timeAgo = (date: Date) => {
 		return m.weeks_ago({ weeks });
 	}
 
-	if (days >= 6) {
+	if (days >= 7) {
 		return m.this_week();
 	}
 
@@ -64,12 +64,8 @@ export const timeAgo = (date: Date) => {
 		return m.days_ago({ days });
 	}
 
-	if (days == 1) {
-		return m.yesterday();
-	}
-
 	if (hours >= 18) {
-		return m.today();
+		return date.getDate() === now.getDate() ? m.today() : m.yesterday();
 	}
 
 	if (hours >= 1) {

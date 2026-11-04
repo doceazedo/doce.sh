@@ -26,7 +26,7 @@
 	import { LAST_PLAYED_TRACKS } from "$lib/stores";
 	import { SOCIALS } from "$lib/constants";
 	import { cn } from "$lib/utils";
-	import { lastCronRun, timeAgo } from "$lib/utils/date";
+	import { timeAgo } from "$lib/utils/date";
 	import Seo from "$lib/components/common/seo.svelte";
 	import { browser } from "$app/environment";
 	import { elasticFly } from "$lib/utils/transitions";
@@ -34,15 +34,15 @@
 	import type {
 		LastPlayedGamesRecord,
 		StatusRecord,
-		MoviesRecord,
 	} from "$lib/pocketbase-types";
+	import type { MoviesApiResponse } from "$lib/types";
 	import { siGodotengine } from "simple-icons";
 	import TennisPlayer from "$lib/components/icons/tennis-player.svg?component";
 	import PageTitle from "$lib/components/common/page-title.svelte";
 	import Prose from "$lib/components/common/prose.svelte";
 
 	const ACTIVITIES_UPDATED_AT = new Date("2026/07/19 12:45:00 GMT-3");
-	const MOVIES_UPDATED_AT = lastCronRun("0 6 */2 * *");
+	let moviesUpdatedAt = $state<Date | null>(null);
 
 	const ACTIVITIES = $derived([
 		{
@@ -105,8 +105,9 @@
 	const getLastWatchedMovies = async () => {
 		try {
 			const resp = await fetch("/api/now/movies");
-			const data = (await resp.json()) as MoviesRecord[];
-			return data;
+			const data = (await resp.json()) as MoviesApiResponse;
+			if (data.updatedAt) moviesUpdatedAt = new Date(data.updatedAt);
+			return data.movies;
 		} catch (_error) {
 			return [];
 		}
@@ -435,11 +436,11 @@
 		icon={Movie2FillMedia}
 		title={m.watching()}
 		subtitle={m.watching_subtitle()}
-		updatedAt={MOVIES_UPDATED_AT}
+		updatedAt={moviesUpdatedAt}
 		items={lastWatchedMovies}
 		poster={(movie) => {
-			const title = movie.id.endsWith(`-${movie.release_year}`)
-				? `${movie.title} (${movie.release_year})`
+			const title = movie.id.endsWith(`-${movie.year}`)
+				? `${movie.title} (${movie.year})`
 				: movie.title;
 			return {
 				id: movie.id,

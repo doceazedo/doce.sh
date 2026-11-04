@@ -1,7 +1,6 @@
 import { BIRTHDAY } from "$lib/constants";
 import { m } from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
-import { CronExpressionParser } from "cron-parser";
 
 export const wasPostedThisWeek = (date: Date) => {
 	const now = new Date();
@@ -96,11 +95,6 @@ export const readyInDays = (date: Date) => {
 	if (days === 1) return m.tommorow();
 	return m.ready_in_x_days({ days });
 };
-
-export const lastCronRun = (expression: string) =>
-	CronExpressionParser.parse(expression, { tz: "America/Sao_Paulo" })
-		.prev()
-		.toDate();
 
 export const myAge = () => {
 	const diff = Date.now() - BIRTHDAY.getTime();

@@ -348,3 +348,21 @@ export type RedditUserResponse = {
 		has_subscribed: boolean;
 	};
 };
+
+export type Movie = {
+	id: string;
+	title: string;
+	year: number;
+	url: string;
+	poster: string;
+	watched: string;
+	rating: number | null;
+	liked: boolean;
+	rewatched: boolean;
+	reviewed: boolean;
+};
+
+export type MoviesApiResponse = {
+	updatedAt: string | null;
+	movies: Movie[];
+};

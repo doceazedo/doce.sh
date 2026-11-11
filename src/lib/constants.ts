@@ -125,7 +125,7 @@ export const WORK = {
 	description: m.work_description({ since: 2024 }),
 };
 
-export const EMAIL = "doce@doceazedo.com";
+export const EMAIL = "agridoce.fer@gmail.com";
 
 export const MEMOJI_HOVER_ACHIEVEMENT_THRESHOLD = 5;
 
